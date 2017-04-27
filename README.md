@@ -1,0 +1,3 @@
+This is just a repository for playing around with React, TypeScript, HMR, ...
+
+Might add more reasonable content in case it get's more production-ready ;)

@@ -1,0 +1,4 @@
+.idea
+.awcache
+node_modules
+src/generated
