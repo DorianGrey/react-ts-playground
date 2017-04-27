@@ -90,7 +90,7 @@ const statistics = (opts) =>
       }
       logger.debug(`Translation duplicates: ${_.size(duplicatedValues)} (${(duplicatedValuesPercent).toFixed(1)}%)`);
     } else {
-      logger.debug(`Translation duplicates: 0; There are not translations!`);
+      logger.debug(`Translation duplicates: 0 / 0%; There are no translations!`);
     }
     return partials;
   };

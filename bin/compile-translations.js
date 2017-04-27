@@ -8,6 +8,10 @@ const compileTranslations = require("../dev/translations").compile;
 let argv = yargs
   .usage('$0 <files-glob> <output> [options]')
   .demandCommand(2)
+  .option("no-initial-compile", {
+    describe: "Skips initial compilation",
+    alias: "n"
+  })
   .option("watch", {
     describe: "Watch the translation files",
     alias: "w"
@@ -26,13 +30,15 @@ let argv = yargs
 
 const [filesGlob, output] = argv._;
 
-compileTranslations(filesGlob, output)
-  .catch(e => {
-    logger.error(e);
-    if (!argv.watch) {
-      process.exit(1);
-    }
-  });
+if (!argv.noInitialCompile) {
+  compileTranslations(filesGlob, output)
+    .catch(e => {
+      logger.error(e);
+      if (!argv.watch) {
+        process.exit(1);
+      }
+    });
+}
 
 if (argv.watch) {
   const watch = require("../dev/watch");
