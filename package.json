@@ -20,9 +20,11 @@
     "concurrently": "^3.4.0",
     "cross-env": "^4.0.0",
     "css-loader": "^0.28.0",
+    "express": "^4.15.2",
     "extract-text-webpack-plugin": "^2.1.0",
     "glob": "^7.1.1",
     "html-webpack-plugin": "^2.28.0",
+    "http-proxy": "^1.16.2",
     "inline-chunk-manifest-html-webpack-plugin": "^1.1.1",
     "js-yaml": "^3.8.3",
     "lodash": "^4.17.4",
@@ -49,10 +51,17 @@
     "yargs": "^7.1.0"
   },
   "scripts": {
-    "prestart": "rimraf .tmp && npm run translations:dist",
+    "clear": "rimraf .awcache .tmp .dist src/generated",
+    "prestart": "rimraf .tmp && npm run translations",
     "start": "concurrently -r \"npm run translations:watch\" \"npm run dev-server\"",
     "dev-server": "cross-env NODE_ENV=development webpack-dev-server --config webpack/main.config.js --hot",
-    "translations:dist": "node bin/compile-translations.js \"src/**/*.i18n.yml\" src/generated/translations.ts",
+    "prebuild": "rimraf .dist && npm run translations",
+    "build": "cross-env NODE_ENV=production webpack --config webpack/main.config.js",
+    "prebuild:cc": "rimraf .dist && npm run translations",
+    "build:cc": "npm run build -- --env.useClosureCompiler",
+    "prod-server": "npm run build && node example-prod-server/server.js .dist",
+    "prod-server:cc": "npm run build:cc && node example-prod-server/server.js .dist",
+    "translations": "node bin/compile-translations.js \"src/**/*.i18n.yml\" src/generated/translations.ts",
     "translations:watch": "node bin/compile-translations.js \"src/**/*.i18n.yml\" src/generated/translations.ts -w -n"
   },
   "engines": {

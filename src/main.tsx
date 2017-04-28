@@ -13,12 +13,20 @@ function getContainer() {
 
 function renderApp(container: HTMLElement | null) {
   container = container || getContainer();
-  return render(
-    <AppContainer>
-      <App />
-    </AppContainer>,
-    container
-  );
+
+  if (process.env.NODE_ENV === "production") { // We don't need the 'AppContainer' wrapper in production mode, thus, we make a difference here.
+    return render(
+      <App />,
+      container
+    );
+  } else {
+    return render(
+      <AppContainer>
+        <App />
+      </AppContainer>,
+      container
+    );
+  }
 }
 
 function main() {
@@ -35,6 +43,6 @@ bootloader(main);
 // react-hot-loader 3 API: https://github.com/gaearon/react-hot-loader/tree/master/docs#webpack-2
 if (module.hot) {
   module.hot.accept("./app/App", () => {
-    renderApp(null)
+    renderApp(null);
   })
 }

@@ -23,6 +23,9 @@
     ],
     "jsx": "react"
   },
+  "files": [
+    "src/customTypings.d.ts"
+  ],
   "exclude": [
     "node_modules"
   ],
