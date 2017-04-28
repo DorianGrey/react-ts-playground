@@ -9,13 +9,15 @@
     "noEmitHelpers": true,
     "importHelpers": true,
     "removeComments": false,
+    "alwaysStrict": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
+    "strictNullChecks": true,
+    "strict": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "strictNullChecks": true,
     "typeRoots": [
       "node_modules/@types"
     ],
