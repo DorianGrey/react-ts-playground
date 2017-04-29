@@ -15,9 +15,12 @@ if (serveDirs.length === 0) {
 
 app.use(require("./proxy"));
 
-serveDirs.forEach((dirName) => {
+serveDirs.forEach(dirName => {
   app.use(express.static(path.resolve(process.cwd(), dirName)));
 });
+
+// Serve assets
+app.use("/assets", express.static(path.resolve(process.cwd(), "assets")));
 
 app.get("*", (req, res) => res.sendFile(path.resolve(serveDirs[0] + "/index.html")));
 

@@ -1,31 +1,34 @@
 @import "../../node_modules/normalize.css/normalize";
+@import "./reboot-adoptions";
+@import "./colors";
+@import "./typography";
 
 // Native font stack, see https://www.smashingmagazine.com/2015/11/using-system-ui-fonts-practical-guide/ .
 // Note: "Roboto" was put a little bit lower on that list to not conflict with Google Maps, which loads the Roboto font.
 // To avoid some crazy hacks to suppress this loading behavior, we'll put it somewhere lower so that it's only used on Android.
 $font-family-sans-serif: // Safari for OS X and iOS (San Francisco)
-        -apple-system,
-          // Chrome >= 56 for OS X (San Francisco), Windows, Linux and Android
-        system-ui,
-          // Chrome < 56 for OS X (San Francisco)
-        BlinkMacSystemFont,
-          // Windows
-        "Segoe UI",
-          // KDE
-        "Oxygen",
-          // Ubuntu
-        "Ubuntu",
-          // Gnome
-        "Cantarell",
-          // FF OS
-        "Fira Sans",
-          // Android
-        "Roboto",
-          // Older android versions
-        "Droid Sans",
-          // Basic web fallback
-        "Helvetica Neue",
-        Arial, sans-serif !default;
+  -apple-system,
+    // Chrome >= 56 for OS X (San Francisco), Windows, Linux and Android
+  system-ui,
+    // Chrome < 56 for OS X (San Francisco)
+  BlinkMacSystemFont,
+    // Windows
+  "Segoe UI",
+    // KDE
+  "Oxygen",
+    // Ubuntu
+  "Ubuntu",
+    // Gnome
+  "Cantarell",
+    // FF OS
+  "Fira Sans",
+    // Android
+  "Roboto",
+    // Older android versions
+  "Droid Sans",
+    // Basic web fallback
+  "Helvetica Neue",
+  Arial, sans-serif !default;
 
 // From bootstrap v4's reboot config:
 html {
@@ -35,7 +38,7 @@ html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   -ms-overflow-style: scrollbar;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 *,
@@ -46,5 +49,6 @@ html {
 
 body {
   font-family: $font-family-sans-serif;
-  background: #eee;
+  background: $color-white;
+  margin: 0;
 }

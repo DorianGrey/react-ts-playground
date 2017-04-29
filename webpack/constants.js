@@ -42,7 +42,7 @@ exports.RULE_TS_LOADING = function RULE_TS_LOADING(isDev) {
 const scssLoaderChain     = ["css-loader?importLoaders=1", "postcss-loader", "sass-loader"];
 exports.RULE_SASS_LOADING = function RULE_MAIN_SASS_LOADING(isDev) {
   const result = {
-    test: /main\.scss$/
+    test: /\.scss$/
   };
   if (isDev) {
     result.use = ["style-loader"].concat(scssLoaderChain);

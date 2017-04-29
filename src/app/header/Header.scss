@@ -1,0 +1,19 @@
+@import "../../styles/colors";
+@import "../../styles/typography";
+
+header {
+  background-color: $color-black;
+  color: $color-white;
+  position: fixed;
+  height: $header-height;
+  line-height: $header-height;
+  width: 100%;
+  top: 0;
+  left: 0;
+  box-shadow: 0 1px 6px $color-medium-grey;
+
+  text-align: center;
+
+  display: flex;
+  justify-content: space-around;
+}
