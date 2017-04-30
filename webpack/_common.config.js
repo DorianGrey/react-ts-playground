@@ -12,7 +12,8 @@ const {
         getLoaderOptionsPlugin,
         getPerformanceOptions,
         RULE_TS_LOADING,
-        RULE_SASS_LOADING
+        RULE_SASS_LOADING,
+        RULE_WEBFONTS
       }                          = require("./constants");
 
 /**
@@ -107,7 +108,8 @@ module.exports = function (env) {
        */
       rules: [
         RULE_TS_LOADING(isDev),
-        RULE_SASS_LOADING(isDev)
+        RULE_SASS_LOADING(isDev),
+        RULE_WEBFONTS(isDev),
       ]
     },
     /**

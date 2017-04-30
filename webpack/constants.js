@@ -39,8 +39,20 @@ exports.RULE_TS_LOADING = function RULE_TS_LOADING(isDev) {
   }
 };
 
-const scssLoaderChain     = ["css-loader?importLoaders=1", "postcss-loader", "sass-loader"];
 exports.RULE_SASS_LOADING = function RULE_MAIN_SASS_LOADING(isDev) {
+  const scssLoaderChain = [
+    {
+      loader: "css-loader",
+      query: {
+        sourceMap: isDev,
+        minimize: !isDev
+      }
+    },
+    `postcss-loader?sourceMap=${isDev}`,
+    `resolve-url-loader?sourceMap=${isDev}`,
+    `sass-loader?sourceMap=true` // Has to be true always, since the resolve-url-loader requires it to properly map the resource paths.
+  ];
+
   const result = {
     test: /\.scss$/
   };
@@ -53,6 +65,33 @@ exports.RULE_SASS_LOADING = function RULE_MAIN_SASS_LOADING(isDev) {
     });
   }
   return result;
+};
+
+exports.RULE_WEBFONTS = function (isDev) {
+  const webFontRule = {
+    test: /\.(ttf|eot|svg|woff|woff2)(\?[a-z0-9]+)?$/,
+    use: {
+      loader: "url-loader",
+      query: {
+        limit: (
+          /*
+           Note: Due to the problem with source-maps in conjunction with css-loader (see https://github.com/webpack-contrib/css-loader/issues/29),
+           we're inlining most of the referenced fonts and images directly. Although this raises the stylesheet size to > 10 MB in dev mode,
+           it should be acceptable. In production, the CSS is extracted to a file, thus, we can stick with the lower limit.
+           */
+          isDev ? 250 : 2
+        ) * 1024, // i.e. if the content has a size of > 2KB resp. 250KB, it will be copied via file-loader.
+        name: "[ext]/[name].[hash].[ext]"
+      }
+    },
+    include: [
+      /node_modules/
+    ]
+  };
+
+  // TODO: We might need conditional updates to webFontRule.use.query.publicPath here.
+
+  return webFontRule;
 };
 
 exports.getLoaderOptionsPlugin = function getLoaderOptionsPlugin(isDevMode) {
