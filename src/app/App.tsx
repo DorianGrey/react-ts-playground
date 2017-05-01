@@ -12,7 +12,7 @@ import Header from "./header/Header";
 import TestRoute1 from "./routes/TestRoute1";
 import TestRoute2 from "./routes/TestRoute2";
 import TestRoute3 from "./routes/TestRoute3";
-import NotFound from "./routes/NotFound";
+import NotFound from "./404/404";
 
 export default class App extends React.Component<any, any> {
   constructor(props: any, context: any) {
@@ -26,8 +26,6 @@ export default class App extends React.Component<any, any> {
       <Router>
         <div>
           <Header />
-
-          <h1>Hello World, {navigator.userAgent}!</h1>
 
           <Switch>
             <Route exact path="/" component={TestRoute1}/>
