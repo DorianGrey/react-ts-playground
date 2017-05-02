@@ -28,7 +28,16 @@ exports.NODE_CONFIG = {
 };
 
 exports.RULE_TS_LOADING = function RULE_TS_LOADING(isDev) {
-  const use = ["awesome-typescript-loader"];
+  const use = [
+    {
+      loader: "string-replace-loader", // For being able to use webpack's import() function without causing conflicts with the TS parser.
+      query: {
+        search: "_import_",
+        replace: "import",
+      }
+    },
+    "awesome-typescript-loader"
+  ];
   if (isDev) {
     use.unshift("react-hot-loader/webpack");
   }
