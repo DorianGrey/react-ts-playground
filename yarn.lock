@@ -2,6 +2,37 @@
 # yarn lockfile v1
 
 
+"@types/babel-core@*":
+  version "6.7.14"
+  resolved "https://registry.yarnpkg.com/@types/babel-core/-/babel-core-6.7.14.tgz#a08c900a98e8987c1a98d2ea4fa0a1805a7d131f"
+  dependencies:
+    "@types/babel-template" "*"
+    "@types/babel-traverse" "*"
+    "@types/babel-types" "*"
+
+"@types/babel-template@*":
+  version "6.7.14"
+  resolved "https://registry.yarnpkg.com/@types/babel-template/-/babel-template-6.7.14.tgz#8088a56f9d697d620d3d079c3ef66025b7a08d02"
+  dependencies:
+    "@types/babel-types" "*"
+    "@types/babylon" "*"
+
+"@types/babel-traverse@*":
+  version "6.7.16"
+  resolved "https://registry.yarnpkg.com/@types/babel-traverse/-/babel-traverse-6.7.16.tgz#52f475893b8633f653499d745302fa5572a7bd05"
+  dependencies:
+    "@types/babel-types" "*"
+
+"@types/babel-types@*":
+  version "6.7.14"
+  resolved "https://registry.yarnpkg.com/@types/babel-types/-/babel-types-6.7.14.tgz#a8faeb55853724a854f845cfeb357a59fc76d5bf"
+
+"@types/babylon@*":
+  version "6.16.0"
+  resolved "https://registry.yarnpkg.com/@types/babylon/-/babylon-6.16.0.tgz#42f7d60de27259120306d0c7d9e39760013f00ba"
+  dependencies:
+    "@types/babel-types" "*"
+
 "@types/history@*":
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.5.0.tgz#2f5c3aad4fbd00f89e99b83083e354bc5308e307"
@@ -26,6 +57,13 @@
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@types/react-hot-loader/-/react-hot-loader-3.0.1.tgz#d15e3af68595c5d6c5576cfcc18e28d578924fce"
   dependencies:
+    "@types/react" "*"
+
+"@types/react-loadable@^3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@types/react-loadable/-/react-loadable-3.3.0.tgz#041ea51e5a8ad57af135e2c38e7eb9abe270ad3f"
+  dependencies:
+    "@types/babel-core" "*"
     "@types/react" "*"
 
 "@types/react-router-dom@^4.0.4":
@@ -293,6 +331,10 @@ babel-messages@^6.23.0:
   resolved "https://registry.yarnpkg.com/babel-messages/-/babel-messages-6.23.0.tgz#f3cdf4703858035b2a2951c6ec5edf6c62f2630e"
   dependencies:
     babel-runtime "^6.22.0"
+
+babel-plugin-syntax-dynamic-import@^6.18.0:
+  version "6.18.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-syntax-dynamic-import/-/babel-plugin-syntax-dynamic-import-6.18.0.tgz#8d6a26229c83745a9982a441051572caa179b1da"
 
 babel-runtime@^6.22.0:
   version "6.23.0"
@@ -3307,6 +3349,12 @@ react-hot-loader@3.0.0-beta.6:
     react-proxy "^3.0.0-alpha.0"
     redbox-react "^1.2.5"
     source-map "^0.4.4"
+
+react-loadable@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/react-loadable/-/react-loadable-3.3.1.tgz#91310f1c2adcc73ce944380ee9529f5d33e100d3"
+  dependencies:
+    babel-plugin-syntax-dynamic-import "^6.18.0"
 
 react-proxy@^3.0.0-alpha.0:
   version "3.0.0-alpha.1"

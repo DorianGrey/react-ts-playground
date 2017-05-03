@@ -67,10 +67,10 @@ module.exports = function (env) {
 
   const output = env.isDev ? {
     filename: "[name].js",
-    chunkFilename: "[id].chunk.js"
+    chunkFilename: "[name].chunk.js"
   } : {
     filename: "[name].[chunkhash].js",
-    chunkFilename: "[id].chunk.[chunkhash].js"
+    chunkFilename: "[name].chunk.[chunkhash].js"
   };
 
   return {

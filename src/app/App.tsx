@@ -6,36 +6,36 @@ import {
   Route,
   Switch
 } from "react-router-dom";
+import Loadable, {LoadingComponentProps, OptionsWithResolve} from "react-loadable";
 
 import Header from "./header/Header";
 
 import TestRoute1 from "./routes/TestRoute1";
 import TestRoute2 from "./routes/TestRoute2";
-import TestRoute3 from "./routes/TestRoute3";
 import NotFound from "./404/404";
+import Loading from "./Loading";
 
-export default class App extends React.Component<any, any> {
-  constructor(props: any, context: any) {
-    super(props, context);
-  }
+export default function App() {
+  // TODO: Check if query parameters are forwarded correctly!
+  const LoadableTestRoute3: any = Loadable({
+    loader: () => _import_(/* webpackChunkName: "lazyTestRoute" */ "./routes/TestRoute3.tsx"),
+    LoadingComponent: Loading,
+    resolveModule: module => (module as any).default
+  } as OptionsWithResolve<LoadingComponentProps, any>);
 
+  return (
+    <Router>
+      <div>
+        <Header />
 
-  render() {
-    // TODO: Load a route lazily, like described in https://gist.github.com/acdlite/a68433004f9d6b4cbc83b5cc3990c194
-    return (
-      <Router>
-        <div>
-          <Header />
+        <Switch>
+          <Route exact path="/" component={TestRoute1}/>
+          <Route path="/tr1" component={TestRoute2}/>
+          <Route path="/tr2" component={LoadableTestRoute3}/>
+          <Route component={NotFound}/>
+        </Switch>
 
-          <Switch>
-            <Route exact path="/" component={TestRoute1}/>
-            <Route path="/tr1" component={TestRoute2}/>
-            <Route path="/tr2" component={TestRoute3}/>
-            <Route component={NotFound}/>
-          </Switch>
-
-        </div>
-      </Router>
-    );
-  }
+      </div>
+    </Router>
+  );
 }
