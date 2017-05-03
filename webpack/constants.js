@@ -1,10 +1,9 @@
-const path              = require("path");
-const {
-        ContextReplacementPlugin,
-        LoaderOptionsPlugin
-      }                 = require("webpack");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path                  = require("path");
+const {LoaderOptionsPlugin} = require("webpack");
+const ExtractTextPlugin     = require("extract-text-webpack-plugin");
+const HtmlWebpackPlugin     = require("html-webpack-plugin");
+
+const loadingAnimation = require("../src/generated/loading.scss.json");
 
 const rootDir = path.resolve(__dirname, "..");
 
@@ -139,7 +138,8 @@ exports.getHtmlTemplatePlugin = function getHtmlTemplatePlugin(isDevMode) {
     // Custom config.
     title: "Demo App",
     devMode: isDevMode,
-    baseHref: "/"
+    baseHref: "/",
+    loadingCss: loadingAnimation.css
   });
 };
 

@@ -59,11 +59,12 @@
     "yargs": "^7.1.0"
   },
   "scripts": {
+    "renderLoadingAnimation": "node webpack/util/renderLoading.js",
     "clear": "rimraf .awcache .tmp .dist src/generated",
-    "prestart": "rimraf .tmp && npm run translations",
+    "prestart": "rimraf .tmp && npm run translations && npm run renderLoadingAnimation",
     "start": "concurrently -r \"npm run translations:watch\" \"npm run dev-server\"",
     "dev-server": "cross-env NODE_ENV=development webpack-dev-server --config webpack/main.config.js --hot",
-    "prebuild": "rimraf .dist && npm run translations",
+    "prebuild": "rimraf .dist && npm run translations && npm run renderLoadingAnimation",
     "build": "cross-env NODE_ENV=production webpack --config webpack/main.config.js",
     "prebuild:cc": "rimraf .dist && npm run translations",
     "build:cc": "npm run build -- --env.useClosureCompiler",

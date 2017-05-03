@@ -23,7 +23,10 @@ function getContainer() {
 function renderApp(container: HTMLElement | null) {
   container = container || getContainer();
 
-  return render(wrapWithRhlContainer(<App /> as React.DOMElement<any, any>), container);
+  // Use this if you want to test the loading animation, or for any kind of defer timing.
+  // setTimeout(() => render(wrapWithRhlContainer(<App /> as React.DOMElement<any, any>), container), 1000);
+
+  render(wrapWithRhlContainer(<App /> as React.DOMElement<any, any>), container);
 }
 
 function main() {
