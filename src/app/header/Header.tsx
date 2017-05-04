@@ -47,7 +47,7 @@ export default class Header extends React.Component<any, any> {
           <nav className="header-nav" ref="navMenu" onClick={ this.onNavClick.bind(this) }>
             <Link to="/">TestRoute1</Link>
             <Link to="/tr1">TestRoute2</Link>
-            <Link to="/tr2">TestRoute3</Link>
+            <Link to="/lazy-test/faq?bla=true">TestRoute3</Link>
           </nav>
 
         </div>

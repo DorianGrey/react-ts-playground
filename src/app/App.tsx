@@ -18,7 +18,7 @@ import Loading from "./Loading";
 export default function App() {
   // TODO: Check if query parameters are forwarded correctly!
   const LoadableTestRoute3: any = Loadable({
-    loader: () => _import_(/* webpackChunkName: "lazyTestRoute" */ "./routes/TestRoute3.tsx"),
+    loader: () => _import_(/* webpackChunkName: "lazyTestRoute" */ "./routes/LazyTestRoute.tsx"),
     LoadingComponent: Loading,
     resolveModule: module => (module as any).default
   } as OptionsWithResolve<LoadingComponentProps, any>);
@@ -31,7 +31,7 @@ export default function App() {
         <Switch>
           <Route exact path="/" component={TestRoute1}/>
           <Route path="/tr1" component={TestRoute2}/>
-          <Route path="/tr2" component={LoadableTestRoute3}/>
+          <Route path="/lazy-test/:id" component={LoadableTestRoute3}/>
           <Route component={NotFound}/>
         </Switch>
 
