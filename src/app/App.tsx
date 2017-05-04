@@ -10,18 +10,22 @@ import Loadable, {LoadingComponentProps, OptionsWithResolve} from "react-loadabl
 
 import Header from "./header/Header";
 
-import TestRoute1 from "./routes/TestRoute1";
-import TestRoute2 from "./routes/TestRoute2";
 import NotFound from "./404/404";
 import Loading from "./Loading";
 
-export default function App() {
-  // TODO: Check if query parameters are forwarded correctly!
-  const LoadableTestRoute3: any = Loadable({
-    loader: () => _import_(/* webpackChunkName: "lazyTestRoute" */ "./routes/LazyTestRoute.tsx"),
+function withLoader<T>(loader: () => Promise<T>) {
+  return Loadable({
+    loader,
     LoadingComponent: Loading,
-    resolveModule: module => (module as any).default
+    resolveModule:    module => (module as any).default
   } as OptionsWithResolve<LoadingComponentProps, any>);
+}
+
+export default function App() {
+
+  const AsyncTestRoute1: any           = withLoader(() => _import_(/* webpackChunkName: "testRoute1" */"./routes/TestRoute1.tsx"));
+  const AsyncTestRoute2: any           = withLoader(() => _import_(/* webpackChunkName: "testRoute2" */"./routes/TestRoute2.tsx"));
+  const AsyncParseParamsTestRoute: any = withLoader(() => _import_(/* webpackChunkName: "parseParamTest" */"./routes/ParseParamsTestRoute.tsx"));
 
   return (
     <Router>
@@ -29,9 +33,9 @@ export default function App() {
         <Header />
 
         <Switch>
-          <Route exact path="/" component={TestRoute1}/>
-          <Route path="/tr1" component={TestRoute2}/>
-          <Route path="/lazy-test/:id" component={LoadableTestRoute3}/>
+          <Route exact path="/" component={AsyncTestRoute1}/>
+          <Route path="/tr1" component={AsyncTestRoute2}/>
+          <Route path="/lazy-test/:id" component={AsyncParseParamsTestRoute}/>
           <Route component={NotFound}/>
         </Switch>
 

@@ -33,6 +33,7 @@ exports.RULE_TS_LOADING = function RULE_TS_LOADING(isDev) {
       query: {
         search: "_import_",
         replace: "import",
+        flags: "g"
       }
     },
     "awesome-typescript-loader"
