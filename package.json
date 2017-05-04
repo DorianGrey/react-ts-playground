@@ -62,6 +62,7 @@
   },
   "scripts": {
     "renderLoadingAnimation": "node webpack/util/renderLoading.js",
+    "analyze:build": "npm run build -- --env.analyzeBundles",
     "clear": "rimraf .awcache .tmp .dist src/generated",
     "prestart": "rimraf .tmp && npm run translations && npm run renderLoadingAnimation",
     "start": "concurrently -r \"npm run translations:watch\" \"npm run dev-server\"",
