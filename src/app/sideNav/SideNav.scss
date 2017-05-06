@@ -1,0 +1,66 @@
+@import "../../styles/colors";
+@import "../../styles/typography";
+
+.side-nav {
+  position: fixed;
+  top: $header-height;
+  height: calc(100vh - #{$header-height});
+  width: $side-nav-width;
+
+  background-color: $color-black;
+  color: $color-white;
+
+  a {
+    color: white;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    height: $side-nav-width;
+    line-height: $side-nav-width;
+    //border-top: 1px solid $color-medium-grey;
+
+    //box-shadow: $default-box-shadow;
+
+    width: $side-nav-width;
+    white-space: nowrap;
+    transition: background-color, width .25s linear;
+
+    a {
+      display: block;
+      background-color: $color-black;
+      transition: background-color, color, width .25s linear;
+      overflow: hidden;
+      &.selected {
+        .icon-container {
+          background-color: $color-white;
+          color: $color-black;
+        }
+      }
+    }
+
+    i {
+      font-size: 1.5em;
+    }
+
+    span.icon-container {
+      width: $side-nav-width;
+      text-align: center;
+      display: inline-block;
+    }
+
+    span.text-container {
+      font-size: 1em;
+      display: inline-block;
+    }
+
+    &:hover {
+      //background-color: lighten($color-black, 20%);
+      width: 4 * $side-nav-width;
+    }
+  }
+}
