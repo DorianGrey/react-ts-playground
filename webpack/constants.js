@@ -52,12 +52,24 @@ exports.RULE_SASS_LOADING = function RULE_MAIN_SASS_LOADING(isDev) {
   const scssLoaderChain = [
     {
       loader: "css-loader",
-      query: {
+      options: {
         sourceMap: isDev,
-        minimize: !isDev
+        minimize: !isDev,
+        importLoaders: 1
       }
     },
-    `postcss-loader?sourceMap=${isDev}`,
+    {
+      loader: "postcss-loader",
+      options: {
+        sourceMap: isDev,
+        plugins: (loader) => [
+          require("autoprefixer")({
+            "browsers": ["last 2 versions"]
+          }),
+          require("postcss-flexbugs-fixes")
+        ]
+      }
+    },
     `resolve-url-loader?sourceMap=${isDev}`,
     `sass-loader?sourceMap=true` // Has to be true always, since the resolve-url-loader requires it to properly map the resource paths.
   ];
@@ -105,18 +117,7 @@ exports.RULE_WEBFONTS = function (isDev) {
 
 exports.getLoaderOptionsPlugin = function getLoaderOptionsPlugin(isDevMode) {
   const options = {
-    options: {
-      // Forwards options to the postcss-loader; put more of them here as required.
-      // In its current state, only
-      postcss: {
-        plugins: [
-          require("autoprefixer")({
-            "browsers": ["last 2 versions"]
-          }),
-          require("postcss-flexbugs-fixes")
-        ]
-      }
-    }
+    options: {}
   };
 
   if (!isDevMode) {

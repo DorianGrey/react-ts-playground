@@ -1,11 +1,13 @@
 import "./App.scss";
 
 import * as React from "react";
+// Note: We have to import these from different packages to always get the proper typings ... DAFUQ?!
+import {BrowserRouter as Router} from "react-router-dom";
 import {
-  BrowserRouter as Router,
+  Redirect,
   Route,
   Switch
-} from "react-router-dom";
+} from "react-router";
 import Loadable, {LoadingComponentProps, OptionsWithResolve} from "react-loadable";
 
 import Header from "./header/Header";
@@ -13,7 +15,6 @@ import Header from "./header/Header";
 import NotFound from "./404/404";
 import Loading from "./Loading";
 import SideNav from "./sideNav/SideNav";
-import {Redirect} from "react-router";
 
 function withLoader<T>(loader: () => Promise<T>) {
   return Loadable({
