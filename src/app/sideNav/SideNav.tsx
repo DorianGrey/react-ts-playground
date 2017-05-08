@@ -22,9 +22,9 @@ export default function SideNav() {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/tr1" activeClassName="selected">
+            <NavLink to="/todo-list" activeClassName="selected">
               <span className="icon-container"><i className="fa fa-tasks" aria-hidden="true"/></span>
-              <span className="text-container">TestRoute2</span>
+              <span className="text-container">Todo list</span>
             </NavLink>
           </li>
           <li> {/* I'm not sure why the isActive stuff does not work out of the box for this link, but it seems we have to work around it. */}
