@@ -1,0 +1,63 @@
+@import "../../styles/typography";
+
+.todo-list {
+
+  ul {
+    padding: 0;
+    list-style-type: none;
+  }
+
+  .todo-entry {
+    min-width: $min-page-width;
+    margin: auto;
+    width: 50%;
+    padding: 1em;
+    border: 1px solid $color-medium-grey;
+
+    .headline {
+      justify-content: space-between;
+      padding-bottom: .5rem;
+    }
+
+    .controls {
+      font-size: 1.5em;
+
+      i {
+        cursor: pointer;
+      }
+
+      i:not(:last-child) {
+        margin: 0 .5rem;
+      }
+
+      i:last-child {
+        margin-left: .5rem;
+      }
+    }
+
+    .content {
+      justify-content: space-around;
+    }
+  }
+
+  .new-todo {
+    width: 50%;
+    margin: auto;
+    font-size: 3em;
+    text-align: center;
+    border: 1px dotted $color-medium-grey;
+    color: $color-medium-grey;
+    cursor: pointer;
+
+    transition: color, background-color .25s linear;
+
+    &:hover {
+      background-color: $color-light-grey;
+      color: $color-black;
+    }
+
+    i {
+      transition: color .25s linear;
+    }
+  }
+}

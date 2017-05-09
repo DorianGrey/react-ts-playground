@@ -21,7 +21,8 @@ const initialTodoList: TodoState = List.of<TodoModel>({
   id:          1,
   headline:    "Test todo",
   description: "A lot of stuff to be done!",
-  deadline:    new Date()
+  deadline:    new Date(),
+  created:     new Date()
 });
 
 
