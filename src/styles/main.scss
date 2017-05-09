@@ -72,3 +72,15 @@ a {
   font-weight: 600;
   font-size: 1.2em;
 }
+
+[hidden] {
+  display: none !important;
+}
+
+input, textarea {
+  padding: 5px 8px;
+}
+
+textarea {
+  max-width: 100%;
+}

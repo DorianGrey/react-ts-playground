@@ -2,6 +2,7 @@ import {List} from "immutable";
 import {TodoModel} from "./todo.model";
 import {Action} from "redux";
 
+export type TodoAction = Action & { payload: TodoModel };
 export type TodoState = List<TodoModel>;
 
 const ACTION_TYPES = {
@@ -10,10 +11,18 @@ const ACTION_TYPES = {
 
 Object.freeze(ACTION_TYPES);
 
-export function AddTodo(payload: TodoModel) {
+export function AddTodo(headline: string,
+                        description: string,
+                        deadline: Date) {
   return {
-    type: ACTION_TYPES.ADD_TODO,
-    payload
+    type:    ACTION_TYPES.ADD_TODO,
+    payload: {
+      id:      Math.random() * 1000,
+      created: new Date(),
+      headline,
+      description,
+      deadline
+    }
   };
 }
 
@@ -26,11 +35,11 @@ const initialTodoList: TodoState = List.of<TodoModel>({
 });
 
 
-export const todosReducer = (state: TodoState = initialTodoList, action: Action) => {
+export const todosReducer = (state: TodoState = initialTodoList, action: TodoAction) => {
   switch (action.type) {
     case ACTION_TYPES.ADD_TODO:
       // TODO: Need to figure out what to do here ?!
-      return state.push(action.type);
+      return state.push(action.payload);
     default:
       return state;
   }

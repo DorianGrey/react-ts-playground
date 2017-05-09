@@ -6,6 +6,8 @@ import {List} from "immutable";
 
 import {TodoModel} from "./todo.model";
 import {AppState} from "../app.state";
+import {AddTodo, TodoAction} from "./todo.state";
+import {Dispatch} from "redux";
 
 // Simple Todo entry.
 function Todo(todo: TodoModel) {
@@ -33,6 +35,9 @@ function Todo(todo: TodoModel) {
 
 export interface TodoListProps {
   todos: List<TodoModel>;
+  onTodoClick: (headline: string,
+                description: string,
+                deadline: Date) => void;
 }
 
 const mapStateToProps = (state: AppState) => {
@@ -41,18 +46,69 @@ const mapStateToProps = (state: AppState) => {
   }
 };
 
-function TodoList({todos}: TodoListProps) {
-  return (
-    <div className="todo-list">
-      <h2>TestRoute 2</h2>
-      <ul>
-        {todos.map((todo: TodoModel) => <Todo key={todo.id} {...todo} />)}
-      </ul>
-      <div className="new-todo">
-        <i className="fa fa-plus-circle"></i>
-      </div>
-    </div>
-  )
+const mapDispatchToProps = (dispatch: Dispatch<TodoAction>) => {
+  return {
+    onTodoClick: (headline: string,
+                  description: string,
+                  deadline: Date) => {
+      dispatch(AddTodo(headline, description, deadline))
+    }
+  }
 };
 
-export default connect(mapStateToProps)(TodoList);
+class TodoList extends React.Component<TodoListProps, any> {
+  state = {
+    showNewTodoBlock: false
+  };
+
+  currentTodoData: Partial<TodoModel> = {};
+
+  private descriptionInput: HTMLTextAreaElement;
+  private headlineInput: HTMLInputElement;
+
+  createTodo() {
+    this.setState({showNewTodoBlock: false});
+
+    this.props.onTodoClick(
+      this.currentTodoData.headline as string,
+      this.currentTodoData.description as string,
+      new Date()
+    );
+
+    this.currentTodoData        = {};
+    this.headlineInput.value    = "";
+    this.descriptionInput.value = "";
+  }
+
+  render() {
+    return (
+      <div className="todo-list">
+        <h2>TestRoute 2</h2>
+        <ul>
+          {this.props.todos.map((todo: TodoModel) => <Todo key={todo.id} {...todo} />)}
+        </ul>
+        <div className="new-todo-block column" hidden={!this.state.showNewTodoBlock}>
+          <div>
+            <label htmlFor="new-todo-headline">Name:</label>
+            <input id="new-todo-headline"
+                   ref={input => this.headlineInput = input}
+                   onChange={(event) => this.currentTodoData.headline = event.target.value}/>
+          </div>
+          <div>
+            <label htmlFor="new-todo-description">Description:</label>
+            <textarea id="new-todo-description"
+                      ref={input => this.descriptionInput = input}
+                      onChange={(event) => this.currentTodoData.description = event.target.value}/>
+          </div>
+          <button type="button" onClick={() => this.createTodo()}>Create</button>
+        </div>
+        <div className="new-todo" onClick={ () => this.setState({showNewTodoBlock: true}) }
+             hidden={this.state.showNewTodoBlock}>
+          <i className="fa fa-plus-circle"></i>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
