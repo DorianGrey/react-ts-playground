@@ -6,18 +6,18 @@ import {List} from "immutable";
 
 import {TodoModel} from "./todo.model";
 import {AppState} from "../app.state";
-import {AddTodo, TodoAction} from "./todo.state";
+import {AddTodo, DeleteTodo, TodoAddAction} from "./todo.state";
 import {Dispatch} from "redux";
 
 // Simple Todo entry.
-function Todo(todo: TodoModel) {
+function Todo(todo: TodoModel & { onDelete: () => void }) {
   return (
     <li className="todo-entry">
       <div className="row headline">
         <div className="h3">{todo.headline}</div>
         <div className="controls">
           <i className="fa fa-edit"></i>
-          <i className="fa fa-close"></i>
+          <i className="fa fa-close" onClick={ () => todo.onDelete() }></i>
         </div>
       </div>
       <div className="row content">
@@ -35,9 +35,10 @@ function Todo(todo: TodoModel) {
 
 export interface TodoListProps {
   todos: List<TodoModel>;
-  onTodoClick: (headline: string,
-                description: string,
-                deadline: Date) => void;
+  onTodoAdd: (headline: string,
+              description: string,
+              deadline: Date) => void;
+  onTodoDelete: (id: number) => void;
 }
 
 const mapStateToProps = (state: AppState) => {
@@ -46,12 +47,15 @@ const mapStateToProps = (state: AppState) => {
   }
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<TodoAction>) => {
+const mapDispatchToProps = (dispatch: Dispatch<TodoAddAction>) => {
   return {
-    onTodoClick: (headline: string,
-                  description: string,
-                  deadline: Date) => {
+    onTodoAdd:    (headline: string,
+                   description: string,
+                   deadline: Date) => {
       dispatch(AddTodo(headline, description, deadline))
+    },
+    onTodoDelete: (id: number) => {
+      dispatch(DeleteTodo(id));
     }
   }
 };
@@ -69,7 +73,7 @@ class TodoList extends React.Component<TodoListProps, any> {
   createTodo() {
     this.setState({showNewTodoBlock: false});
 
-    this.props.onTodoClick(
+    this.props.onTodoAdd(
       this.currentTodoData.headline as string,
       this.currentTodoData.description as string,
       new Date()
@@ -85,7 +89,8 @@ class TodoList extends React.Component<TodoListProps, any> {
       <div className="todo-list">
         <h2>TestRoute 2</h2>
         <ul>
-          {this.props.todos.map((todo: TodoModel) => <Todo key={todo.id} {...todo} />)}
+          {this.props.todos.map((todo: TodoModel) => <Todo key={todo.id}
+                                                           onDelete={() => this.props.onTodoDelete(todo.id)} {...todo}  />)}
         </ul>
         <div className="new-todo-block column" hidden={!this.state.showNewTodoBlock}>
           <div>
