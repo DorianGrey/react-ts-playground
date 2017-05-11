@@ -81,9 +81,9 @@
     "@types/react" "*"
     "@types/react-router" "*"
 
-"@types/react-router@*", "@types/react-router@^4.0.8":
-  version "4.0.8"
-  resolved "https://registry.yarnpkg.com/@types/react-router/-/react-router-4.0.8.tgz#18257d55a5dd72defb288fb9e8354908aa98f746"
+"@types/react-router@*", "@types/react-router@^4.0.9":
+  version "4.0.9"
+  resolved "https://registry.yarnpkg.com/@types/react-router/-/react-router-4.0.9.tgz#ff43a8e842358891d4d0c7acf0d11023b7951de9"
   dependencies:
     "@types/history" "*"
     "@types/react" "*"
@@ -1104,13 +1104,13 @@ dateformat@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-2.0.0.tgz#2743e3abb5c3fc2462e527dca445e04e9f4dee17"
 
-debug@2.6.1, debug@^2.2.0, debug@^2.3.3:
+debug@2.6.1, debug@^2.2.0:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.1.tgz#79855090ba2c4e3115cc7d8769491d58f0491351"
   dependencies:
     ms "0.7.2"
 
-debug@2.6.4:
+debug@2.6.4, debug@^2.6.3:
   version "2.6.4"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.4.tgz#7586a9b3c39741c0282ae33445c4e8ac74734fe0"
   dependencies:
@@ -3139,11 +3139,11 @@ postcss-filter-plugins@^2.0.0:
     postcss "^5.0.4"
     uniqid "^4.0.0"
 
-postcss-flexbugs-fixes@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/postcss-flexbugs-fixes/-/postcss-flexbugs-fixes-2.1.1.tgz#5fa40080ba216d398e41228be2765282f2060d8d"
+postcss-flexbugs-fixes@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/postcss-flexbugs-fixes/-/postcss-flexbugs-fixes-3.0.0.tgz#7b31cb6c27d0417a35a67914c295f83c403c7ed4"
   dependencies:
-    postcss "^5.0.0"
+    postcss "^6.0.1"
 
 postcss-load-config@^1.x:
   version "1.2.0"
@@ -3168,9 +3168,9 @@ postcss-load-plugins@^2.3.0:
     cosmiconfig "^2.1.1"
     object-assign "^4.1.0"
 
-postcss-loader@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/postcss-loader/-/postcss-loader-2.0.1.tgz#4078aef52336c2434415aabaacbf9d7e7ae025e8"
+postcss-loader@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/postcss-loader/-/postcss-loader-2.0.5.tgz#c19d3e8b83eb1ac316f5621ef4c0ef5b3d1b8b3a"
   dependencies:
     loader-utils "^1.x"
     postcss "^6.x"
@@ -3345,7 +3345,7 @@ postcss-zindex@^2.0.1:
     postcss "^5.0.4"
     uniqs "^2.0.0"
 
-postcss@^5.0.0, postcss@^5.0.10, postcss@^5.0.11, postcss@^5.0.12, postcss@^5.0.13, postcss@^5.0.14, postcss@^5.0.16, postcss@^5.0.2, postcss@^5.0.4, postcss@^5.0.5, postcss@^5.0.6, postcss@^5.0.8, postcss@^5.2.16:
+postcss@^5.0.10, postcss@^5.0.11, postcss@^5.0.12, postcss@^5.0.13, postcss@^5.0.14, postcss@^5.0.16, postcss@^5.0.2, postcss@^5.0.4, postcss@^5.0.5, postcss@^5.0.6, postcss@^5.0.8, postcss@^5.2.16:
   version "5.2.17"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-5.2.17.tgz#cf4f597b864d65c8a492b2eabe9d706c879c388b"
   dependencies:
@@ -3855,9 +3855,9 @@ sass-graph@^2.1.1:
     lodash "^4.0.0"
     yargs "^4.7.1"
 
-sass-loader@^6.0.3:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-6.0.3.tgz#33983b1f90d27ddab0e57d0dac403dce9bc7ecfd"
+sass-loader@^6.0.5:
+  version "6.0.5"
+  resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-6.0.5.tgz#a847910f36442aa56c5985879d54eb519e24a328"
   dependencies:
     async "^2.1.5"
     clone-deep "^0.2.4"
@@ -3875,11 +3875,11 @@ schema-utils@^0.x:
   dependencies:
     ajv "^5.0.0"
 
-script-ext-html-webpack-plugin@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/script-ext-html-webpack-plugin/-/script-ext-html-webpack-plugin-1.7.1.tgz#ae9c0e26d7767d4aa793c76e3550344ec08b6d10"
+script-ext-html-webpack-plugin@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/script-ext-html-webpack-plugin/-/script-ext-html-webpack-plugin-1.7.2.tgz#68b2ed82a4c6d402d9b8d7cdede226f38d525d31"
   dependencies:
-    debug "^2.3.3"
+    debug "^2.6.3"
 
 select-hose@^2.0.0:
   version "2.0.0"
@@ -4549,9 +4549,9 @@ wbuf@^1.1.0, wbuf@^1.4.0:
   dependencies:
     minimalistic-assert "^1.0.0"
 
-webpack-bundle-analyzer@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/webpack-bundle-analyzer/-/webpack-bundle-analyzer-2.6.0.tgz#9b8052d6aa26004f49ab76e88c45445ecd03f15a"
+webpack-bundle-analyzer@^2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/webpack-bundle-analyzer/-/webpack-bundle-analyzer-2.7.0.tgz#9a8320a9e33917ade47aa1369013bbf4d4a9f5af"
   dependencies:
     acorn "^5.0.3"
     chalk "^1.1.3"
