@@ -12,7 +12,7 @@ export default function Loading<T extends LoadingComponentProps>({isLoading, err
       </div>
       : null;
   } else if (error) {
-    return <div>Error loading component.</div>
+    return <div>Error loading component.</div>;
   } else {
     return null;
   }

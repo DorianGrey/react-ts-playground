@@ -42,7 +42,7 @@ exports.RULE_TS_LOADING = function RULE_TS_LOADING(isDev) {
     use.unshift("react-hot-loader/webpack");
   }
   return {
-    test: /\.tsx?/,
+    test: /\.tsx?$/,
     use: use,
     exclude: /node_modules/
   }
@@ -113,6 +113,27 @@ exports.RULE_WEBFONTS = function (isDev) {
   // TODO: We might need conditional updates to webFontRule.use.query.publicPath here.
 
   return webFontRule;
+};
+
+exports.RULE_TS_LINT_LOADING = function (isDevMode) {
+  const options = {
+    configuration: require("../tslint.json"),
+    emitErrors: !isDevMode,
+    failOnHint: !isDevMode
+    /* typeCheck: !isDevMode */ // Currently makes things fail with a curious error: https://github.com/palantir/tslint/issues/2208
+  };
+
+  return {
+    enforce: "pre",
+    test: /\.tsx?$/,
+    use: {
+      loader: "tslint-loader",
+      options: options
+    },
+    include: [
+      exports.root("src")
+    ]
+  };
 };
 
 exports.getLoaderOptionsPlugin = function getLoaderOptionsPlugin(isDevMode) {

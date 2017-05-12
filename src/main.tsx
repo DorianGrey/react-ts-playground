@@ -13,7 +13,8 @@ let wrapWithRhlContainer: <P extends React.DOMAttributes<T>, T extends Element>(
 if (process.env.NODE_ENV === "production") {
   wrapWithRhlContainer = identity;
 } else {
-  wrapWithRhlContainer = <P extends React.DOMAttributes<T>, T extends Element>(elem: React.DOMElement<P, T>) => <AppContainer>{elem}</AppContainer> as React.DOMElement<P, T>;
+  wrapWithRhlContainer = <P extends React.DOMAttributes<T>, T extends Element>(elem: React.DOMElement<P, T>) =>
+    <AppContainer>{elem}</AppContainer> as React.DOMElement<P, T>;
 }
 
 function getContainer() {
@@ -44,5 +45,5 @@ bootloader(main);
 if (module.hot) {
   module.hot.accept("./app/App", () => {
     renderApp(null);
-  })
+  });
 }

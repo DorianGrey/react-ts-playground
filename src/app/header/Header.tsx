@@ -21,7 +21,7 @@ export default class Header extends React.Component<any, any> {
 
   componentWillMount(): void {
     this.interval = setInterval(() => {
-      this.setState({date: new Date()})
+      this.setState({date: new Date()});
     }, 1000);
   }
 

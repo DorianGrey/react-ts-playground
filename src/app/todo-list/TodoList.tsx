@@ -6,7 +6,7 @@ import {List} from "immutable";
 
 import {TodoModel} from "./todo.model";
 import {AppState} from "../app.state";
-import {AddTodo, DeleteTodo, TodoAddAction} from "./todo.state";
+import {AddTodo, DeleteTodo, TodoAddAction, TodoDeleteAction} from "./todo.state";
 import {Dispatch} from "redux";
 
 // Simple Todo entry.
@@ -44,20 +44,20 @@ export interface TodoListProps {
 const mapStateToProps = (state: AppState) => {
   return {
     todos: state.todos
-  }
+  };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<TodoAddAction>) => {
+const mapDispatchToProps = (dispatch: Dispatch<TodoAddAction> | Dispatch<TodoDeleteAction>) => {
   return {
-    onTodoAdd:    (headline: string,
-                   description: string,
-                   deadline: Date) => {
-      dispatch(AddTodo(headline, description, deadline))
+    onTodoAdd: (headline: string,
+                description: string,
+                deadline: Date) => {
+      dispatch(AddTodo(headline, description, deadline));
     },
     onTodoDelete: (id: number) => {
       dispatch(DeleteTodo(id));
     }
-  }
+  };
 };
 
 class TodoList extends React.Component<TodoListProps, any> {
@@ -112,7 +112,7 @@ class TodoList extends React.Component<TodoListProps, any> {
           <i className="fa fa-plus-circle"></i>
         </div>
       </div>
-    )
+    );
   }
 }
 

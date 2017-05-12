@@ -34,7 +34,7 @@ export function DeleteTodo(id: number) {
     payload: {
       id
     }
-  }
+  };
 }
 
 const initialTodoList: TodoState = List.of<TodoModel>({

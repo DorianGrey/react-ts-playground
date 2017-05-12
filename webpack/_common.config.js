@@ -11,6 +11,7 @@ const {
         getHtmlTemplatePlugin,
         getLoaderOptionsPlugin,
         getPerformanceOptions,
+        RULE_TS_LINT_LOADING,
         RULE_TS_LOADING,
         RULE_SASS_LOADING,
         RULE_WEBFONTS
@@ -107,6 +108,7 @@ module.exports = function (env) {
        * See: http://webpack.github.io/docs/configuration.html#module-preloaders-module-postloaders
        */
       rules: [
+        RULE_TS_LINT_LOADING(isDev),
         RULE_TS_LOADING(isDev),
         RULE_SASS_LOADING(isDev),
         RULE_WEBFONTS(isDev),
