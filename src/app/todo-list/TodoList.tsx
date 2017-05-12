@@ -16,8 +16,8 @@ function Todo(todo: TodoModel & { onDelete: () => void }) {
       <div className="row headline">
         <div className="h3">{todo.headline}</div>
         <div className="controls">
-          <i className="fa fa-edit"></i>
-          <i className="fa fa-close" onClick={ () => todo.onDelete() }></i>
+          <i className="fa fa-edit"/>
+          <i className="fa fa-close" onClick={ () => todo.onDelete() }/>
         </div>
       </div>
       <div className="row content">
@@ -49,9 +49,9 @@ const mapStateToProps = (state: AppState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<TodoAddAction> | Dispatch<TodoDeleteAction>) => {
   return {
-    onTodoAdd: (headline: string,
-                description: string,
-                deadline: Date) => {
+    onTodoAdd:    (headline: string,
+                   description: string,
+                   deadline: Date) => {
       dispatch(AddTodo(headline, description, deadline));
     },
     onTodoDelete: (id: number) => {
@@ -85,32 +85,37 @@ class TodoList extends React.Component<TodoListProps, any> {
   }
 
   render() {
-    return (
-      <div className="todo-list">
-        <h2>TestRoute 2</h2>
-        <ul>
-          {this.props.todos.map((todo: TodoModel) => <Todo key={todo.id}
-                                                           onDelete={() => this.props.onTodoDelete(todo.id)} {...todo}  />)}
-        </ul>
+    const displayContent = this.state.showNewTodoBlock ?
+      (
         <div className="new-todo-block column" hidden={!this.state.showNewTodoBlock}>
           <div>
-            <label htmlFor="new-todo-headline">Name:</label>
-            <input id="new-todo-headline"
+            <input placeholder="Tag..."
                    ref={input => this.headlineInput = input}
                    onChange={(event) => this.currentTodoData.headline = event.target.value}/>
           </div>
           <div>
-            <label htmlFor="new-todo-description">Description:</label>
-            <textarea id="new-todo-description"
+            <textarea placeholder="Description..."
                       ref={input => this.descriptionInput = input}
                       onChange={(event) => this.currentTodoData.description = event.target.value}/>
           </div>
           <button type="button" onClick={() => this.createTodo()}>Create</button>
         </div>
+      )
+      : (
         <div className="new-todo" onClick={ () => this.setState({showNewTodoBlock: true}) }
              hidden={this.state.showNewTodoBlock}>
-          <i className="fa fa-plus-circle"></i>
+          <i className="fa fa-plus-circle"/>
         </div>
+      )
+    ;
+    return (
+      <div className="todo-list">
+        <h2>TestRoute 2</h2>,
+        <ul>
+          {this.props.todos.map((todo: TodoModel) => <Todo key={todo.id}
+                                                           onDelete={() => this.props.onTodoDelete(todo.id)} {...todo}  />)}
+        </ul>
+        {displayContent}
       </div>
     );
   }

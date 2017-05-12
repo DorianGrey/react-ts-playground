@@ -66,15 +66,12 @@
     color: $color-medium-grey;
     cursor: pointer;
 
-    transition: color, background-color .25s linear;
+    transition: background-color .25s ease,
+                color .25s ease;
 
     &:hover {
       background-color: $color-light-grey;
       color: $color-black;
-    }
-
-    i {
-      transition: color .25s linear;
     }
   }
 }

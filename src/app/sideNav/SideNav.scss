@@ -28,12 +28,15 @@
 
     width: $side-nav-width;
     white-space: nowrap;
-    transition: background-color, width .25s linear;
+    transition: background-color .25s ease,
+                width .25s linear;
 
     a {
       display: block;
       background-color: $color-black;
-      transition: background-color, color, width .25s linear;
+      transition: background-color .25s ease,
+                  color .25s ease,
+                  width .25s linear;
       overflow: hidden;
       &.selected {
         .icon-container {
