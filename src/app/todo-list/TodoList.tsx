@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {List} from "immutable";
 
 import {TodoModel} from "./todo.model";
-import {AppState} from "../app.state";
+import {AppState} from "../state";
 import {AddTodo, DeleteTodo, TodoAddAction, TodoDeleteAction} from "./todo.state";
 import {Dispatch} from "redux";
 
@@ -110,7 +110,7 @@ class TodoList extends React.Component<TodoListProps, any> {
     ;
     return (
       <div className="todo-list">
-        <h2>TestRoute 2</h2>,
+        <h2>Todo list</h2>
         <ul>
           {this.props.todos.map((todo: TodoModel) => <Todo key={todo.id}
                                                            onDelete={() => this.props.onTodoDelete(todo.id)} {...todo}  />)}

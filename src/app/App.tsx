@@ -10,14 +10,14 @@ import {
 } from "react-router";
 import Loadable, {LoadingComponentProps, OptionsWithResolve} from "react-loadable";
 import {Provider as StoreProvider} from "react-redux";
-import {createStore} from "redux";
 
 import Header from "./header/Header";
 
 import NotFound from "./404/404";
 import Loading from "./Loading";
 import SideNav from "./sideNav/SideNav";
-import {AppReducers} from "./app.state";
+import {AppState} from "./state";
+import {Store} from "redux";
 
 function withLoader<T>(loader: () => Promise<T>) {
   return Loadable({
@@ -27,16 +27,18 @@ function withLoader<T>(loader: () => Promise<T>) {
   } as OptionsWithResolve<LoadingComponentProps, any>);
 }
 
-const store = createStore(AppReducers, window["__REDUX_DEVTOOLS_EXTENSION__"] && window["__REDUX_DEVTOOLS_EXTENSION__"]());
+export interface AppProps {
+  store: Store<AppState>;
+}
 
-export default function App() {
+export default function App(props: AppProps) {
 
   const AsyncTestRoute1: any           = withLoader(() => _import_(/* webpackChunkName: "testRoute1" */"./routes/TestRoute1.tsx"));
   const AsyncTestRoute2: any           = withLoader(() => _import_(/* webpackChunkName: "todos" */"./todo-list/TodoList.tsx"));
   const AsyncParseParamsTestRoute: any = withLoader(() => _import_(/* webpackChunkName: "parseParamTest" */"./routes/ParseParamsTestRoute.tsx"));
 
   return (
-    <StoreProvider store={store}>
+    <StoreProvider store={props.store}>
       <Router>
         <div>
           <Header />

@@ -37,7 +37,7 @@ export function DeleteTodo(id: number) {
   };
 }
 
-const initialTodoList: TodoState = List.of<TodoModel>({
+export const initialTodoList: TodoState = List.of<TodoModel>({
   id:          1,
   headline:    "Test todo",
   description: "A lot of stuff to be done!",
