@@ -9,6 +9,7 @@ import {AppState} from "../state";
 import {AddTodo, DeleteTodo, TodoAddAction, TodoDeleteAction} from "./todo.state";
 import {Dispatch} from "redux";
 import {FormEvent} from "react";
+import {sendNotification} from "../notifications/NotificationProvider";
 
 // Simple Todo entry.
 function Todo(todo: TodoModel & { onDelete: () => void }) {
@@ -80,6 +81,11 @@ class TodoList extends React.Component<TodoListProps, any> {
       this.currentTodoData.description as string,
       new Date()
     );
+
+    sendNotification("New todo added successfully!", {
+      icon: "assets/images/favicon.ico",
+      body: this.currentTodoData.headline
+    }, 5000);
 
     this.currentTodoData        = {};
     this.headlineInput.value    = "";

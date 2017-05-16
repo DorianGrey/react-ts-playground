@@ -21,7 +21,13 @@
     "typeRoots": [
       "node_modules/@types"
     ],
-    "jsx": "react"
+    "jsx": "react",
+    "lib": [
+      "DOM",
+      "ES5",
+      "ScriptHost",
+      "ES2015.Promise"
+    ]
   },
   "files": [
     "src/customTypings.d.ts"

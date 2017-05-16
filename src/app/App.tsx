@@ -18,6 +18,7 @@ import Loading from "./Loading";
 import SideNav from "./sideNav/SideNav";
 import {AppState} from "./state";
 import {Store} from "redux";
+import NotificationProvider from "./notifications/NotificationProvider";
 
 function withLoader<T>(loader: () => Promise<T>) {
   return Loadable({
@@ -39,24 +40,26 @@ export default function App(props: AppProps) {
 
   return (
     <StoreProvider store={props.store}>
-      <Router>
-        <div>
-          <Header />
+      <NotificationProvider>
+        <Router>
+          <div>
+            <Header />
 
-          <SideNav />
+            <SideNav />
 
-          <div id="app-body">
-            <Switch>
-              <Redirect exact from="/" to="/tr0"/>
-              <Route path="/tr0" component={AsyncTestRoute1}/>
-              <Route path="/todo-list" component={AsyncTestRoute2}/>
-              <Route path="/lazy-test/:id" component={AsyncParseParamsTestRoute}/>
-              <Route component={NotFound}/>
-            </Switch>
+            <div id="app-body">
+              <Switch>
+                <Redirect exact from="/" to="/tr0"/>
+                <Route path="/tr0" component={AsyncTestRoute1}/>
+                <Route path="/todo-list" component={AsyncTestRoute2}/>
+                <Route path="/lazy-test/:id" component={AsyncParseParamsTestRoute}/>
+                <Route component={NotFound}/>
+              </Switch>
+            </div>
+
           </div>
-
-        </div>
-      </Router>
+        </Router>
+      </NotificationProvider>
     </StoreProvider>
   );
 }
