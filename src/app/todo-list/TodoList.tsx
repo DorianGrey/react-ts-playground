@@ -8,6 +8,7 @@ import {TodoModel} from "./todo.model";
 import {AppState} from "../state";
 import {AddTodo, DeleteTodo, TodoAddAction, TodoDeleteAction} from "./todo.state";
 import {Dispatch} from "redux";
+import {FormEvent} from "react";
 
 // Simple Todo entry.
 function Todo(todo: TodoModel & { onDelete: () => void }) {
@@ -15,7 +16,7 @@ function Todo(todo: TodoModel & { onDelete: () => void }) {
     <li className="todo-entry">
       <div className="row headline">
         <div className="h3">{todo.headline}</div>
-        <div className="controls">
+        <div className="todo-controls">
           <i className="fa fa-edit"/>
           <i className="fa fa-close" onClick={ () => todo.onDelete() }/>
         </div>
@@ -70,7 +71,8 @@ class TodoList extends React.Component<TodoListProps, any> {
   private descriptionInput: HTMLTextAreaElement;
   private headlineInput: HTMLInputElement;
 
-  createTodo() {
+  createTodo(event: FormEvent<never>) {
+    event.preventDefault();
     this.setState({showNewTodoBlock: false});
 
     this.props.onTodoAdd(
@@ -87,23 +89,25 @@ class TodoList extends React.Component<TodoListProps, any> {
   render() {
     const displayContent = this.state.showNewTodoBlock ?
       (
-        <div className="new-todo-block column" hidden={!this.state.showNewTodoBlock}>
-          <div>
+        <div className="new-todo-block column">
+          <form onSubmit={event => this.createTodo(event)}>
             <input placeholder="Tag..."
+                   required
                    ref={input => this.headlineInput = input}
                    onChange={(event) => this.currentTodoData.headline = event.target.value}/>
-          </div>
-          <div>
             <textarea placeholder="Description..."
+                      required
                       ref={input => this.descriptionInput = input}
                       onChange={(event) => this.currentTodoData.description = event.target.value}/>
-          </div>
-          <button type="button" onClick={() => this.createTodo()}>Create</button>
+            <div className="row todo-creation-controls">
+              <button type="submit">Create</button>
+              <button type="button" onClick={ () => this.setState({showNewTodoBlock: true}) }>Cancel</button>
+            </div>
+          </form>
         </div>
       )
       : (
-        <div className="new-todo" onClick={ () => this.setState({showNewTodoBlock: true}) }
-             hidden={this.state.showNewTodoBlock}>
+        <div className="new-todo" onClick={ () => this.setState({showNewTodoBlock: true}) }>
           <i className="fa fa-plus-circle"/>
         </div>
       )

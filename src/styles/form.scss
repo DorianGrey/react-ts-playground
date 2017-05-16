@@ -1,0 +1,10 @@
+@import "./colors";
+
+input, select, textarea {
+  &:invalid {
+    box-shadow: 0 0 6px $color-red;
+  }
+  &:focus:invalid {
+    outline: none;
+  }
+}
