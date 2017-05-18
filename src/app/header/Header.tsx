@@ -1,6 +1,7 @@
 import "./Header.scss";
 
 import * as React from "react";
+import {FormattedMessage} from "react-intl";
 
 export default class Header extends React.Component<any, any> {
 
@@ -38,7 +39,7 @@ export default class Header extends React.Component<any, any> {
   render() {
     return (
       <header>
-        <div>Demo App</div>
+        <div><FormattedMessage id="header.title"/></div>
         <div>{new Date().toLocaleString()}</div>
       </header>
     );

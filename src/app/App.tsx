@@ -10,6 +10,7 @@ import {
 } from "react-router";
 import Loadable, {LoadingComponentProps, OptionsWithResolve} from "react-loadable";
 import {Provider as StoreProvider} from "react-redux";
+import {IntlProvider} from "react-intl";
 
 import Header from "./header/Header";
 
@@ -19,6 +20,7 @@ import SideNav from "./sideNav/SideNav";
 import {AppState} from "./state";
 import {Store} from "redux";
 import NotificationProvider from "./notifications/NotificationProvider";
+import {getMessagesForLang} from "./i18n";
 
 function withLoader<T>(loader: () => Promise<T>) {
   return Loadable({
@@ -38,28 +40,33 @@ export default function App(props: AppProps) {
   const AsyncTestRoute2: any           = withLoader(() => _import_(/* webpackChunkName: "todos" */"./todo-list/TodoList.tsx"));
   const AsyncParseParamsTestRoute: any = withLoader(() => _import_(/* webpackChunkName: "parseParamTest" */"./routes/ParseParamsTestRoute.tsx"));
 
+  const currentLanguage = navigator.language.slice(0, 2);
+
   return (
     <StoreProvider store={props.store}>
-      <NotificationProvider>
-        <Router>
-          <div>
-            <Header />
+      <IntlProvider locale={currentLanguage}
+                    messages={getMessagesForLang(currentLanguage)}>
+        <NotificationProvider>
+          <Router>
+            <div>
+              <Header />
 
-            <SideNav />
+              <SideNav />
 
-            <div id="app-body">
-              <Switch>
-                <Redirect exact from="/" to="/tr0"/>
-                <Route path="/tr0" component={AsyncTestRoute1}/>
-                <Route path="/todo-list" component={AsyncTestRoute2}/>
-                <Route path="/lazy-test/:id" component={AsyncParseParamsTestRoute}/>
-                <Route component={NotFound}/>
-              </Switch>
+              <div id="app-body">
+                <Switch>
+                  <Redirect exact from="/" to="/tr0"/>
+                  <Route path="/tr0" component={AsyncTestRoute1}/>
+                  <Route path="/todo-list" component={AsyncTestRoute2}/>
+                  <Route path="/lazy-test/:id" component={AsyncParseParamsTestRoute}/>
+                  <Route component={NotFound}/>
+                </Switch>
+              </div>
+
             </div>
-
-          </div>
-        </Router>
-      </NotificationProvider>
+          </Router>
+        </NotificationProvider>
+      </IntlProvider>
     </StoreProvider>
   );
 }

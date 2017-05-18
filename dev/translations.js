@@ -32,13 +32,7 @@ const mapLeaves = (obj, iteratee, path) => {
 };
 
 const setValueAt = (obj, path, value) => {
-  const next = path.shift();
-  if (path.length === 0) {
-    obj[next] = value;
-  } else {
-    obj[next] = obj[next] || {};
-    setValueAt(obj[next], path, value);
-  }
+  obj[path] = value;
 };
 
 const statistics = (opts) =>
@@ -98,7 +92,9 @@ const statistics = (opts) =>
 const byLanguage = translations => {
   const result = {};
   mapLeaves(translations, (value, path) => {
-    setValueAt(result, [path.pop()].concat(path), value);
+    const lang = path.pop();
+    result[lang] = result[lang] || {};
+    setValueAt(result[lang], path.join("."), value);
   });
   return result;
 };
