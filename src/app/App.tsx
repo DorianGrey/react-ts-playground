@@ -20,7 +20,7 @@ import SideNav from "./sideNav/SideNav";
 import {AppState} from "./state";
 import {Store} from "redux";
 import NotificationProvider from "./notifications/NotificationProvider";
-import {getMessagesForLang} from "./i18n";
+import {BROWSER_LANGUAGE, getMessagesForLang} from "./i18n";
 
 function withLoader<T>(loader: () => Promise<T>) {
   return Loadable({
@@ -40,12 +40,10 @@ export default function App(props: AppProps) {
   const AsyncTestRoute2: any           = withLoader(() => _import_(/* webpackChunkName: "todos" */"./todo-list/TodoList.tsx"));
   const AsyncParseParamsTestRoute: any = withLoader(() => _import_(/* webpackChunkName: "parseParamTest" */"./routes/ParseParamsTestRoute.tsx"));
 
-  const currentLanguage = navigator.language.slice(0, 2);
-
   return (
     <StoreProvider store={props.store}>
-      <IntlProvider locale={currentLanguage}
-                    messages={getMessagesForLang(currentLanguage)}>
+      <IntlProvider locale={BROWSER_LANGUAGE}
+                    messages={getMessagesForLang(BROWSER_LANGUAGE)}>
         <NotificationProvider>
           <Router>
             <div>

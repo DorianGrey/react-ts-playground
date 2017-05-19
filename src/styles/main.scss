@@ -92,12 +92,15 @@ button {
   color: $color-white;
   background-color: $color-black;
   border: 0;
-  border-radius: 3px;
   cursor: pointer;
 
   &:hover {
     background-color: lighten($color-black, 15%);
   }
+}
+
+button, select, textarea {
+  border: none;
 }
 
 button, a, li {

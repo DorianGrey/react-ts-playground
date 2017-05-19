@@ -1,0 +1,7 @@
+parseParams:
+  url:
+    de: "Extrahierte URL-Parameter:"
+    en: "Parsed URL parameters:"
+  search:
+    de: "Extrahierte Such-Parameter:"
+    en: "Parsed search params:"

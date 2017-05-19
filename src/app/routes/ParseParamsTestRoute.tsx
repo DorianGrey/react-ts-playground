@@ -1,5 +1,6 @@
 import * as React from "react";
 import {RouteComponentProps} from "react-router";
+import {FormattedMessage} from "react-intl";
 
 const expectedQueryParams = ["bla"];
 
@@ -9,10 +10,10 @@ export default (props: any & RouteComponentProps<string | number>) => {
   const params       = props.match.params;
   return (
     <div>
-      <p>Parsed URL parameters:</p>
+      <p><FormattedMessage id="parseParams.url"/></p>
       <p>{JSON.stringify(params)}</p>
       <hr />
-      <p>Parsed search params:</p>
+      <p><FormattedMessage id="parseParams.search"/></p>
       <ul>
         {
           expectedQueryParams.map(entry => <li key={entry}>{entry} => {searchParams.get(entry)}</li>)

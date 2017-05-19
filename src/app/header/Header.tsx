@@ -1,18 +1,17 @@
 import "./Header.scss";
 
 import * as React from "react";
-import {FormattedMessage} from "react-intl";
+import {FormattedDate, FormattedMessage} from "react-intl";
+
+import LanguagePicker from "../language-picker/LanguagePicker";
 
 export default class Header extends React.Component<any, any> {
 
   state: {
-    date: Date;
-  } = {date: new Date()};
-
-  // refs: {
-  //   navLabel: HTMLLabelElement;
-  //   navMenu: HTMLElement;
-  // };
+    date: Date
+  } = {
+    date: new Date()
+  };
 
   private interval: number;
 
@@ -26,12 +25,6 @@ export default class Header extends React.Component<any, any> {
     }, 1000);
   }
 
-  componentDidMount(): void {
-    // this.refs.navMenu.addEventListener("click", () => {
-    //   this.refs.navLabel.click();
-    // });
-  }
-
   componentWillUnmount(): void {
     this.interval && clearInterval(this.interval);
   }
@@ -39,8 +32,17 @@ export default class Header extends React.Component<any, any> {
   render() {
     return (
       <header>
-        <div><FormattedMessage id="header.title"/></div>
-        <div>{new Date().toLocaleString()}</div>
+        <FormattedMessage id="header.title"/>
+        <FormattedDate
+          value={this.state.date}
+          year="numeric"
+          month="long"
+          day="2-digit"
+          hour="2-digit"
+          minute="2-digit"
+          second="2-digit"
+        />
+        <LanguagePicker />
       </header>
     );
   }

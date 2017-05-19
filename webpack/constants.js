@@ -100,7 +100,7 @@ exports.RULE_WEBFONTS = function (isDev) {
            we're inlining most of the referenced fonts and images directly. Although this raises the stylesheet size to > 10 MB in dev mode,
            it should be acceptable. In production, the CSS is extracted to a file, thus, we can stick with the lower limit.
            */
-          isDev ? 250 : 2
+          /*isDev ? 250 :*/ 2
         ) * 1024, // i.e. if the content has a size of > 2KB resp. 250KB, it will be copied via file-loader.
         name: "[ext]/[name].[hash].[ext]"
       }

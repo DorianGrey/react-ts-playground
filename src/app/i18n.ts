@@ -9,3 +9,9 @@ addLocaleData([...de, ...en]);
 export function getMessagesForLang(lang: string): { [key: string]: string } {
   return translations[lang] || translations["en"];
 }
+
+export const BROWSER_LANGUAGE = navigator.language.slice(0, 2);
+
+export function getSupportedLanguages(): string[] {
+  return Object.keys(translations);
+}

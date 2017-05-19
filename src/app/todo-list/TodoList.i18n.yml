@@ -1,0 +1,30 @@
+todos:
+  list:
+    de: Aufgabenliste
+    en: Todo list
+
+  entry:
+    placeholder:
+      tag:
+        de: Titel...
+        en: Tag...
+      description:
+        de: Beschreibung...
+        en: Descriptions...
+    created:
+      de: "Angelegt:"
+      en: "Created:"
+    deadline:
+      de: "Fällig bis:"
+      en: "Deadline:"
+
+  newTodo:
+    create:
+      de: Anlegen
+      en: Create
+    cancel:
+      de: Abbrechen
+      en: Cancel
+    added:
+      de: "Neue Aufgabe erfolgreich hinzugefügt!"
+      en: "New todo added successfully!"

@@ -3,12 +3,13 @@ import "./TodoList.scss";
 import * as React from "react";
 import {connect} from "react-redux";
 import {List} from "immutable";
+import {FormattedDate, FormattedMessage, InjectedIntlProps, injectIntl} from "react-intl";
+import {Dispatch} from "redux";
+import {FormEvent} from "react";
 
 import {TodoModel} from "./todo.model";
 import {AppState} from "../state";
 import {AddTodo, DeleteTodo, TodoAddAction, TodoDeleteAction} from "./todo.state";
-import {Dispatch} from "redux";
-import {FormEvent} from "react";
 import {sendNotification} from "../notifications/NotificationProvider";
 
 // Simple Todo entry.
@@ -25,8 +26,30 @@ function Todo(todo: TodoModel & { onDelete: () => void }) {
       <div className="row content">
         <div>{todo.description}</div>
         <div className="column">
-          <div><b>Created:</b>&nbsp;{todo.created.toLocaleString()}</div>
-          <div><b>Deadline:</b>&nbsp;{todo.deadline.toLocaleString()}</div>
+          <div>
+            <b><FormattedMessage id="todos.entry.created"/></b>&nbsp;
+            <FormattedDate
+              value={todo.created}
+              year="numeric"
+              month="long"
+              day="2-digit"
+              hour="2-digit"
+              minute="2-digit"
+              second="2-digit"
+            />
+          </div>
+          <div>
+            <b><FormattedMessage id="todos.entry.deadline"/></b>&nbsp;
+            <FormattedDate
+              value={todo.deadline}
+              year="numeric"
+              month="long"
+              day="2-digit"
+              hour="2-digit"
+              minute="2-digit"
+              second="2-digit"
+            />
+          </div>
         </div>
       </div>
     </li>
@@ -62,7 +85,7 @@ const mapDispatchToProps = (dispatch: Dispatch<TodoAddAction> | Dispatch<TodoDel
   };
 };
 
-class TodoList extends React.Component<TodoListProps, any> {
+class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
   state = {
     showNewTodoBlock: false
   };
@@ -82,7 +105,8 @@ class TodoList extends React.Component<TodoListProps, any> {
       new Date()
     );
 
-    sendNotification("New todo added successfully!", {
+    // TODO: We need to translate this one manually1
+    sendNotification(this.props.intl.formatMessage({id: "todos.newTodo.added"}), {
       icon: "assets/images/favicon.ico",
       body: this.currentTodoData.headline
     }, 5000);
@@ -97,17 +121,21 @@ class TodoList extends React.Component<TodoListProps, any> {
       (
         <div className="new-todo-block column">
           <form onSubmit={event => this.createTodo(event)}>
-            <input placeholder="Tag..."
+            <input placeholder={this.props.intl.formatMessage({id: "todos.entry.placeholder.tag"})}
                    required
                    ref={input => this.headlineInput = input}
                    onChange={(event) => this.currentTodoData.headline = event.target.value}/>
-            <textarea placeholder="Description..."
+            <textarea placeholder={this.props.intl.formatMessage({id: "todos.entry.placeholder.description"})}
                       required
                       ref={input => this.descriptionInput = input}
                       onChange={(event) => this.currentTodoData.description = event.target.value}/>
             <div className="row todo-creation-controls">
-              <button type="submit">Create</button>
-              <button type="button" onClick={ () => this.setState({showNewTodoBlock: true}) }>Cancel</button>
+              <button type="submit">
+                <FormattedMessage id="todos.newTodo.create"/>
+              </button>
+              <button type="button" onClick={ () => this.setState({showNewTodoBlock: true}) }>
+                <FormattedMessage id="todos.newTodo.cancel"/>
+              </button>
             </div>
           </form>
         </div>
@@ -120,7 +148,7 @@ class TodoList extends React.Component<TodoListProps, any> {
     ;
     return (
       <div className="todo-list">
-        <h2>Todo list</h2>
+        <h2><FormattedMessage id="todos.list"/></h2>
         <ul>
           {this.props.todos.map((todo: TodoModel) => <Todo key={todo.id}
                                                            onDelete={() => this.props.onTodoDelete(todo.id)} {...todo}  />)}
@@ -131,4 +159,4 @@ class TodoList extends React.Component<TodoListProps, any> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(TodoList));
