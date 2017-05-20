@@ -9,8 +9,9 @@ import {
   Switch
 } from "react-router";
 import Loadable, {LoadingComponentProps, OptionsWithResolve} from "react-loadable";
+import {Store} from "redux";
 import {Provider as StoreProvider} from "react-redux";
-import {IntlProvider} from "react-intl";
+import {IntlProvider} from "react-intl-redux";
 
 import Header from "./header/Header";
 
@@ -18,9 +19,7 @@ import NotFound from "./404/404";
 import Loading from "./Loading";
 import SideNav from "./sideNav/SideNav";
 import {AppState} from "./state";
-import {Store} from "redux";
 import NotificationProvider from "./notifications/NotificationProvider";
-import {BROWSER_LANGUAGE, getMessagesForLang} from "./i18n";
 
 function withLoader<T>(loader: () => Promise<T>) {
   return Loadable({
@@ -42,8 +41,7 @@ export default function App(props: AppProps) {
 
   return (
     <StoreProvider store={props.store}>
-      <IntlProvider locale={BROWSER_LANGUAGE}
-                    messages={getMessagesForLang(BROWSER_LANGUAGE)}>
+      <IntlProvider>
         <NotificationProvider>
           <Router>
             <div>

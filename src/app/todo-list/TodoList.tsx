@@ -1,11 +1,11 @@
 import "./TodoList.scss";
 
 import * as React from "react";
+import {FormEvent} from "react";
+import {Dispatch} from "redux";
 import {connect} from "react-redux";
 import {List} from "immutable";
 import {FormattedDate, FormattedMessage, InjectedIntlProps, injectIntl} from "react-intl";
-import {Dispatch} from "redux";
-import {FormEvent} from "react";
 
 import {TodoModel} from "./todo.model";
 import {AppState} from "../state";
