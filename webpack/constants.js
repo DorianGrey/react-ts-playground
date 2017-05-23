@@ -36,7 +36,14 @@ exports.RULE_TS_LOADING = function RULE_TS_LOADING(isDev) {
         flags: "g"
       }
     },
-    "awesome-typescript-loader"
+    {
+      loader: "ts-loader",
+      options: {
+        // disable type checker - we will use it in fork plugin
+        transpileOnly: true
+      }
+    }
+    // "awesome-typescript-loader"
   ];
   if (isDev) {
     use.unshift("react-hot-loader/webpack");
