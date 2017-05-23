@@ -9,6 +9,7 @@ module.exports = function (env = {}) {
   process.env.NODE_ENV = process.env.NODE_ENV || "development";
   // Eval configurable parts.
   env.isDev            = process.env.NODE_ENV !== "production";
+  env.isWatch          = /dev-server/.test(process.env.npm_lifecycle_event);
 
   logger.debug("Using build env:", JSON.stringify(env, null, 4));
   logger.debug("Build mode:", env.isDev ? "development" : "production");

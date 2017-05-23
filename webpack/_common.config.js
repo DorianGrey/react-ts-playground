@@ -60,7 +60,8 @@ module.exports = function (env) {
     new ForkTsCheckerWebpackPlugin({
       watch: "./src",
       tsconfig: "./tsconfig.json",
-      blockEmit: !isDev
+      blockEmit: !env.isWatch,
+      tslint: "./tslint.json"
     })
   ];
 
@@ -111,7 +112,7 @@ module.exports = function (env) {
        * See: http://webpack.github.io/docs/configuration.html#module-preloaders-module-postloaders
        */
       rules: [
-        RULE_TS_LINT_LOADING(isDev),
+        // RULE_TS_LINT_LOADING(isDev),
         RULE_TS_LOADING(isDev),
         RULE_SASS_LOADING(isDev),
         RULE_WEBFONTS(isDev),

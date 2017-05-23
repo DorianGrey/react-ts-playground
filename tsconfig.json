@@ -29,9 +29,6 @@
       "ES2015.Promise"
     ]
   },
-  "files": [
-    "src/customTypings.d.ts"
-  ],
   "exclude": [
     "node_modules"
   ],
