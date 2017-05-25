@@ -1,14 +1,14 @@
 import "./styles/main.scss";
 
+import identity from "lodash-es/identity";
 import * as React from "react";
 import {render} from "react-dom";
 import {AppContainer} from "react-hot-loader";
-import identity from "lodash-es/identity";
 
-import {bootloader} from "./bootloader";
 import App from "./app/App";
 import {initialAppState} from "./app/state";
 import configureStore from "./app/store";
+import {bootloader} from "./bootloader";
 
 const store = configureStore(initialAppState);
 

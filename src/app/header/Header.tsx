@@ -26,7 +26,9 @@ export default class Header extends React.Component<any, any> {
   }
 
   componentWillUnmount(): void {
-    this.interval && clearInterval(this.interval);
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
   }
 
   render() {

@@ -1,16 +1,22 @@
 import "./TodoList.scss";
 
 import * as React from "react";
-import {FormEvent} from "react";
-import {Dispatch} from "redux";
+import {ChangeEvent, FormEvent} from "react";
+import {
+  FormattedDate,
+  FormattedMessage,
+  InjectedIntlProps,
+  injectIntl
+} from "react-intl";
 import {connect} from "react-redux";
-import {List} from "immutable";
-import {FormattedDate, FormattedMessage, InjectedIntlProps, injectIntl} from "react-intl";
+import {Dispatch} from "redux";
 
-import {TodoModel} from "./todo.model";
-import {AppState} from "../state";
-import {AddTodo, DeleteTodo, TodoAddAction, TodoDeleteAction} from "./todo.state";
+import {List} from "immutable";
+
 import {sendNotification} from "../notifications/NotificationProvider";
+import {AppState} from "../state";
+import {TodoModel} from "./todo.model";
+import {AddTodo, DeleteTodo, TodoAddAction, TodoDeleteAction} from "./todo.state";
 
 // Simple Todo entry.
 function Todo(todo: TodoModel & { onDelete: () => void }) {
@@ -20,7 +26,7 @@ function Todo(todo: TodoModel & { onDelete: () => void }) {
         <div className="h3">{todo.headline}</div>
         <div className="todo-controls">
           <i className="fa fa-edit"/>
-          <i className="fa fa-close" onClick={ () => todo.onDelete() }/>
+          <i className="fa fa-close" onClick={todo.onDelete}/>
         </div>
       </div>
       <div className="row content">
@@ -95,6 +101,19 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
   private descriptionInput: HTMLTextAreaElement;
   private headlineInput: HTMLInputElement;
 
+  constructor(props: TodoListProps & InjectedIntlProps, context: any) {
+    super(props, context);
+
+    this.createTodo          = this.createTodo.bind(this);
+    this.setHeadlineInput    = this.setHeadlineInput.bind(this);
+    this.setDescriptionInput = this.setDescriptionInput.bind(this);
+    this.setTodoHeadline     = this.setTodoHeadline.bind(this);
+    this.setTodoDescription  = this.setTodoDescription.bind(this);
+    this.showNewTodoBlock    = this.showNewTodoBlock.bind(this);
+    this.deleteTodo          = this.deleteTodo.bind(this);
+    this.createTodoEntry     = this.createTodoEntry.bind(this);
+  }
+
   createTodo(event: FormEvent<never>) {
     event.preventDefault();
     this.setState({showNewTodoBlock: false});
@@ -120,20 +139,24 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
     const displayContent = this.state.showNewTodoBlock ?
       (
         <div className="new-todo-block column">
-          <form onSubmit={event => this.createTodo(event)}>
-            <input placeholder={this.props.intl.formatMessage({id: "todos.entry.placeholder.tag"})}
-                   required
-                   ref={input => this.headlineInput = input}
-                   onChange={(event) => this.currentTodoData.headline = event.target.value}/>
-            <textarea placeholder={this.props.intl.formatMessage({id: "todos.entry.placeholder.description"})}
-                      required
-                      ref={input => this.descriptionInput = input}
-                      onChange={(event) => this.currentTodoData.description = event.target.value}/>
+          <form onSubmit={this.createTodo}>
+            <input
+              placeholder={this.props.intl.formatMessage({id: "todos.entry.placeholder.tag"})}
+              required
+              ref={this.setHeadlineInput}
+              onChange={this.setTodoHeadline}
+            />
+            <textarea
+              placeholder={this.props.intl.formatMessage({id: "todos.entry.placeholder.description"})}
+              required
+              ref={this.setDescriptionInput}
+              onChange={this.setTodoDescription}
+            />
             <div className="row todo-creation-controls">
               <button type="submit">
                 <FormattedMessage id="todos.newTodo.create"/>
               </button>
-              <button type="button" onClick={ () => this.setState({showNewTodoBlock: true}) }>
+              <button type="button" onClick={this.showNewTodoBlock}>
                 <FormattedMessage id="todos.newTodo.cancel"/>
               </button>
             </div>
@@ -141,7 +164,7 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
         </div>
       )
       : (
-        <div className="new-todo" onClick={ () => this.setState({showNewTodoBlock: true}) }>
+        <div className="new-todo" onClick={this.showNewTodoBlock}>
           <i className="fa fa-plus-circle"/>
         </div>
       )
@@ -150,12 +173,47 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
       <div className="todo-list">
         <h2><FormattedMessage id="todos.list"/></h2>
         <ul>
-          {this.props.todos.map((todo: TodoModel) => <Todo key={todo.id}
-                                                           onDelete={() => this.props.onTodoDelete(todo.id)} {...todo}  />)}
+          {this.props.todos.map(this.createTodoEntry)}
         </ul>
         {displayContent}
       </div>
     );
+  }
+
+  private createTodoEntry(todo: TodoModel) {
+    return (
+      <Todo
+        key={todo.id}
+        onDelete={this.deleteTodo(todo.id)}
+        {...todo}
+      />
+    );
+  }
+
+  private deleteTodo(id: number): () => void {
+    return () => {
+      this.props.onTodoDelete(id);
+    };
+  }
+
+  private showNewTodoBlock() {
+    this.setState({showNewTodoBlock: true});
+  }
+
+  private setHeadlineInput(input: HTMLInputElement) {
+    this.headlineInput = input;
+  }
+
+  private setDescriptionInput(input: HTMLTextAreaElement) {
+    this.descriptionInput = input;
+  }
+
+  private setTodoHeadline(event: ChangeEvent<HTMLInputElement>) {
+    this.currentTodoData.headline = event.target.value;
+  }
+
+  private setTodoDescription(event: ChangeEvent<HTMLTextAreaElement>) {
+    this.currentTodoData.description = event.target.value;
   }
 }
 

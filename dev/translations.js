@@ -107,5 +107,5 @@ exports.compile = (src, dest, opts) =>
     .then(statistics(_.pick(opts, "verbose", "duplicateThreshold")))
     .then(partials => _.defaultsDeep.apply(_, _.map(partials, "translations")))
     .then(byLanguage)
-    .then(translations => `export default ${JSON.stringify(translations, null, 4)};`)
+    .then(translations => `export default ${JSON.stringify(translations, null, 4)};\n`)
     .then(content => utils.writeFile(dest, content));
