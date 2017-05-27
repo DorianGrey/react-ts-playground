@@ -2,7 +2,7 @@ const {
         DefinePlugin,
         ProgressPlugin
       }                          = require("webpack");
-const {CheckerPlugin}            = require("awesome-typescript-loader");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const {
         root,
@@ -57,8 +57,12 @@ module.exports = function (env) {
     }),
     // Plugin for displaying bundle process stage.
     new ProgressPlugin(),
-    // Plugin of atl. to improve build and type checking speed; Will be included by default in the next major version.
-    new CheckerPlugin()
+    new ForkTsCheckerWebpackPlugin({
+      watch: "./src",
+      tsconfig: "./tsconfig.json",
+      blockEmit: !env.isWatch,
+      tslint: "./tslint.json"
+    })
   ];
 
   const bundle = isDev ? [
@@ -108,7 +112,7 @@ module.exports = function (env) {
        * See: http://webpack.github.io/docs/configuration.html#module-preloaders-module-postloaders
        */
       rules: [
-        RULE_TS_LINT_LOADING(isDev),
+        // RULE_TS_LINT_LOADING(isDev),
         RULE_TS_LOADING(isDev),
         RULE_SASS_LOADING(isDev),
         RULE_WEBFONTS(isDev),

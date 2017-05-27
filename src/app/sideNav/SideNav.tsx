@@ -1,9 +1,9 @@
 import "./SideNav.scss";
 
 import * as React from "react";
-import {NavLink} from "react-router-dom";
-import {match} from "react-router";
 import {FormattedMessage} from "react-intl";
+import {match} from "react-router";
+import {NavLink} from "react-router-dom";
 
 function isActive(url: string) {
   return function (_match: match<any>, location: any): boolean {
@@ -31,7 +31,7 @@ export default function SideNav() {
             </NavLink>
           </li>
           <li> {/* I'm not sure why the isActive stuff does not work out of the box for this link, but it seems we have to work around it. */}
-            <NavLink to="/lazy-test/faq?bla=true" activeClassName="selected" isActive={ isActive("/lazy-test") }>
+            <NavLink to="/lazy-test/faq?bla=true" activeClassName="selected" isActive={isActive("/lazy-test")}>
               <span className="icon-container"><i className="fa fa-question-circle" aria-hidden="true"/></span>
               <FormattedMessage id="sidenav.testRoute3" />
               {/*<span className="text-container">TestRoute3</span>*/}

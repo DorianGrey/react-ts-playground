@@ -1,25 +1,26 @@
 import "./App.scss";
 
 import * as React from "react";
-// Note: We have to import these from different packages to always get the proper typings ... DAFUQ?!
-import {BrowserRouter as Router} from "react-router-dom";
+
+import {IntlProvider} from "react-intl-redux";
+import Loadable, {LoadingComponentProps, OptionsWithResolve} from "react-loadable";
 import {
   Redirect,
   Route,
   Switch
 } from "react-router";
-import Loadable, {LoadingComponentProps, OptionsWithResolve} from "react-loadable";
-import {Store} from "redux";
-import {Provider as StoreProvider} from "react-redux";
-import {IntlProvider} from "react-intl-redux";
+// Note: We have to import these from different packages to always get the proper typings ... DAFUQ?!
+import {BrowserRouter as Router} from "react-router-dom";
 
-import Header from "./header/Header";
+import {Provider as StoreProvider} from "react-redux";
+import {Store} from "redux";
 
 import NotFound from "./404/404";
+import Header from "./header/Header";
 import Loading from "./Loading";
+import NotificationProvider from "./notifications/NotificationProvider";
 import SideNav from "./sideNav/SideNav";
 import {AppState} from "./state";
-import NotificationProvider from "./notifications/NotificationProvider";
 
 function withLoader<T>(loader: () => Promise<T>) {
   return Loadable({

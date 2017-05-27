@@ -1,6 +1,7 @@
 import {List} from "immutable";
-import {TodoModel} from "./todo.model";
 import {Action} from "redux";
+
+import {TodoModel} from "./todo.model";
 
 export type TodoAddAction = Action & { payload: TodoModel };
 export type TodoDeleteAction = Action & { payload: { id: number } };

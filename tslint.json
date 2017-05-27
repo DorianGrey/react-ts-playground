@@ -4,6 +4,7 @@
     "tslint-react"
   ],
   "rules": {
+    "arrow-parens": [true, "ban-single-arg-parens"],
     "ban": false,
     "class-name": true,
     "comment-format": [
@@ -16,12 +17,15 @@
       true,
       "spaces"
     ],
+    "interface-name": [true, "never-prefix"],
     "jsdoc-format": true,
+    "jsx-boolean-value": [true, "never"],
     "label-position": true,
     "max-line-length": [
       true,
       160
     ],
+    "member-access": [true, "no-public"],
     "member-ordering": [
       true,
       "public-before-private",
@@ -47,12 +51,16 @@
     "no-eval": true,
     "no-inferrable-types": false,
     "no-internal-module": true,
+    "no-object-literal-type-assertion": false,
     "no-shadowed-variable": true,
+    "no-string-literal": false,
     "no-switch-case-fall-through": true,
     "no-trailing-whitespace": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "no-var-requires": true,
+    "object-literal-key-quotes": [true, "consistent"],
+    "object-literal-sort-keys": false,
     "one-line": [
       true,
       "check-open-brace",
@@ -60,6 +68,7 @@
       "check-else",
       "check-whitespace"
     ],
+    "only-arrow-functions": false,
     "quotemark": [
       true,
       "double",
@@ -70,7 +79,9 @@
       "always",
       "ignore-bound-class-methods"
     ],
+    "space-before-function-paren": [true, {"anonymous": "always", "named": "never"}],
     "switch-default": true,
+    "trailing-comma": false,
     "triple-equals": [
       true,
       "allow-null-check"

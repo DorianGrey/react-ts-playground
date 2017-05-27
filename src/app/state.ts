@@ -1,9 +1,8 @@
-import {combineReducers} from "redux";
-import {initialTodoList, todosReducer, TodoState} from "./todo-list/todo.state";
 import {intlReducer, IntlState} from "react-intl-redux";
-
+import {combineReducers} from "redux";
 
 import {BROWSER_LANGUAGE, getMessagesForLang} from "./i18n/i18n";
+import {initialTodoList, todosReducer, TodoState} from "./todo-list/todo.state";
 
 export interface AppState {
   todos: TodoState;

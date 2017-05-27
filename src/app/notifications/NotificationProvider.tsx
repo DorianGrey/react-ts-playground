@@ -22,7 +22,7 @@ export function sendNotification(title: string, options?: NotificationOptions, a
   } else {
     // TODO: Fallback on rejection or not available!
     return permissionCallback.then(() => {
-      let notification = new Notification(title, options);
+      const notification = new Notification(title, options);
       if (autodisposeAfter && autodisposeAfter > 0) {
         setTimeout(() => notification.close(), autodisposeAfter);
       }

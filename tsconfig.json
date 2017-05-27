@@ -29,11 +29,9 @@
       "ES2015.Promise"
     ]
   },
-  "files": [
-    "src/customTypings.d.ts"
-  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/generated"
   ],
   "awesomeTypescriptLoaderOptions": {
     "useWebpackText": true,
