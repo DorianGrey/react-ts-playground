@@ -65,7 +65,6 @@ module.exports = function (env) {
       tslint: "./tslint.json"
     }),
     new StyleLintPlugin({
-      quiet: false,
       failOnError: !isDev,
       configFile: root(".stylelintrc"),
       files: "src/**/*.scss",
