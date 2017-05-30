@@ -4,6 +4,7 @@ const {
       }                          = require("webpack");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
+const StyleLintPlugin            = require("stylelint-webpack-plugin");
 const {
         root,
         DEFAULT_RESOLVE_EXTENSIONS,
@@ -62,6 +63,13 @@ module.exports = function (env) {
       tsconfig: "./tsconfig.json",
       blockEmit: !env.isWatch,
       tslint: "./tslint.json"
+    }),
+    new StyleLintPlugin({
+      quiet: false,
+      failOnError: !isDev,
+      configFile: root(".stylelintrc"),
+      files: "src/**/*.scss",
+      syntax: "scss"
     })
   ];
 
