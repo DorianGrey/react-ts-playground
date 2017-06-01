@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
+    "outDir": "build/dist",
+    "rootDir": "src",
     "target": "es5",
     "module": "es2015",
+    "forceConsistentCasingInFileNames": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
@@ -31,11 +34,15 @@
   },
   "exclude": [
     "node_modules",
+    "build",
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest",
+    "src/setupTests.ts",
     "src/generated"
   ],
-  "awesomeTypescriptLoaderOptions": {
-    "useWebpackText": true,
-    "forkChecker": true,
-    "useCache": true
-  }
+  "types": [
+    "typePatches"
+  ]
 }

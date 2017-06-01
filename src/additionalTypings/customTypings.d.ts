@@ -1,7 +1,12 @@
-// FOr scss imports.
+// For scss imports.
 declare module "*.scss" {
   let __scss__: string;
   export default __scss__;
+}
+
+declare module "*.svg" {
+  let __svg__: string;
+  export default __svg__;
 }
 
 // To avoid having to use @types/node, we'll define the required process.env.NODE_ENV here.

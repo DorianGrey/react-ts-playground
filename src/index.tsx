@@ -1,4 +1,4 @@
-import "./styles/main.scss";
+import "./styles/index.scss";
 
 import identity from "lodash-es/identity";
 import * as React from "react";
@@ -9,6 +9,8 @@ import App from "./app/App";
 import {initialAppState} from "./app/state";
 import configureStore from "./app/store";
 import {bootloader} from "./bootloader";
+import registerServiceWorker from "./registerServiceWorker";
+
 
 const store = configureStore(initialAppState);
 
@@ -35,6 +37,7 @@ function renderApp(container: HTMLElement | null) {
     wrapWithRhlContainer(<App store={store}/> as React.DOMElement<any, any>),
     container
   );
+  registerServiceWorker();
 }
 
 function main() {
@@ -59,3 +62,5 @@ if (module.hot) {
    varStore.oldState = store.getState();
    });*/
 }
+
+

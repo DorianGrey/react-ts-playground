@@ -3,7 +3,7 @@
 const yargs  = require("yargs");
 const logger = require("log4js").getLogger("translations");
 
-const compileTranslations = require("../dev/translations").compile;
+const compileTranslations = require("./translations").compile;
 
 let argv = yargs
   .usage('$0 <files-glob> <output> [options]')

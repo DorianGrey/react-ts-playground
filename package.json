@@ -2,9 +2,9 @@
   "name": "react-ts-playground",
   "version": "0.0.0",
   "description": "Playground for using react with typescript",
-  "main": "index.js",
   "author": "Christian Linne",
   "license": "MIT",
+  "private": true,
   "dependencies": {
     "@types/react-intl": "^2.2.8",
     "@types/react-router-dom": "^4.0.4",
@@ -18,11 +18,14 @@
     "react-loadable": "^3.3.1",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.1",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {
+    "@types/jest": "^19.2.3",
     "@types/lodash-es": "4.14.4",
-    "@types/react": "^15.0.24",
+    "@types/node": "^7.0.23",
+    "@types/react": "^15.0.25",
     "@types/react-dom": "^15.5.0",
     "@types/react-hot-loader": "^3.0.1",
     "@types/react-intl-redux": "^0.1.2",
@@ -30,67 +33,122 @@
     "@types/react-redux": "^4.4.40",
     "@types/react-router": "^4.0.9",
     "@types/webpack-env": "^1.13.0",
+    "app-root-path": "^2.0.1",
     "autoprefixer": "^7.1.1",
-    "concurrently": "^3.4.0",
+    "case-sensitive-paths-webpack-plugin": "2.0.0",
+    "chalk": "1.1.3",
+    "cli-highlight": "1.1.4",
     "cross-env": "^5.0.0",
     "css-loader": "^0.28.2",
-    "express": "^4.15.3",
+    "dotenv": "4.0.0",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.1",
     "fork-ts-checker-webpack-plugin": "^0.1.4",
+    "fs-extra": "3.0.1",
     "glob": "^7.1.2",
     "html-webpack-plugin": "^2.28.0",
     "http-proxy": "^1.16.2",
     "inline-chunk-manifest-html-webpack-plugin": "^1.1.1",
+    "jest": "20.0.3",
     "js-yaml": "^3.8.4",
     "lodash": "^4.17.4",
     "log4js": "^1.1.1",
     "mkdirp": "^0.5.1",
     "node-sass": "^4.5.3",
     "normalize.css": "^7.0.0",
+    "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "^3.0.0",
     "postcss-loader": "^2.0.5",
+    "promise": "7.1.1",
+    "react-dev-utils": "^2.0.1",
+    "react-error-overlay": "^1.0.6",
     "react-hot-loader": "3.0.0-beta.6",
     "resolve-url-loader": "^2.0.2",
     "rimraf": "^2.6.1",
     "sass-loader": "^6.0.5",
     "script-ext-html-webpack-plugin": "^1.8.0",
     "string-replace-loader": "^1.2.0",
+    "source-map-loader": "^0.2.1",
     "style-loader": "^0.18.0",
     "stylelint": "^7.10.1",
     "stylelint-webpack-plugin": "^0.7.0",
+    "sw-precache-webpack-plugin": "0.9.1",
     "ts-loader": "^2.1.0",
     "tslib": "^1.7.1",
     "tslint": "^5.3.2",
-    "tslint-loader": "^3.5.3",
     "tslint-react": "^3.0.0",
     "typescript": "^2.3.3",
     "url-loader": "^0.5.8",
-    "wait-for-change": "^1.1.1",
-    "webpack": "2.5.1",
+    "webpack": "^2.6.1",
     "webpack-bundle-analyzer": "^2.8.2",
     "webpack-chunk-hash": "^0.4.0",
     "webpack-closure-compiler": "^2.1.4",
     "webpack-dev-server": "^2.4.5",
+    "webpack-manifest-plugin": "1.1.0",
     "webpack-merge": "^4.1.0",
     "yargs": "^8.0.1"
   },
   "scripts": {
-    "renderLoadingAnimation": "node webpack/util/renderLoading.js",
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
+    "serve": "node scripts/serve.js",
+    "test": "node scripts/test.js --env=jsdom --no-cache --verbose --coverage",
+    "renderLoadingAnimation": "node scripts/util/renderLoading.js",
+    "-----need to translate these scripts!-----": "echo 0",
     "analyze:build": "npm run build -- --env.analyzeBundles",
     "clear": "rimraf .awcache .tmp .dist src/generated",
     "prestart": "rimraf .tmp && npm run translations && npm run renderLoadingAnimation",
-    "start": "concurrently -r \"npm run translations:watch\" \"npm run dev-server\"",
+    "start2": "concurrently -r \"npm run translations:watch\" \"npm run dev-server\"",
     "dev-server": "cross-env NODE_ENV=development webpack-dev-server --config webpack/main.config.js --hot",
     "build:dev": "npm run prestart && cross-env NODE_ENV=development webpack --config webpack/main.config.js",
     "prebuild": "rimraf .dist && npm run translations && npm run renderLoadingAnimation",
-    "build": "cross-env NODE_ENV=production webpack --config webpack/main.config.js",
+    "build2": "cross-env NODE_ENV=production webpack --config webpack/main.config.js",
     "prebuild:cc": "rimraf .dist && npm run translations",
     "build:cc": "npm run build -- --env.useClosureCompiler",
     "prod-server": "npm run build && node example-prod-server/server.js .dist",
     "prod-server:cc": "npm run build:cc && node example-prod-server/server.js .dist",
-    "translations": "node bin/compile-translations.js \"src/**/*.i18n.yml\" src/generated/translations.ts",
-    "translations:watch": "node bin/compile-translations.js \"src/**/*.i18n.yml\" src/generated/translations.ts -w -n"
+    "translations": "node scripts/translations/compile-translations.js \"src/**/*.i18n.yml\" src/generated/translations.ts",
+    "translations:watch": "node scripts/translations/compile-translations.js \"src/**/*.i18n.yml\" src/generated/translations.ts -w -n"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      ".d.ts"
+    ],
+    "setupFiles": [
+      "<rootDir>/config/polyfills.js"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.ts?(x)",
+      "<rootDir>/src/**/?(*.)(spec|test).ts?(x)"
+    ],
+    "testEnvironment": "node",
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.s?css$": "<rootDir>/config/jest/cssTransform.js",
+      "^.+\\.tsx?$": "<rootDir>/config/jest/typescriptTransform.js",
+      "^(?!.*\\.(css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$"
+    ],
+    "moduleNameMapper": {
+      "^react-native$": "react-native-web"
+    }
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
   },
   "engines": {
     "node": ">=6.10",

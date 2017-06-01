@@ -1,7 +1,6 @@
 import "./App.scss";
 
 import * as React from "react";
-
 import {IntlProvider} from "react-intl-redux";
 import Loadable, {LoadingComponentProps, OptionsWithResolve} from "react-loadable";
 import {
