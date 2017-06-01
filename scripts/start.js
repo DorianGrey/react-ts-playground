@@ -1,33 +1,34 @@
-'use strict';
+"use strict";
 
 // Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will
 // terminate the Node.js process with a non-zero exit code.
-process.on('unhandledRejection', err => {
+process.on("unhandledRejection", err => {
   throw err;
 });
 
-process.env.NODE_ENV = 'development';
+process.env.NODE_ENV = "development";
 
 // Ensure environment variables are read.
-require('../config/env');
+require("../config/env");
 
-const fs = require('fs');
-const chalk = require('chalk');
-const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
-const clearConsole = require('react-dev-utils/clearConsole');
-const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
+const fs = require("fs");
+const chalk = require("chalk");
+const webpack = require("webpack");
+const WebpackDevServer = require("webpack-dev-server");
+const clearConsole = require("react-dev-utils/clearConsole");
+const checkRequiredFiles = require("react-dev-utils/checkRequiredFiles");
 const {
   choosePort,
   createCompiler,
   prepareProxy,
   prepareUrls,
-} = require('react-dev-utils/WebpackDevServerUtils');
-const openBrowser = require('react-dev-utils/openBrowser');
-const paths = require('../config/paths');
-const config = require('../config/webpack.config.dev');
-const createDevServerConfig = require('../config/webpackDevServer.config');
+} = require("react-dev-utils/WebpackDevServerUtils");
+const openBrowser = require("react-dev-utils/openBrowser");
+
+const paths = require("../config/paths");
+const config = require("../config/webpack.config.dev");
+const createDevServerConfig = require("../config/webpack/devServer.config");
 
 const useYarn = fs.existsSync(paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;
@@ -49,7 +50,7 @@ choosePort(HOST, DEFAULT_PORT)
       // We have not found a port.
       return;
     }
-    const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
+    const protocol = process.env.HTTPS === "true" ? "https" : "http";
     const appName = require(paths.appPackageJson).name;
     const urls = prepareUrls(protocol, HOST, port);
     // Create a webpack compiler that is configured with custom messages.
@@ -71,11 +72,11 @@ choosePort(HOST, DEFAULT_PORT)
       if (isInteractive) {
         clearConsole();
       }
-      console.log(chalk.cyan('Starting the development server...\n'));
+      console.log(chalk.cyan("Starting the development server...\n"));
       openBrowser(urls.localUrlForBrowser);
     });
 
-    ['SIGINT', 'SIGTERM'].forEach(function(sig) {
+    ["SIGINT", "SIGTERM"].forEach(function(sig) {
       process.on(sig, function() {
         devServer.close();
         process.exit();
