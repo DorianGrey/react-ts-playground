@@ -16,7 +16,6 @@ interface Process {
   };
 }
 
-declare const ENV: "production" | "development";
 declare const process: Process;
 
 // For the import() function. Only works properly in conjunction with the string-replace-loader, which adjusts _import_ to import.

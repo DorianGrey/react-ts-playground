@@ -2,7 +2,7 @@ import "./TestRoute1.scss";
 
 import * as React from "react";
 
-import logo from "../../../public/logo.svg";
+import logo from "../../importedAssets/logo.svg";
 
 export default () => (
   <div>
