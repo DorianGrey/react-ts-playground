@@ -87,7 +87,7 @@ const RULE_EXT_JS = {
 // smaller than specified limit in bytes as data URLs to avoid requests.
 // A missing `test` is equivalent to a match.
 const RULE_IMAGES = {
-  test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+  test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.svg$/],
   use: {
     loader: require.resolve("url-loader"),
     options: {
@@ -126,7 +126,7 @@ const RULE_SCSS = function (isDev, extractTextPluginOptions) {
       options: {
         importLoaders: 1,
         minimize: !isDev,
-        sourceMap: !isDev,
+        sourceMap: isDev,
       },
     },
     {

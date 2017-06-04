@@ -125,10 +125,14 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
     );
 
     // TODO: We need to translate this one manually1
-    sendNotification(this.props.intl.formatMessage({id: "todos.newTodo.added"}), {
-      icon: "assets/images/favicon.ico",
-      body: this.currentTodoData.headline
-    }, 5000);
+    sendNotification(
+      this.props.intl.formatMessage({id: "todos.newTodo.added"}),
+      {
+        icon: "assets/images/favicon.ico",
+        body: this.currentTodoData.headline
+      },
+      5000
+    );
 
     this.currentTodoData        = {};
     this.headlineInput.value    = "";

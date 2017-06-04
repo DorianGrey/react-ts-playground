@@ -88,7 +88,9 @@
     "yargs": "^8.0.1"
   },
   "scripts": {
+    "prestart": "rimraf .tmp && npm run translations && npm run renderLoadingAnimation",
     "start": "node scripts/start.js",
+    "prebuild": "npm run translations && npm run renderLoadingAnimation",
     "build": "node scripts/build.js",
     "serve": "node scripts/serve.js",
     "test": "node scripts/test.js --env=jsdom --no-cache --verbose --coverage",
@@ -96,11 +98,9 @@
     "-----need to translate these scripts!-----": "echo 0",
     "analyze:build": "npm run build -- --env.analyzeBundles",
     "clear": "rimraf .awcache .tmp .dist src/generated",
-    "prestart": "rimraf .tmp && npm run translations && npm run renderLoadingAnimation",
     "start2": "concurrently -r \"npm run translations:watch\" \"npm run dev-server\"",
     "dev-server": "cross-env NODE_ENV=development webpack-dev-server --config webpack/main.config.js --hot",
     "build:dev": "npm run prestart && cross-env NODE_ENV=development webpack --config webpack/main.config.js",
-    "prebuild": "rimraf .dist && npm run translations && npm run renderLoadingAnimation",
     "build2": "cross-env NODE_ENV=production webpack --config webpack/main.config.js",
     "prebuild:cc": "rimraf .dist && npm run translations",
     "build:cc": "npm run build -- --env.useClosureCompiler",
