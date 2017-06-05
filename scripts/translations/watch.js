@@ -18,4 +18,6 @@ module.exports = (pattern, onChange, opts) => {
       debouncedCallback();
     });
   }
+
+  return watcher;
 };

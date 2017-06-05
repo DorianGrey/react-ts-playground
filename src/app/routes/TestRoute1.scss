@@ -1,3 +1,5 @@
+@import "../../styles/colors";
+
 .App {
   text-align: center;
 }
@@ -8,14 +10,9 @@
 }
 
 .App-header {
-  background-color: #222;
   height: 150px;
   padding: 20px;
-  color: white;
-}
-
-.App-intro {
-  font-size: large;
+  color: $color-black;
 }
 
 @keyframes App-logo-spin {

@@ -64,6 +64,20 @@ choosePort(HOST, DEFAULT_PORT)
       urls.lanUrlForConfig
     );
     const devServer    = new WebpackDevServer(compiler, serverConfig);
+
+    // Launch translations watcher.
+    // TODO: We need to link this a little more with webpack, esp. in terms of errors.
+    const compileTranslations = require("./translations/translations").compile;
+    const watch = require("./translations/watch");
+    const translationsGlob = "src/**/*.i18n.yml";
+    const translationsOutputPath = "src/generated/translations.ts";
+    const translationsWatcher = watch(translationsGlob, () => {
+      compileTranslations(translationsGlob, translationsOutputPath).then(
+        () => console.log(`Translations written to ${chalk.cyan(translationsOutputPath)}`),
+        err => console.error("Error processing translations:", chalk.red(err))
+      );
+    }, {events: ["change", "unlink"]});
+
     // Launch WebpackDevServer.
     devServer.listen(port, HOST, err => {
       if (err) {
@@ -79,6 +93,7 @@ choosePort(HOST, DEFAULT_PORT)
     ["SIGINT", "SIGTERM"].forEach(function (sig) {
       process.on(sig, function () {
         devServer.close();
+        translationsWatcher.close();
         process.exit();
       });
     });
