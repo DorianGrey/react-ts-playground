@@ -1,9 +1,7 @@
 import "./TodoList.scss";
 
 import * as React from "react";
-import {ChangeEvent, FormEvent} from "react";
 import {
-  FormattedDate,
   FormattedMessage,
   InjectedIntlProps,
   injectIntl
@@ -12,63 +10,21 @@ import {connect} from "react-redux";
 import {Dispatch} from "redux";
 
 import {List} from "immutable";
+import noop from "lodash-es/noop";
 
 import {sendNotification} from "../notifications/NotificationProvider";
 import {AppState} from "../state";
 import {TodoModel} from "./todo.model";
-import {AddTodo, DeleteTodo, TodoAddAction, TodoDeleteAction} from "./todo.state";
-
-// Simple Todo entry.
-function Todo(todo: TodoModel & { onDelete: () => void }) {
-  return (
-    <li className="todo-entry">
-      <div className="row headline">
-        <div className="h3">{todo.headline}</div>
-        <div className="todo-controls">
-          <i className="fa fa-edit"/>
-          <i className="fa fa-close" onClick={todo.onDelete}/>
-        </div>
-      </div>
-      <div className="row content">
-        <div>{todo.description}</div>
-        <div className="column">
-          <div>
-            <b><FormattedMessage id="todos.entry.created"/></b>&nbsp;
-            <FormattedDate
-              value={todo.created}
-              year="numeric"
-              month="long"
-              day="2-digit"
-              hour="2-digit"
-              minute="2-digit"
-              second="2-digit"
-            />
-          </div>
-          <div>
-            <b><FormattedMessage id="todos.entry.deadline"/></b>&nbsp;
-            <FormattedDate
-              value={todo.deadline}
-              year="numeric"
-              month="long"
-              day="2-digit"
-              hour="2-digit"
-              minute="2-digit"
-              second="2-digit"
-            />
-          </div>
-        </div>
-      </div>
-    </li>
-  );
-}
+import {AddTodo, DeleteTodo, TodoAddAction, TodoDeleteAction, UpdateTodo} from "./todo.state";
+import TodoEntry from "./TodoEntry";
 
 // Todo list.
-
 export interface TodoListProps {
   todos: List<TodoModel>;
   onTodoAdd: (headline: string,
               description: string,
               deadline: Date) => void;
+  onTodoUpdate: (todo: TodoModel) => void;
   onTodoDelete: (id: number) => void;
 }
 
@@ -85,6 +41,9 @@ const mapDispatchToProps = (dispatch: Dispatch<TodoAddAction> | Dispatch<TodoDel
                    deadline: Date) => {
       dispatch(AddTodo(headline, description, deadline));
     },
+    onTodoUpdate: (updated: TodoModel) => {
+      dispatch(UpdateTodo(updated));
+    },
     onTodoDelete: (id: number) => {
       dispatch(DeleteTodo(id));
     }
@@ -96,76 +55,62 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
     showNewTodoBlock: false
   };
 
-  currentTodoData: Partial<TodoModel> = {};
-
-  private descriptionInput: HTMLTextAreaElement;
-  private headlineInput: HTMLInputElement;
-
   constructor(props: TodoListProps & InjectedIntlProps, context: any) {
     super(props, context);
 
-    this.createTodo          = this.createTodo.bind(this);
-    this.setHeadlineInput    = this.setHeadlineInput.bind(this);
-    this.setDescriptionInput = this.setDescriptionInput.bind(this);
-    this.setTodoHeadline     = this.setTodoHeadline.bind(this);
-    this.setTodoDescription  = this.setTodoDescription.bind(this);
-    this.showNewTodoBlock    = this.showNewTodoBlock.bind(this);
-    this.deleteTodo          = this.deleteTodo.bind(this);
-    this.createTodoEntry     = this.createTodoEntry.bind(this);
+    this.createTodo       = this.createTodo.bind(this);
+    this.showNewTodoBlock = this.showNewTodoBlock.bind(this);
+    this.deleteTodo       = this.deleteTodo.bind(this);
+    this.createTodoEntry  = this.createTodoEntry.bind(this);
   }
 
-  createTodo(event: FormEvent<never>) {
-    event.preventDefault();
+  createTodo(headline: string,
+             description: string,
+             deadline: Date,
+             id?: number) {
     this.setState({showNewTodoBlock: false});
 
-    this.props.onTodoAdd(
-      this.currentTodoData.headline as string,
-      this.currentTodoData.description as string,
-      new Date()
-    );
+    // TODO: Eval "id" parameter.
+    if (id) {
+      const oldTodo = this.props.todos.find(e => !!e && e.id === id);
 
-    // TODO: We need to translate this one manually1
+      this.props.onTodoUpdate(
+        {
+          ...oldTodo,
+          id,
+          headline,
+          description,
+          deadline
+        }
+      );
+    } else {
+      this.props.onTodoAdd(
+        headline,
+        description,
+        deadline
+      );
+    }
+
     sendNotification(
-      this.props.intl.formatMessage({id: "todos.newTodo.added"}),
+      this.props.intl.formatMessage({id: `todos.newTodo.${id ? "updated" : "added"}`}),
       {
-        icon: "assets/images/favicon.ico",
-        body: this.currentTodoData.headline
+        icon: "favicon.ico",
+        body: headline
       },
       5000
     );
-
-    this.currentTodoData        = {};
-    this.headlineInput.value    = "";
-    this.descriptionInput.value = "";
   }
+
 
   render() {
     const displayContent = this.state.showNewTodoBlock ?
       (
-        <div className="new-todo-block column">
-          <form onSubmit={this.createTodo}>
-            <input
-              placeholder={this.props.intl.formatMessage({id: "todos.entry.placeholder.tag"})}
-              required
-              ref={this.setHeadlineInput}
-              onChange={this.setTodoHeadline}
-            />
-            <textarea
-              placeholder={this.props.intl.formatMessage({id: "todos.entry.placeholder.description"})}
-              required
-              ref={this.setDescriptionInput}
-              onChange={this.setTodoDescription}
-            />
-            <div className="row todo-creation-controls">
-              <button type="submit">
-                <FormattedMessage id="todos.newTodo.create"/>
-              </button>
-              <button type="button" onClick={this.showNewTodoBlock}>
-                <FormattedMessage id="todos.newTodo.cancel"/>
-              </button>
-            </div>
-          </form>
-        </div>
+        <TodoEntry
+          editable
+          createOrUpdateTodo={this.createTodo}
+          onCancel={this.showNewTodoBlock}
+          onDelete={noop}
+        />
       )
       : (
         <div className="new-todo" onClick={this.showNewTodoBlock}>
@@ -186,11 +131,15 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
 
   private createTodoEntry(todo: TodoModel) {
     return (
-      <Todo
-        key={todo.id}
-        onDelete={this.deleteTodo(todo.id)}
-        {...todo}
-      />
+      <li key={todo.id}>
+        <TodoEntry
+          editable={false}
+          onDelete={this.deleteTodo(todo.id)}
+          createOrUpdateTodo={this.createTodo}
+          onCancel={noop}
+          {...todo}
+        />
+      </li>
     );
   }
 
@@ -202,22 +151,6 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
 
   private showNewTodoBlock() {
     this.setState({showNewTodoBlock: true});
-  }
-
-  private setHeadlineInput(input: HTMLInputElement) {
-    this.headlineInput = input;
-  }
-
-  private setDescriptionInput(input: HTMLTextAreaElement) {
-    this.descriptionInput = input;
-  }
-
-  private setTodoHeadline(event: ChangeEvent<HTMLInputElement>) {
-    this.currentTodoData.headline = event.target.value;
-  }
-
-  private setTodoDescription(event: ChangeEvent<HTMLTextAreaElement>) {
-    this.currentTodoData.description = event.target.value;
   }
 }
 

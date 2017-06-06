@@ -22,9 +22,15 @@ todos:
     create:
       de: Anlegen
       en: Create
+    update:
+      de: Aktualisieren
+      en: Update
     cancel:
       de: Abbrechen
       en: Cancel
     added:
       de: "Neue Aufgabe erfolgreich hinzugefügt!"
       en: "New todo added successfully!"
+    updated:
+      de: "Aufgabe erfolgreich aktualisiert!"
+      en: "Todo updated successfully!"

@@ -4,11 +4,13 @@ import {Action} from "redux";
 import {TodoModel} from "./todo.model";
 
 export type TodoAddAction = Action & { payload: TodoModel };
+export type TodoUpdateAction = Action & { payload: TodoModel };
 export type TodoDeleteAction = Action & { payload: { id: number } };
 export type TodoState = List<TodoModel>;
 
 const ACTION_TYPES = {
   ADD_TODO:    "ADD_TODO",
+  UPDATE_TODO: "UPDATE_TODO",
   DELETE_TODO: "DELETE_TODO"
 };
 
@@ -26,6 +28,13 @@ export function AddTodo(headline: string,
       description,
       deadline
     }
+  };
+}
+
+export function UpdateTodo(todo: TodoModel) {
+  return {
+    type:    ACTION_TYPES.UPDATE_TODO,
+    payload: todo
   };
 }
 
@@ -47,10 +56,18 @@ export const initialTodoList: TodoState = List.of<TodoModel>({
 });
 
 
-export const todosReducer = (state: TodoState = initialTodoList, action: TodoAddAction | TodoDeleteAction) => {
+export const todosReducer = (state: TodoState = initialTodoList, action: TodoAddAction | TodoUpdateAction | TodoDeleteAction) => {
   switch (action.type) {
     case ACTION_TYPES.ADD_TODO:
       return state.push((action as TodoAddAction).payload);
+    case ACTION_TYPES.UPDATE_TODO:
+      const act      = action as TodoUpdateAction;
+      const oldIndex = state.findIndex(e => !!e && e.id === act.payload.id);
+      if (oldIndex >= 0) {
+        return state.set(oldIndex, act.payload);
+      } else {
+        return state;
+      }
     case ACTION_TYPES.DELETE_TODO:
       return state.filter((e: TodoModel) => e.id !== (action as TodoDeleteAction).payload.id);
     default:
