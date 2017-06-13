@@ -72,6 +72,7 @@
     "stylelint": "^7.11.0",
     "stylelint-webpack-plugin": "^0.7.0",
     "sw-precache-webpack-plugin": "^0.11.3",
+    "ts-jest": "^20.0.6",
     "ts-loader": "^2.1.0",
     "tslib": "^1.7.1",
     "tslint": "^5.4.3",
@@ -128,7 +129,7 @@
     "testURL": "http://localhost",
     "transform": {
       "^.+\\.s?css$": "<rootDir>/config/jest/cssTransform.js",
-      "^.+\\.tsx?$": "<rootDir>/config/jest/typescriptTransform.js",
+      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js",
       "^(?!.*\\.(css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
     "transformIgnorePatterns": [
@@ -136,12 +137,8 @@
     ],
     "moduleNameMapper": {
       "^react-native$": "react-native-web"
-    }
-  },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
+    },
+    "mapCoverage": true
   },
   "engines": {
     "node": ">=6.10",
