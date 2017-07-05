@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "build/dist",
     "target": "es5",
-    "module": "es2015",
+    "module": "esnext",
     "forceConsistentCasingInFileNames": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

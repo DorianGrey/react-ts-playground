@@ -1,5 +1,5 @@
 import {intlReducer, IntlState} from "react-intl-redux";
-import {combineReducers} from "redux";
+import {combineReducers, Reducer} from "redux";
 
 import {BROWSER_LANGUAGE, getMessagesForLang} from "./i18n/i18n";
 import {initialTodoList, todosReducer, TodoState} from "./todo-list/todo.state";
@@ -18,6 +18,6 @@ export const initialAppState: AppState = {
 };
 
 export default combineReducers<AppState>({
-  todos: todosReducer,
-  intl:  intlReducer
+  todos: todosReducer as Reducer<any>,
+  intl:  intlReducer as Reducer<any>
 });

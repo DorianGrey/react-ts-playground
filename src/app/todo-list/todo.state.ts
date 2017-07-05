@@ -3,13 +3,17 @@ import {Action} from "redux";
 
 import {TodoModel} from "./todo.model";
 
-export type TodoAddAction = Action & { payload: TodoModel };
-export type TodoUpdateAction = Action & { payload: TodoModel };
-export type TodoDeleteAction = Action & { payload: { id: number } };
+interface TodoAction<P> extends Action {
+  payload: P;
+}
+
+export type TodoAddAction = TodoAction<TodoModel>;
+export type TodoUpdateAction = TodoAction<TodoModel>;
+export type TodoDeleteAction = TodoAction<{ id: number }>;
 export type TodoState = List<TodoModel>;
 
 const ACTION_TYPES = {
-  ADD_TODO:    "ADD_TODO",
+  ADD_TODO: "ADD_TODO",
   UPDATE_TODO: "UPDATE_TODO",
   DELETE_TODO: "DELETE_TODO"
 };
@@ -20,9 +24,9 @@ export function AddTodo(headline: string,
                         description: string,
                         deadline: Date) {
   return {
-    type:    ACTION_TYPES.ADD_TODO,
+    type: ACTION_TYPES.ADD_TODO,
     payload: {
-      id:      Math.random() * 1000,
+      id: Math.random() * 1000,
       created: new Date(),
       headline,
       description,
@@ -33,14 +37,14 @@ export function AddTodo(headline: string,
 
 export function UpdateTodo(todo: TodoModel) {
   return {
-    type:    ACTION_TYPES.UPDATE_TODO,
+    type: ACTION_TYPES.UPDATE_TODO,
     payload: todo
   };
 }
 
 export function DeleteTodo(id: number) {
   return {
-    type:    ACTION_TYPES.DELETE_TODO,
+    type: ACTION_TYPES.DELETE_TODO,
     payload: {
       id
     }
@@ -48,11 +52,11 @@ export function DeleteTodo(id: number) {
 }
 
 export const initialTodoList: TodoState = List.of<TodoModel>({
-  id:          1,
-  headline:    "Test todo",
+  id: 1,
+  headline: "Test todo",
   description: "A lot of stuff to be done!",
-  deadline:    new Date(),
-  created:     new Date()
+  deadline: new Date(),
+  created: new Date()
 });
 
 

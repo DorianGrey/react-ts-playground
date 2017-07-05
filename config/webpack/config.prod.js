@@ -1,12 +1,13 @@
 "use strict";
 
-const path                  = require("path");
+const path                      = require("path");
 const {
         NoEmitOnErrorsPlugin
-      }                     = require("webpack");
-const CommonsChunkPlugin    = require("webpack/lib/optimize/CommonsChunkPlugin");
-const HashedModuleIdsPlugin = require("webpack/lib/HashedModuleIdsPlugin");
-const UglifyJsPlugin        = require("webpack/lib/optimize/UglifyJsPlugin");
+      }                         = require("webpack");
+const CommonsChunkPlugin        = require("webpack/lib/optimize/CommonsChunkPlugin");
+const HashedModuleIdsPlugin     = require("webpack/lib/HashedModuleIdsPlugin");
+const UglifyJsPlugin            = require("webpack/lib/optimize/UglifyJsPlugin");
+const ModuleConcatenationPlugin = require("webpack/lib/optimize/ModuleConcatenationPlugin");
 
 const ExtractTextPlugin                    = require("extract-text-webpack-plugin");
 const InlineChunkManifestHtmlWebpackPlugin = require("inline-chunk-manifest-html-webpack-plugin");
@@ -136,6 +137,8 @@ module.exports = merge.smart(commonConfig(false, env, extractTextPluginOptions),
     new ExtractTextPlugin({
       filename: cssFilename,
     }),
+
+    new ModuleConcatenationPlugin(),
 
     // Generate a service worker script that will precache, and keep up to date,
     // the HTML & assets that are part of the Webpack build.

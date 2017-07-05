@@ -2,7 +2,7 @@ import "./App.scss";
 
 import * as React from "react";
 import {IntlProvider} from "react-intl-redux";
-import Loadable, {LoadingComponentProps, OptionsWithResolve} from "react-loadable";
+import Loadable, {LoadingComponentProps, OptionsWithRender} from "react-loadable";
 import {
   Redirect,
   Route,
@@ -24,9 +24,12 @@ import {AppState} from "./state";
 function withLoader<T>(loader: () => Promise<T>) {
   return Loadable({
     loader,
-    LoadingComponent: Loading,
-    resolveModule:    module => (module as any).default
-  } as OptionsWithResolve<LoadingComponentProps, any>);
+    loading: Loading,
+    render(loaded: any, props: any) {
+      const Component = loaded.default;
+      return <Component {...props} />;
+    }
+  } as OptionsWithRender<LoadingComponentProps, any>);
 }
 
 export interface AppProps {
@@ -35,9 +38,9 @@ export interface AppProps {
 
 export default function App(props: AppProps) {
 
-  const AsyncTestRoute1: any           = withLoader(() => _import_(/* webpackChunkName: "testRoute1" */"./routes/TestRoute1.tsx"));
-  const AsyncTestRoute2: any           = withLoader(() => _import_(/* webpackChunkName: "todos" */"./todo-list/TodoList.tsx"));
-  const AsyncParseParamsTestRoute: any = withLoader(() => _import_(/* webpackChunkName: "parseParamTest" */"./routes/ParseParamsTestRoute.tsx"));
+  const AsyncTestRoute1: any           = withLoader(() => import(/* webpackChunkName: "testRoute1" */"./routes/TestRoute1"));
+  const AsyncTestRoute2: any           = withLoader(() => import(/* webpackChunkName: "todos" */"./todo-list/TodoList"));
+  const AsyncParseParamsTestRoute: any = withLoader(() => import(/* webpackChunkName: "parseParamTest" */"./routes/ParseParamsTestRoute"));
 
   return (
     <StoreProvider store={props.store}>

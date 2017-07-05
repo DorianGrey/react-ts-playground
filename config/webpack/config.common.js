@@ -50,18 +50,11 @@ const PLUGIN_HTML = function (isDev) {
 const RULE_EXT_TSX = function (isDev) {
   const use = [
     {
-      loader: "string-replace-loader", // For being able to use webpack's import() function without causing conflicts with the TS parser.
-      query: {
-        search: "_import_",
-        replace: "import",
-        flags: "g"
-      }
-    },
-    {
       loader: "ts-loader",
       options: {
         // disable type checker - we will use it in fork plugin
-        transpileOnly: true
+        transpileOnly: true,
+        silent: true
       }
     }
   ];
