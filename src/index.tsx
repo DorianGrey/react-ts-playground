@@ -2,25 +2,32 @@ import "./styles/index.scss";
 
 import identity from "lodash-es/identity";
 import * as React from "react";
-import {render} from "react-dom";
-import {AppContainer} from "react-hot-loader";
+import { render } from "react-dom";
+import { AppContainer } from "react-hot-loader";
 
 import App from "./app/App";
-import {initialAppState} from "./app/state";
+import { initialAppState } from "./app/state";
 import configureStore from "./app/store";
-import {bootloader} from "./bootloader";
+import { bootloader } from "./bootloader";
 import registerServiceWorker from "./registerServiceWorker";
-
 
 const store = configureStore(initialAppState);
 
 // We don't need the 'AppContainer' wrapper in production mode, thus, we make a difference here.
-let wrapWithRhlContainer: <P extends React.DOMAttributes<T>, T extends Element>(s: React.DOMElement<P, T>) => React.DOMElement<P, T>;
+let wrapWithRhlContainer: <P extends React.DOMAttributes<T>, T extends Element>(
+  s: React.DOMElement<P, T>
+) => React.DOMElement<P, T>;
 if (process.env.NODE_ENV === "production") {
   wrapWithRhlContainer = identity;
 } else {
-  wrapWithRhlContainer = <P extends React.DOMAttributes<T>, T extends Element>(elem: React.DOMElement<P, T>) =>
-    <AppContainer>{elem}</AppContainer> as React.DOMElement<P, T>;
+  wrapWithRhlContainer = <P extends React.DOMAttributes<T>, T extends Element>(
+    elem: React.DOMElement<P, T>
+  ) =>
+    (
+      <AppContainer>
+        {elem}
+      </AppContainer>
+    ) as React.DOMElement<P, T>;
 }
 
 function getContainer() {
@@ -34,7 +41,7 @@ function renderApp(container: HTMLElement | null) {
   // setTimeout(() => render(wrapWithRhlContainer(<App /> as React.DOMElement<any, any>), container), 1000);
 
   render(
-    wrapWithRhlContainer(<App store={store}/> as React.DOMElement<any, any>),
+    wrapWithRhlContainer(<App store={store} /> as React.DOMElement<any, any>),
     container
   );
   registerServiceWorker();
@@ -53,7 +60,7 @@ bootloader(main);
 
 // react-hot-loader 3 API: https://github.com/gaearon/react-hot-loader/tree/master/docs#webpack-2
 if (module.hot) {
-  module.hot.accept("./app/App", function () {
+  module.hot.accept("./app/App", function hmr() {
     renderApp(null);
   });
 
@@ -62,5 +69,3 @@ if (module.hot) {
    varStore.oldState = store.getState();
    });*/
 }
-
-

@@ -1,14 +1,14 @@
 "use strict";
 
-const path                          = require("path");
-const HotModuleReplacementPlugin    = require("webpack/lib/HotModuleReplacementPlugin");
-const CaseSensitivePathsPlugin      = require("case-sensitive-paths-webpack-plugin");
-const NamedModulesPlugin            = require("webpack/lib/NamedModulesPlugin");
+const path = require("path");
+const HotModuleReplacementPlugin = require("webpack/lib/HotModuleReplacementPlugin");
+const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
+const NamedModulesPlugin = require("webpack/lib/NamedModulesPlugin");
 const WatchMissingNodeModulesPlugin = require("react-dev-utils/WatchMissingNodeModulesPlugin");
-const merge                         = require("webpack-merge");
+const merge = require("webpack-merge");
 
-const commonConfig         = require("./config.common");
-const paths                = require("../paths");
+const commonConfig = require("./config.common");
+const paths = require("../paths");
 const getClientEnvironment = require("../env");
 
 // Webpack uses `publicPath` to determine where the app is being served from.
@@ -19,7 +19,7 @@ const publicPath = "/";
 // Omit trailing slash as %PUBLIC_PATH%/xyz looks better than %PUBLIC_PATH%xyz.
 const publicUrl = "";
 // Get environment variables to inject into our app.
-const env       = getClientEnvironment(publicUrl);
+const env = getClientEnvironment(publicUrl);
 
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.
@@ -50,7 +50,7 @@ module.exports = merge.smart(commonConfig(true, env, {}), {
     // For easier hot reloading.
     require.resolve("react-hot-loader/patch"),
     // Finally, this is your app's code:
-    paths.appIndexJs,
+    paths.appIndexJs
     // We include the app code last so that if there is a runtime error during
     // initialization, it doesn't blow up the WebpackDevServer client, and
     // changing JS code would still trigger a refresh.
@@ -70,7 +70,7 @@ module.exports = merge.smart(commonConfig(true, env, {}), {
     publicPath: publicPath,
     // Point sourcemap entries to original disk location
     devtoolModuleFilenameTemplate: info =>
-      path.resolve(info.absoluteResourcePath),
+      path.resolve(info.absoluteResourcePath)
   },
 
   plugins: [

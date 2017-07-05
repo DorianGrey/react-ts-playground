@@ -1,5 +1,5 @@
 import * as React from "react";
-import {ReactNode} from "react";
+import { ReactNode } from "react";
 
 let permissionCallback: Promise<string> | null;
 
@@ -16,7 +16,11 @@ function requestNotificationPermission(): void {
   // want to be respectful there is no need to bother them any more.
 }
 
-export function sendNotification(title: string, options?: NotificationOptions, autodisposeAfter?: number): Promise<Notification> {
+export function sendNotification(
+  title: string,
+  options?: NotificationOptions,
+  autodisposeAfter?: number
+): Promise<Notification> {
   if (!permissionCallback) {
     return Promise.reject<Notification>("not initialized");
   } else {
@@ -31,7 +35,9 @@ export function sendNotification(title: string, options?: NotificationOptions, a
   }
 }
 
-export default function NotificationProvider(props: Readonly<{ children?: ReactNode }>) {
+export default function NotificationProvider(
+  props: Readonly<{ children?: ReactNode }>
+) {
   requestNotificationPermission();
 
   return React.Children.only(props.children);

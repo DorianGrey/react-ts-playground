@@ -13,20 +13,21 @@ process.on("unhandledRejection", err => {
 // Ensure environment variables are read.
 require("../config/env");
 
-const path                     = require("path");
-const chalk                    = require("chalk");
-const fs                       = require("fs-extra");
-const webpack                  = require("webpack");
-const config                   = require("../config/webpack/config.prod");
-const paths                    = require("../config/paths");
-const checkRequiredFiles       = require("react-dev-utils/checkRequiredFiles");
-const formatWebpackMessages    = require("react-dev-utils/formatWebpackMessages");
+const path = require("path");
+const chalk = require("chalk");
+const fs = require("fs-extra");
+const webpack = require("webpack");
+const config = require("../config/webpack/config.prod");
+const paths = require("../config/paths");
+const checkRequiredFiles = require("react-dev-utils/checkRequiredFiles");
+const formatWebpackMessages = require("react-dev-utils/formatWebpackMessages");
 const printHostingInstructions = require("react-dev-utils/printHostingInstructions");
-const FileSizeReporter         = require("react-dev-utils/FileSizeReporter");
+const FileSizeReporter = require("react-dev-utils/FileSizeReporter");
 
-const measureFileSizesBeforeBuild = FileSizeReporter.measureFileSizesBeforeBuild;
-const printFileSizesAfterBuild    = FileSizeReporter.printFileSizesAfterBuild;
-const useYarn                     = fs.existsSync(paths.yarnLockFile);
+const measureFileSizesBeforeBuild =
+  FileSizeReporter.measureFileSizesBeforeBuild;
+const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild;
+const useYarn = fs.existsSync(paths.yarnLockFile);
 
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
@@ -46,19 +47,19 @@ measureFileSizesBeforeBuild(paths.appBuild)
     return build(previousFileSizes);
   })
   .then(
-    ({stats, previousFileSizes, warnings}) => {
+    ({ stats, previousFileSizes, warnings }) => {
       if (warnings.length) {
         console.log(chalk.yellow("Compiled with warnings.\n"));
         console.log(warnings.join("\n\n"));
         console.log(
           "\nSearch for the " +
-          chalk.underline(chalk.yellow("keywords")) +
-          " to learn more about each warning."
+            chalk.underline(chalk.yellow("keywords")) +
+            " to learn more about each warning."
         );
         console.log(
           "To ignore, add " +
-          chalk.cyan("// eslint-disable-next-line") +
-          " to the line before.\n"
+            chalk.cyan("// eslint-disable-next-line") +
+            " to the line before.\n"
         );
       } else {
         console.log(chalk.green("Compiled successfully.\n"));
@@ -68,9 +69,9 @@ measureFileSizesBeforeBuild(paths.appBuild)
       printFileSizesAfterBuild(stats, previousFileSizes, paths.appBuild);
       console.log();
 
-      const appPackage  = require(paths.appPackageJson);
-      const publicUrl   = paths.publicUrl;
-      const publicPath  = config.output.publicPath;
+      const appPackage = require(paths.appPackageJson);
+      const publicUrl = paths.publicUrl;
+      const publicPath = config.output.publicPath;
       const buildFolder = path.relative(process.cwd(), paths.appBuild);
       printHostingInstructions(
         appPackage,
@@ -82,7 +83,7 @@ measureFileSizesBeforeBuild(paths.appBuild)
     },
     err => {
       console.log(chalk.red("Failed to compile.\n"));
-      console.log((err.message || err) + '\n');
+      console.log((err.message || err) + "\n");
       process.exit(1);
     }
   );
@@ -105,15 +106,15 @@ function build(previousFileSizes) {
         console.log(
           chalk.yellow(
             "\nTreating warnings as errors because process.env.CI = true.\n" +
-            "Most CI servers set it automatically.\n"
+              "Most CI servers set it automatically.\n"
           )
         );
-        return reject(new Error(messages.warnings.join('\n\n')));
+        return reject(new Error(messages.warnings.join("\n\n")));
       }
       return resolve({
         stats,
         previousFileSizes,
-        warnings: messages.warnings,
+        warnings: messages.warnings
       });
     });
   });
@@ -122,6 +123,6 @@ function build(previousFileSizes) {
 function copyPublicFolder() {
   fs.copySync(paths.appPublic, paths.appBuild, {
     dereference: true,
-    filter: file => file !== paths.appHtml,
+    filter: file => file !== paths.appHtml
   });
 }

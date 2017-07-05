@@ -1,7 +1,7 @@
-import {List} from "immutable";
-import {Action} from "redux";
+import { List } from "immutable";
+import { Action } from "redux";
 
-import {TodoModel} from "./todo.model";
+import { TodoModel } from "./todo.model";
 
 interface TodoAction<P> extends Action {
   payload: P;
@@ -20,9 +20,7 @@ const ACTION_TYPES = {
 
 Object.freeze(ACTION_TYPES);
 
-export function AddTodo(headline: string,
-                        description: string,
-                        deadline: Date) {
+export function AddTodo(headline: string, description: string, deadline: Date) {
   return {
     type: ACTION_TYPES.ADD_TODO,
     payload: {
@@ -59,13 +57,15 @@ export const initialTodoList: TodoState = List.of<TodoModel>({
   created: new Date()
 });
 
-
-export const todosReducer = (state: TodoState = initialTodoList, action: TodoAddAction | TodoUpdateAction | TodoDeleteAction) => {
+export const todosReducer = (
+  state: TodoState = initialTodoList,
+  action: TodoAddAction | TodoUpdateAction | TodoDeleteAction
+) => {
   switch (action.type) {
     case ACTION_TYPES.ADD_TODO:
       return state.push((action as TodoAddAction).payload);
     case ACTION_TYPES.UPDATE_TODO:
-      const act      = action as TodoUpdateAction;
+      const act = action as TodoUpdateAction;
       const oldIndex = state.findIndex(e => !!e && e.id === act.payload.id);
       if (oldIndex >= 0) {
         return state.set(oldIndex, act.payload);
@@ -73,7 +73,9 @@ export const todosReducer = (state: TodoState = initialTodoList, action: TodoAdd
         return state;
       }
     case ACTION_TYPES.DELETE_TODO:
-      return state.filter((e: TodoModel) => e.id !== (action as TodoDeleteAction).payload.id);
+      return state.filter(
+        (e: TodoModel) => e.id !== (action as TodoDeleteAction).payload.id
+      );
     default:
       return state;
   }

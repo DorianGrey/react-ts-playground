@@ -1,29 +1,29 @@
 import "./TodoList.scss";
 
 import * as React from "react";
-import {
-  FormattedMessage,
-  InjectedIntlProps,
-  injectIntl
-} from "react-intl";
-import {connect} from "react-redux";
-import {Dispatch} from "redux";
+import { FormattedMessage, InjectedIntlProps, injectIntl } from "react-intl";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 
-import {List} from "immutable";
+import { List } from "immutable";
 import noop from "lodash-es/noop";
 
-import {sendNotification} from "../notifications/NotificationProvider";
-import {AppState} from "../state";
-import {TodoModel} from "./todo.model";
-import {AddTodo, DeleteTodo, TodoAddAction, TodoDeleteAction, UpdateTodo} from "./todo.state";
+import { sendNotification } from "../notifications/NotificationProvider";
+import { AppState } from "../state";
+import { TodoModel } from "./todo.model";
+import {
+  AddTodo,
+  DeleteTodo,
+  TodoAddAction,
+  TodoDeleteAction,
+  UpdateTodo
+} from "./todo.state";
 import TodoEntry from "./TodoEntry";
 
 // Todo list.
 export interface TodoListProps {
   todos: List<TodoModel>;
-  onTodoAdd: (headline: string,
-              description: string,
-              deadline: Date) => void;
+  onTodoAdd: (headline: string, description: string, deadline: Date) => void;
   onTodoUpdate: (todo: TodoModel) => void;
   onTodoDelete: (id: number) => void;
 }
@@ -34,11 +34,11 @@ const mapStateToProps = (state: AppState) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<TodoAddAction> | Dispatch<TodoDeleteAction>) => {
+const mapDispatchToProps = (
+  dispatch: Dispatch<TodoAddAction> | Dispatch<TodoDeleteAction>
+) => {
   return {
-    onTodoAdd:    (headline: string,
-                   description: string,
-                   deadline: Date) => {
+    onTodoAdd: (headline: string, description: string, deadline: Date) => {
       dispatch(AddTodo(headline, description, deadline));
     },
     onTodoUpdate: (updated: TodoModel) => {
@@ -58,41 +58,39 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
   constructor(props: TodoListProps & InjectedIntlProps, context: any) {
     super(props, context);
 
-    this.createTodo       = this.createTodo.bind(this);
+    this.createTodo = this.createTodo.bind(this);
     this.showNewTodoBlock = this.showNewTodoBlock.bind(this);
-    this.deleteTodo       = this.deleteTodo.bind(this);
-    this.createTodoEntry  = this.createTodoEntry.bind(this);
+    this.deleteTodo = this.deleteTodo.bind(this);
+    this.createTodoEntry = this.createTodoEntry.bind(this);
   }
 
-  createTodo(headline: string,
-             description: string,
-             deadline: Date,
-             id?: number) {
-    this.setState({showNewTodoBlock: false});
+  createTodo(
+    headline: string,
+    description: string,
+    deadline: Date,
+    id?: number
+  ) {
+    this.setState({ showNewTodoBlock: false });
 
     // TODO: Eval "id" parameter.
     if (id) {
       const oldTodo = this.props.todos.find(e => !!e && e.id === id);
 
-      this.props.onTodoUpdate(
-        {
-          ...oldTodo,
-          id,
-          headline,
-          description,
-          deadline
-        }
-      );
-    } else {
-      this.props.onTodoAdd(
+      this.props.onTodoUpdate({
+        ...oldTodo,
+        id,
         headline,
         description,
         deadline
-      );
+      });
+    } else {
+      this.props.onTodoAdd(headline, description, deadline);
     }
 
     sendNotification(
-      this.props.intl.formatMessage({id: `todos.newTodo.${id ? "updated" : "added"}`}),
+      this.props.intl.formatMessage({
+        id: `todos.newTodo.${id ? "updated" : "added"}`
+      }),
       {
         icon: "favicon.ico",
         body: headline
@@ -101,26 +99,22 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
     );
   }
 
-
   render() {
-    const displayContent = this.state.showNewTodoBlock ?
-      (
-        <TodoEntry
+    const displayContent = this.state.showNewTodoBlock
+      ? <TodoEntry
           editable
           createOrUpdateTodo={this.createTodo}
           onCancel={this.showNewTodoBlock}
           onDelete={noop}
         />
-      )
-      : (
-        <div className="new-todo" onClick={this.showNewTodoBlock}>
-          <i className="fa fa-plus-circle"/>
-        </div>
-      )
-    ;
+      : <div className="new-todo" onClick={this.showNewTodoBlock}>
+          <i className="fa fa-plus-circle" />
+        </div>;
     return (
       <div className="todo-list">
-        <h2><FormattedMessage id="todos.list"/></h2>
+        <h2>
+          <FormattedMessage id="todos.list" />
+        </h2>
         <ul>
           {this.props.todos.map(this.createTodoEntry)}
         </ul>
@@ -150,8 +144,10 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
   }
 
   private showNewTodoBlock() {
-    this.setState({showNewTodoBlock: true});
+    this.setState({ showNewTodoBlock: true });
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(TodoList));
+export default connect(mapStateToProps, mapDispatchToProps)(
+  injectIntl(TodoList)
+);

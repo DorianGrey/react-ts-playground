@@ -1,7 +1,7 @@
 import "./TodoEntry.scss";
 
 import * as React from "react";
-import {ChangeEvent, FormEvent} from "react";
+import { ChangeEvent, FormEvent } from "react";
 import {
   FormattedDate,
   FormattedMessage,
@@ -11,14 +11,16 @@ import {
 
 import pick from "lodash-es/pick";
 
-import {TodoModel} from "./todo.model";
+import { TodoModel } from "./todo.model";
 
 export interface TodoEntryProps extends Partial<TodoModel> {
   editable: boolean;
-  createOrUpdateTodo: (headline: string,
-                       description: string,
-                       deadline: Date,
-                       id?: number) => void;
+  createOrUpdateTodo: (
+    headline: string,
+    description: string,
+    deadline: Date,
+    id?: number
+  ) => void;
   onCancel: () => void;
   onDelete: () => void;
 }
@@ -27,17 +29,23 @@ function ReadOnlyTodo(todo: TodoEntryProps & { onEdit: () => void }) {
   return (
     <div className="todo-entry">
       <div className="row headline">
-        <div className="h3">{todo.headline}</div>
+        <div className="h3">
+          {todo.headline}
+        </div>
         <div className="todo-controls">
-          <i className="fa fa-edit" onClick={todo.onEdit}/>
-          <i className="fa fa-close" onClick={todo.onDelete}/>
+          <i className="fa fa-edit" onClick={todo.onEdit} />
+          <i className="fa fa-close" onClick={todo.onDelete} />
         </div>
       </div>
       <div className="row content">
-        <div>{todo.description}</div>
+        <div>
+          {todo.description}
+        </div>
         <div className="column">
           <div>
-            <b><FormattedMessage id="todos.entry.created"/></b>&nbsp;
+            <b>
+              <FormattedMessage id="todos.entry.created" />
+            </b>&nbsp;
             <FormattedDate
               value={todo.created as Date}
               year="numeric"
@@ -49,7 +57,9 @@ function ReadOnlyTodo(todo: TodoEntryProps & { onEdit: () => void }) {
             />
           </div>
           <div>
-            <b><FormattedMessage id="todos.entry.deadline"/></b>&nbsp;
+            <b>
+              <FormattedMessage id="todos.entry.deadline" />
+            </b>&nbsp;
             <FormattedDate
               value={todo.deadline as Date}
               year="numeric"
@@ -66,11 +76,15 @@ function ReadOnlyTodo(todo: TodoEntryProps & { onEdit: () => void }) {
   );
 }
 
-function EditableTodo(props: TodoEntryProps & InjectedIntlProps & { onEditLeave: () => void }) {
-
+function EditableTodo(
+  props: TodoEntryProps & InjectedIntlProps & { onEditLeave: () => void }
+) {
   let descriptionInput: HTMLTextAreaElement;
   let headlineInput: HTMLInputElement;
-  const currentTodoData: Partial<TodoModel> = pick(props, ["headline", "description"]);
+  const currentTodoData: Partial<TodoModel> = pick(props, [
+    "headline",
+    "description"
+  ]);
 
   function setHeadlineInput(input: HTMLInputElement) {
     headlineInput = input;
@@ -103,14 +117,18 @@ function EditableTodo(props: TodoEntryProps & InjectedIntlProps & { onEditLeave:
     <div className="new-todo-block column">
       <form onSubmit={createTodo}>
         <input
-          placeholder={props.intl.formatMessage({id: "todos.entry.placeholder.tag"})}
+          placeholder={props.intl.formatMessage({
+            id: "todos.entry.placeholder.tag"
+          })}
           required
           defaultValue={currentTodoData.headline}
           ref={setHeadlineInput}
           onChange={setTodoHeadline}
         />
         <textarea
-          placeholder={props.intl.formatMessage({id: "todos.entry.placeholder.description"})}
+          placeholder={props.intl.formatMessage({
+            id: "todos.entry.placeholder.description"
+          })}
           required
           defaultValue={currentTodoData.description}
           ref={setDescriptionInput}
@@ -118,10 +136,16 @@ function EditableTodo(props: TodoEntryProps & InjectedIntlProps & { onEditLeave:
         />
         <div className="row todo-creation-controls">
           <button type="submit">
-            <FormattedMessage id={currentTodoData.headline ? "todos.newTodo.update" : "todos.newTodo.create"}/>
+            <FormattedMessage
+              id={
+                currentTodoData.headline
+                  ? "todos.newTodo.update"
+                  : "todos.newTodo.create"
+              }
+            />
           </button>
           <button type="button" onClick={props.onCancel}>
-            <FormattedMessage id="todos.newTodo.cancel"/>
+            <FormattedMessage id="todos.newTodo.cancel" />
           </button>
         </div>
       </form>
@@ -129,8 +153,10 @@ function EditableTodo(props: TodoEntryProps & InjectedIntlProps & { onEditLeave:
   );
 }
 
-class TodoEntry extends React.Component<TodoEntryProps & InjectedIntlProps, any> {
-
+class TodoEntry extends React.Component<
+  TodoEntryProps & InjectedIntlProps,
+  any
+> {
   state = {
     editable: this.props.editable
   };
@@ -144,18 +170,18 @@ class TodoEntry extends React.Component<TodoEntryProps & InjectedIntlProps, any>
 
   render(): JSX.Element | any {
     if (this.state.editable) {
-      return <EditableTodo {...this.props} onEditLeave={this.setReadable}/>;
+      return <EditableTodo {...this.props} onEditLeave={this.setReadable} />;
     } else {
-      return <ReadOnlyTodo {...this.props} onEdit={this.setEditable}/>;
+      return <ReadOnlyTodo {...this.props} onEdit={this.setEditable} />;
     }
   }
 
   private setEditable(): void {
-    this.setState({editable: true});
+    this.setState({ editable: true });
   }
 
   private setReadable(): void {
-    this.setState({editable: false});
+    this.setState({ editable: false });
   }
 }
 

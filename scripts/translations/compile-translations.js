@@ -1,12 +1,12 @@
 "use strict";
 
-const yargs  = require("yargs");
+const yargs = require("yargs");
 const logger = require("log4js").getLogger("translations");
 
 const compileTranslations = require("./translations").compile;
 
 let argv = yargs
-  .usage('$0 <files-glob> <output> [options]')
+  .usage("$0 <files-glob> <output> [options]")
   .demandCommand(2)
   .option("no-initial-compile", {
     describe: "Skips initial compilation",
@@ -24,28 +24,29 @@ let argv = yargs
     describe: "Limit the allowed translation duplication (in percent)",
     alias: "d"
   })
-  .help("help", "Show this help")
-  .argv;
-
+  .help("help", "Show this help").argv;
 
 const [filesGlob, output] = argv._;
 
 if (!argv.noInitialCompile) {
-  compileTranslations(filesGlob, output)
-    .catch(e => {
-      logger.error(e);
-      if (!argv.watch) {
-        process.exit(1);
-      }
-    });
+  compileTranslations(filesGlob, output).catch(e => {
+    logger.error(e);
+    if (!argv.watch) {
+      process.exit(1);
+    }
+  });
 }
 
 if (argv.watch) {
   const watch = require("../dev/watch");
-  watch(filesGlob, () => {
-    compileTranslations(filesGlob, output).then(
-      () => logger.log(`Translations written to ${output}`),
-      err => logger.error("Error processing translation:", err)
-    );
-  }, {events: ["change", "unlink"]});
+  watch(
+    filesGlob,
+    () => {
+      compileTranslations(filesGlob, output).then(
+        () => logger.log(`Translations written to ${output}`),
+        err => logger.error("Error processing translation:", err)
+      );
+    },
+    { events: ["change", "unlink"] }
+  );
 }

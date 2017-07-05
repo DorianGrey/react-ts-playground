@@ -1,11 +1,11 @@
 import * as React from "react";
-import {InjectedIntlProps, injectIntl} from "react-intl";
-import {IntlAction, updateIntl} from "react-intl-redux";
-import {connect} from "react-redux";
-import {Dispatch} from "redux";
+import { InjectedIntlProps, injectIntl } from "react-intl";
+import { IntlAction, updateIntl } from "react-intl-redux";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 
-import {getMessagesForLang, getSupportedLanguages} from "../i18n/i18n";
-import {AppState} from "../state";
+import { getMessagesForLang, getSupportedLanguages } from "../i18n/i18n";
+import { AppState } from "../state";
 
 export interface LanguagePickerProps {
   language: string;
@@ -21,10 +21,12 @@ const mapStateToProps = (state: AppState) => {
 const mapDispatchToProps = (dispatch: Dispatch<IntlAction>) => {
   return {
     setLanguage: (lang: string) => {
-      dispatch(updateIntl({
-        locale:   lang,
-        messages: getMessagesForLang(lang)
-      }));
+      dispatch(
+        updateIntl({
+          locale: lang,
+          messages: getMessagesForLang(lang)
+        })
+      );
     }
   };
 };
@@ -38,9 +40,15 @@ function LanguagePicker(props: LanguagePickerProps & InjectedIntlProps) {
 
   return (
     <select value={props.language} onChange={handleChange}>
-      {languages.map(lang => <option value={lang} key={lang}>{props.intl.formatMessage({id: `languages.${lang}`})}</option>)}
+      {languages.map(lang =>
+        <option value={lang} key={lang}>
+          {props.intl.formatMessage({ id: `languages.${lang}` })}
+        </option>
+      )}
     </select>
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl<never>(LanguagePicker));
+export default connect(mapStateToProps, mapDispatchToProps)(
+  injectIntl<never>(LanguagePicker)
+);

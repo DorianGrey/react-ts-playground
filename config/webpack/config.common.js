@@ -1,38 +1,37 @@
-const autoprefixer               = require("autoprefixer");
-const path                       = require("path");
-const {
-        DefinePlugin,
-        IgnorePlugin
-      }                          = require("webpack");
-const HtmlWebpackPlugin          = require("html-webpack-plugin");
-const ExtractTextPlugin          = require("extract-text-webpack-plugin");
+const autoprefixer = require("autoprefixer");
+const path = require("path");
+const { DefinePlugin, IgnorePlugin } = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
-const StyleLintPlugin            = require("stylelint-webpack-plugin");
-const InterpolateHtmlPlugin      = require("react-dev-utils/InterpolateHtmlPlugin");
-const ModuleScopePlugin          = require("react-dev-utils/ModuleScopePlugin");
+const StyleLintPlugin = require("stylelint-webpack-plugin");
+const InterpolateHtmlPlugin = require("react-dev-utils/InterpolateHtmlPlugin");
+const ModuleScopePlugin = require("react-dev-utils/ModuleScopePlugin");
 
-const paths            = require("../paths");
+const paths = require("../paths");
 const loadingAnimation = require("../../src/generated/loading.scss.json");
-const webpackEnv       = require("./build-env");
+const webpackEnv = require("./build-env");
 
 /*
  Define various constants to be used in multiple different configs here.
  */
 
-const PLUGIN_HTML = function (isDev) {
-  const minify = isDev ? false : {
-    removeComments: true,
-    collapseWhitespace: true,
-    removeRedundantAttributes: true,
-    useShortDoctype: true,
-    removeEmptyAttributes: true,
-    removeStyleLinkTypeAttributes: true,
-    keepClosingSlash: true,
-    minifyJS: true,
-    minifyCSS: true,
-    minifyURLs: true,
-  };
+const PLUGIN_HTML = function(isDev) {
+  const minify = isDev
+    ? false
+    : {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true
+      };
 
   return new HtmlWebpackPlugin({
     filename: "index.html", // Keep in mind that the output path gets prepended to this name automatically.
@@ -47,7 +46,7 @@ const PLUGIN_HTML = function (isDev) {
   });
 };
 
-const RULE_EXT_TSX = function (isDev) {
+const RULE_EXT_TSX = function(isDev) {
   const use = [
     {
       loader: "ts-loader",
@@ -73,7 +72,7 @@ const RULE_EXT_JS = {
   test: /\.js$/,
   use: require.resolve("source-map-loader"),
   enforce: "pre",
-  include: paths.appSrc,
+  include: paths.appSrc
 };
 
 // "url" loader works like "file" loader except that it embeds assets
@@ -85,13 +84,12 @@ const RULE_IMAGES = {
     loader: require.resolve("url-loader"),
     options: {
       limit: 10000,
-      name: "static/media/[name].[hash:8].[ext]",
+      name: "static/media/[name].[hash:8].[ext]"
     }
   }
 };
 
-const RULE_SCSS = function (isDev, extractTextPluginOptions) {
-
+const RULE_SCSS = function(isDev, extractTextPluginOptions) {
   // Development mode docs:
   // "postcss" loader applies autoprefixer to our CSS.
   // "css" loader resolves paths in CSS and adds assets as dependencies.
@@ -119,8 +117,8 @@ const RULE_SCSS = function (isDev, extractTextPluginOptions) {
       options: {
         importLoaders: 1,
         minimize: !isDev,
-        sourceMap: isDev,
-      },
+        sourceMap: isDev
+      }
     },
     {
       loader: require.resolve("postcss-loader"),
@@ -134,12 +132,12 @@ const RULE_SCSS = function (isDev, extractTextPluginOptions) {
               ">1%",
               "last 4 versions",
               "Firefox ESR",
-              "not ie < 9", // React doesn't support IE8 anyway
+              "not ie < 9" // React doesn't support IE8 anyway
             ],
-            flexbox: "no-2009",
-          }),
-        ],
-      },
+            flexbox: "no-2009"
+          })
+        ]
+      }
     },
     `resolve-url-loader?sourceMap=${isDev}`,
     {
@@ -151,7 +149,7 @@ const RULE_SCSS = function (isDev, extractTextPluginOptions) {
     }
   ];
 
-  const result      = {test: /\.scss$/};
+  const result = { test: /\.scss$/ };
   const styleLoader = require.resolve("style-loader");
 
   if (isDev) {
@@ -161,17 +159,17 @@ const RULE_SCSS = function (isDev, extractTextPluginOptions) {
       Object.assign(
         {
           fallback: styleLoader,
-          use: scssLoaderChain,
+          use: scssLoaderChain
         },
         extractTextPluginOptions
       )
-    )
+    );
   }
 
   return result;
 };
 
-const RULE_WEBFONTS = function () {
+const RULE_WEBFONTS = function() {
   const webFontRule = {
     test: /\.(ttf|eot|svg|woff|woff2)(\?[a-z0-9]+)?$/,
     use: {
@@ -181,9 +179,7 @@ const RULE_WEBFONTS = function () {
         name: "static/media/[name].[hash:8].[ext]"
       }
     },
-    include: [
-      /node_modules/
-    ]
+    include: [/node_modules/]
   };
 
   // TODO: We might need conditional updates to webFontRule.use.query.publicPath here.
@@ -215,7 +211,7 @@ const RULE_COVER_NON_MATCHED = {
   ],
   loader: require.resolve("file-loader"),
   options: {
-    name: "static/media/[name].[hash:8].[ext]",
+    name: "static/media/[name].[hash:8].[ext]"
   }
 };
 
@@ -236,7 +232,7 @@ const resolveOptions = {
   alias: {
     // Support React Native Web
     // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
-    "react-native": "react-native-web",
+    "react-native": "react-native-web"
   },
   plugins: [
     // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -244,8 +240,8 @@ const resolveOptions = {
     // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
     // please link the files into your node_modules/ and let module-resolution kick in.
     // Make sure your source files are compiled, as they will not be processed in any way.
-    new ModuleScopePlugin(paths.appSrc),
-  ],
+    new ModuleScopePlugin(paths.appSrc)
+  ]
 };
 
 const nodeOptions = {
@@ -263,8 +259,7 @@ const nodeOptions = {
 /**
  * Export the target config.
  */
-module.exports = function (isDev, env, extractTextPluginOptions) {
-
+module.exports = function(isDev, env, extractTextPluginOptions) {
   return {
     resolve: resolveOptions,
     module: {
@@ -287,7 +282,7 @@ module.exports = function (isDev, env, extractTextPluginOptions) {
         RULE_WEBFONTS()
         // ** STOP ** Are you adding a new loader?
         // Remember to add the new extension(s) to the "file" loader exclusion list.
-      ],
+      ]
     },
     plugins: [
       // Makes some environment variables available in index.html.
@@ -341,7 +336,7 @@ module.exports = function (isDev, env, extractTextPluginOptions) {
     // splitting or minification in interest of speed. These warnings become
     // cumbersome.
     performance: {
-      hints: isDev ? false : "warning",
-    },
+      hints: isDev ? false : "warning"
+    }
   };
 };

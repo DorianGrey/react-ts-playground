@@ -48,9 +48,11 @@
     "glob": "^7.1.2",
     "html-webpack-plugin": "^2.29.0",
     "http-proxy": "^1.16.2",
+    "husky": "^0.14.3",
     "inline-chunk-manifest-html-webpack-plugin": "^1.1.1",
     "jest": "^20.0.4",
     "js-yaml": "^3.8.4",
+    "lint-staged": "^4.0.0",
     "lodash": "^4.17.4",
     "log4js": "^1.1.1",
     "mkdirp": "^0.5.1",
@@ -58,6 +60,7 @@
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "^3.0.0",
     "postcss-loader": "^2.0.6",
+    "prettier": "^1.5.2",
     "promise": "^8.0.0",
     "react-dev-utils": "^3.0.2",
     "react-error-overlay": "^1.0.9",
@@ -75,6 +78,7 @@
     "ts-loader": "^2.2.2",
     "tslib": "^1.7.1",
     "tslint": "^5.4.3",
+    "tslint-config-prettier": "^1.1.0",
     "tslint-react": "^3.0.0",
     "typescript": "^2.4.1",
     "url-loader": "^0.5.9",
@@ -97,29 +101,21 @@
     "test:ci": "node scripts/test.js --env=jsdom --no-cache --verbose --coverage",
     "test": "node scripts/test.js --env=jsdom --verbose",
     "renderLoadingAnimation": "node scripts/util/renderLoading.js",
+    "format": "prettier --write \"{src,scripts,config}/**/*.{js,ts,tsx}\"",
+    "precommit": "lint-staged",
+    "prepush": "npm run test:ci",
     "-----need to translate these scripts!-----": "echo 0",
-    "analyze:build": "npm run build -- --env.analyzeBundles",
     "clear": "rimraf .awcache .tmp .dist src/generated",
-    "build:dev": "npm run prestart && cross-env NODE_ENV=development webpack --config webpack/main.config.js",
     "translations": "node scripts/translations/compile-translations.js \"src/**/*.i18n.yml\" src/generated/translations.ts"
   },
+  "lint-staged": {
+    "{src,scripts,config}/**/*.{js,ts,tsx}": ["prettier --write", "git add"]
+  },
   "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      ".d.ts"
-    ],
-    "setupFiles": [
-      "<rootDir>/config/polyfills.js"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx"
-    ],
+    "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}"],
+    "coveragePathIgnorePatterns": ["/node_modules/", ".d.ts"],
+    "setupFiles": ["<rootDir>/config/polyfills.js"],
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx"],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
       "<rootDir>/src/**/?(*.)(spec|test).ts?(x)"

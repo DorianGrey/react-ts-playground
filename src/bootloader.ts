@@ -4,8 +4,12 @@
 export function bootloader(main: () => void): void {
   switch (document.readyState) {
     case "loading":
-      const domReadyHandler = function () {
-        document.removeEventListener("DOMContentLoaded", domReadyHandler, false);
+      const domReadyHandler = function domReadyHandler() {
+        document.removeEventListener(
+          "DOMContentLoaded",
+          domReadyHandler,
+          false
+        );
         main();
       };
       document.addEventListener("DOMContentLoaded", domReadyHandler, false);
