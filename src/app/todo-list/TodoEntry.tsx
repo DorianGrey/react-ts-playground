@@ -1,3 +1,4 @@
+// tslint:disable max-classes-per-file
 import "./TodoEntry.scss";
 
 import * as React from "react";
@@ -243,3 +244,4 @@ class TodoEntry extends React.Component<
 }
 
 export default injectIntl(TodoEntry);
+// tslint:enable max-class-per-file
