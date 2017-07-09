@@ -60,6 +60,7 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
 
     this.createTodo = this.createTodo.bind(this);
     this.showNewTodoBlock = this.showNewTodoBlock.bind(this);
+    this.hideNewTodoBlock = this.hideNewTodoBlock.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
     this.createTodoEntry = this.createTodoEntry.bind(this);
   }
@@ -104,7 +105,7 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
       ? <TodoEntry
           editable
           createOrUpdateTodo={this.createTodo}
-          onCancel={this.showNewTodoBlock}
+          onCancel={this.hideNewTodoBlock}
           onDelete={noop}
         />
       : <div className="new-todo" onClick={this.showNewTodoBlock}>
@@ -145,6 +146,10 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
 
   private showNewTodoBlock() {
     this.setState({ showNewTodoBlock: true });
+  }
+
+  private hideNewTodoBlock() {
+    this.setState({ showNewTodoBlock: false });
   }
 }
 

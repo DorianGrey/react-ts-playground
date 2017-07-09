@@ -1,4 +1,4 @@
-@import "../../node_modules/normalize.css/normalize";
+@import "../../node_modules/sanitize.css/sanitize";
 @import "../../node_modules/font-awesome/scss/font-awesome";
 @import "./reboot-adoptions";
 @import "./colors";
@@ -96,6 +96,11 @@ button {
 
   &:hover {
     background-color: lighten($color-black, 15%);
+  }
+
+  &[disabled], &:hover[disabled] {
+    background-color: rgba($color-black, 0.75);
+    cursor: not-allowed;
   }
 }
 

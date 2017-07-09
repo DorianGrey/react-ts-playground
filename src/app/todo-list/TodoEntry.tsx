@@ -1,7 +1,7 @@
 import "./TodoEntry.scss";
 
 import * as React from "react";
-import { ChangeEvent, FormEvent } from "react";
+import { FormEvent } from "react";
 import {
   FormattedDate,
   FormattedMessage,
@@ -9,6 +9,8 @@ import {
   injectIntl
 } from "react-intl";
 
+import * as Flatpickr from "flatpickr";
+import linkstate from "linkstate";
 import pick from "lodash-es/pick";
 
 import { TodoModel } from "./todo.model";
@@ -76,81 +78,136 @@ function ReadOnlyTodo(todo: TodoEntryProps & { onEdit: () => void }) {
   );
 }
 
-function EditableTodo(
-  props: TodoEntryProps & InjectedIntlProps & { onEditLeave: () => void }
-) {
-  let descriptionInput: HTMLTextAreaElement;
-  let headlineInput: HTMLInputElement;
-  const currentTodoData: Partial<TodoModel> = pick(props, [
-    "headline",
-    "description"
-  ]);
+type EditableTodoProps = TodoEntryProps &
+  InjectedIntlProps & { onEditLeave: () => void };
 
-  function setHeadlineInput(input: HTMLInputElement) {
-    headlineInput = input;
+class EditableTodo extends React.Component<EditableTodoProps, any> {
+  descriptionInput: HTMLTextAreaElement;
+  headlineInput: HTMLInputElement;
+  deadlineInput: HTMLInputElement;
+  flatpickr: Flatpickr;
+
+  state = {
+    currentTodoData: pick(this.props, [
+      "headline",
+      "description",
+      "deadline"
+    ]) as Partial<TodoModel>
+  };
+
+  submitButtonTranslationId = this.state.currentTodoData.headline
+    ? "todos.newTodo.update"
+    : "todos.newTodo.create";
+
+  private flatpickrOptions: Flatpickr.Options = {
+    defaultDate: this.state.currentTodoData.deadline,
+    enableTime: true,
+    locale: this.props.intl.locale, // TODO: Need lang pack here.
+    time_24hr: this.props.intl.locale !== "en",
+    minDate: new Date(),
+    onChange: this.setTodoDeadline.bind(this)
+  };
+
+  constructor(props: EditableTodoProps, context: any) {
+    super(props, context);
+
+    this.createTodo = this.createTodo.bind(this);
+    this.setHeadlineInput = this.setHeadlineInput.bind(this);
+    this.setDescriptionInput = this.setDescriptionInput.bind(this);
+    this.setDeadlineInput = this.setDeadlineInput.bind(this);
   }
 
-  function setDescriptionInput(input: HTMLTextAreaElement) {
-    descriptionInput = input;
+  componentWillUnmount(): void {
+    this.flatpickr.destroy();
   }
 
-  function setTodoHeadline(event: ChangeEvent<HTMLInputElement>) {
-    currentTodoData.headline = event.target.value;
+  setHeadlineInput(input: HTMLInputElement) {
+    this.headlineInput = input;
   }
 
-  function setTodoDescription(event: ChangeEvent<HTMLTextAreaElement>) {
-    currentTodoData.description = event.target.value;
+  setDescriptionInput(input: HTMLTextAreaElement) {
+    this.descriptionInput = input;
   }
 
-  function createTodo(event: FormEvent<never>) {
+  setDeadlineInput(input: HTMLInputElement) {
+    this.deadlineInput = input;
+    this.flatpickr = new Flatpickr(this.deadlineInput, this.flatpickrOptions);
+  }
+
+  setTodoDeadline(selectedDates: Date[]) {
+    this.setState({
+      currentTodoData: {
+        ...this.state.currentTodoData,
+        deadline: selectedDates[0]
+      }
+    });
+  }
+
+  createTodo(event: FormEvent<never>) {
     event.preventDefault();
-    props.createOrUpdateTodo(
-      currentTodoData.headline as string,
-      currentTodoData.description as string,
-      new Date(),
-      props.id
+    this.props.createOrUpdateTodo(
+      this.state.currentTodoData.headline as string,
+      this.state.currentTodoData.description as string,
+      this.state.currentTodoData.deadline as Date,
+      this.props.id
     );
-    props.onEditLeave();
+
+    this.props.onEditLeave();
   }
 
-  return (
-    <div className="new-todo-block column">
-      <form onSubmit={createTodo}>
-        <input
-          placeholder={props.intl.formatMessage({
-            id: "todos.entry.placeholder.tag"
-          })}
-          required
-          defaultValue={currentTodoData.headline}
-          ref={setHeadlineInput}
-          onChange={setTodoHeadline}
-        />
-        <textarea
-          placeholder={props.intl.formatMessage({
-            id: "todos.entry.placeholder.description"
-          })}
-          required
-          defaultValue={currentTodoData.description}
-          ref={setDescriptionInput}
-          onChange={setTodoDescription}
-        />
-        <div className="row todo-creation-controls">
-          <button type="submit">
-            <FormattedMessage
-              id={
-                currentTodoData.headline
-                  ? "todos.newTodo.update"
-                  : "todos.newTodo.create"
+  render(): JSX.Element | any {
+    return (
+      <div className="new-todo-block column">
+        <form onSubmit={this.createTodo}>
+          <input
+            placeholder={this.props.intl.formatMessage({
+              id: "todos.entry.placeholder.tag"
+            })}
+            type="text"
+            required
+            defaultValue={this.state.currentTodoData.headline}
+            ref={this.setHeadlineInput}
+            onChange={linkstate(this, "currentTodoData.headline")}
+          />
+          <textarea
+            placeholder={this.props.intl.formatMessage({
+              id: "todos.entry.placeholder.description"
+            })}
+            required
+            defaultValue={this.state.currentTodoData.description}
+            ref={this.setDescriptionInput}
+            onChange={linkstate(this, "currentTodoData.description")}
+          />
+          <input
+            type="text"
+            placeholder={this.props.intl.formatMessage({
+              id: "todos.entry.placeholder.deadline"
+            })}
+            required
+            ref={this.setDeadlineInput}
+            className={
+              this.state.currentTodoData.deadline ? "" : "is-invalid-form-field"
+            }
+          />
+          <div className="row todo-creation-controls">
+            <button
+              type="submit"
+              disabled={
+                !this.state.currentTodoData.headline ||
+                !this.state.currentTodoData.description ||
+                !this.state.currentTodoData.deadline
               }
-            />
-          </button>
-          <button type="button" onClick={props.onCancel}>
-            <FormattedMessage id="todos.newTodo.cancel" />
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+            >
+              <FormattedMessage id={this.submitButtonTranslationId} />
+            </button>
+            <button type="button" onClick={this.props.onCancel}>
+              <FormattedMessage id="todos.newTodo.cancel" />
+            </button>
+          </div>
+        </form>
+      </div>
+    );
+  }
 }
 
 class TodoEntry extends React.Component<

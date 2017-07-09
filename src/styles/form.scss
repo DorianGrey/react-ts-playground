@@ -1,8 +1,12 @@
 @import "./colors";
 
+.is-invalid-form-field {
+  box-shadow: 0 0 6px $color-red;
+}
+
 input, select, textarea {
   &:invalid {
-    box-shadow: 0 0 6px $color-red;
+    @extend .is-invalid-form-field;
   }
 
   &:focus:invalid {

@@ -6,10 +6,12 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@types/flatpickr": "^3.0.1",
+    "flatpickr": "^3.0.6",
     "font-awesome": "^4.7.0",
     "immutable": "^3.8.1",
+    "linkstate": "^1.0.1",
     "lodash-es": "^4.17.4",
-    "normalize.css": "^7.0.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-intl": "^2.3.0",
@@ -18,6 +20,7 @@
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.1",
     "redux": "^3.7.1",
+    "sanitize.css": "^5.0.0",
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {
@@ -109,13 +112,28 @@
     "translations": "node scripts/translations/compile-translations.js \"src/**/*.i18n.yml\" src/generated/translations.ts"
   },
   "lint-staged": {
-    "{src,scripts,config}/**/*.{js,ts,tsx}": ["prettier --write", "git add"]
+    "{src,scripts,config}/**/*.{js,ts,tsx}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "jest": {
-    "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}"],
-    "coveragePathIgnorePatterns": ["/node_modules/", ".d.ts"],
-    "setupFiles": ["<rootDir>/config/polyfills.js"],
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx"],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      ".d.ts"
+    ],
+    "setupFiles": [
+      "<rootDir>/config/polyfills.js"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
       "<rootDir>/src/**/?(*.)(spec|test).ts?(x)"

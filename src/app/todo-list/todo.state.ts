@@ -53,7 +53,7 @@ export const initialTodoList: TodoState = List.of<TodoModel>({
   id: 1,
   headline: "Test todo",
   description: "A lot of stuff to be done!",
-  deadline: new Date(),
+  deadline: new Date(Date.now() + 60 * 60 * 1000),
   created: new Date()
 });
 

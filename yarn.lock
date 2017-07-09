@@ -33,6 +33,10 @@
   dependencies:
     "@types/babel-types" "*"
 
+"@types/flatpickr@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@types/flatpickr/-/flatpickr-3.0.1.tgz#99bbc1bd5e322f61e72c986328816e1787362f2b"
+
 "@types/history@*":
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.5.1.tgz#da4a145410466eac20e94b51c8778a7551d1d4db"
@@ -2193,6 +2197,10 @@ flat-cache@^1.2.1:
     graceful-fs "^4.1.2"
     write "^0.2.1"
 
+flatpickr@^3.0.6:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/flatpickr/-/flatpickr-3.0.6.tgz#81540f1a0f010fa3b96d929943b6396bbb25b1b6"
+
 flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
@@ -3585,6 +3593,10 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
+linkstate@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/linkstate/-/linkstate-1.0.1.tgz#540251e313dc477a3c9fa90b99f51edf7da02776"
+
 lint-staged@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-4.0.0.tgz#c15669f598614a6e68090303e175a799d48e0d85"
@@ -4325,10 +4337,6 @@ normalize-url@^1.4.0:
     prepend-http "^1.0.0"
     query-string "^4.1.0"
     sort-keys "^1.0.0"
-
-normalize.css@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/normalize.css/-/normalize.css-7.0.0.tgz#abfb1dd82470674e0322b53ceb1aaf412938e4bf"
 
 npm-path@^2.0.2:
   version "2.0.3"
@@ -5699,6 +5707,10 @@ sane@~1.6.0:
     minimist "^1.1.1"
     walker "~1.0.5"
     watch "~0.10.0"
+
+sanitize.css@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/sanitize.css/-/sanitize.css-5.0.0.tgz#84184b40678f72bb8898c768a27be7578257271a"
 
 sass-graph@^2.1.1:
   version "2.2.4"
