@@ -3,6 +3,7 @@
 const express = require("express");
 const path = require("path");
 const logger = require("log4js").getLogger("server");
+logger.level = "debug";
 
 const httpProxy = require("http-proxy");
 
