@@ -318,8 +318,9 @@ module.exports = function(isDev, env, extractTextPluginOptions) {
       new ForkTsCheckerWebpackPlugin({
         watch: "./src",
         tsconfig: "./tsconfig.json",
-        blockEmit: !webpackEnv.isWatch,
-        tslint: "./tslint.json"
+        async: false,
+        tslint: "./tslint.json",
+        formatter: "codeframe"
       }),
       // This plugin lints your SCSS stylesheets.
       new StyleLintPlugin({

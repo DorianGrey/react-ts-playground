@@ -99,7 +99,7 @@
     "@types/react" "*"
     redux "^3.6.0"
 
-"@types/react-router-dom@^4.0.6":
+"@types/react-router-dom@4.0.6":
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/@types/react-router-dom/-/react-router-dom-4.0.6.tgz#e3bd43e4dcae8aed421f53b02425cc83242f3983"
   dependencies:
@@ -125,7 +125,7 @@
   version "15.0.35"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-15.0.35.tgz#4672923cd502d03e1480d03816ebc5a719fb86da"
 
-"@types/react@^15.0.36":
+"@types/react@15.0.36":
   version "15.0.36"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-15.0.36.tgz#35cb9153eaaae0750ea50e0a8eaee1d93f42c189"
 
@@ -7564,9 +7564,9 @@ webpack-sources@^1.0.1:
     source-list-map "^2.0.0"
     source-map "~0.5.3"
 
-webpack@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.1.0.tgz#ac0675e500db835f9ab2369d29ba096f51ad0731"
+webpack@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.2.0.tgz#8b0cae0e1a9fd76bfbf0eab61a8c2ada848c312f"
   dependencies:
     acorn "^5.0.0"
     acorn-dynamic-import "^2.0.0"
