@@ -19,22 +19,22 @@
     "react-loadable": "^4.0.3",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.1",
-    "redux": "^3.7.1",
+    "redux": "^3.7.2",
     "sanitize.css": "^5.0.0",
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {
     "@types/jest": "^20.0.2",
     "@types/lodash-es": "^4.14.5",
-    "@types/react": "15.0.36",
+    "@types/react": "^15.0.38",
     "@types/react-dom": "^15.5.1",
     "@types/react-hot-loader": "^3.0.3",
     "@types/react-intl": "^2.3.1",
     "@types/react-intl-redux": "^0.1.3",
-    "@types/react-loadable": "^4.0.2",
+    "@types/react-loadable": "^4.0.3",
     "@types/react-redux": "^4.4.46",
     "@types/react-router": "^4.0.14",
-    "@types/react-router-dom": "4.0.6",
+    "@types/react-router-dom": "^4.0.7",
     "@types/webpack-env": "^1.13.0",
     "app-root-path": "^2.0.1",
     "autoprefixer": "^7.1.2",
@@ -57,14 +57,14 @@
     "js-yaml": "^3.9.0",
     "lint-staged": "^4.0.1",
     "lodash": "^4.17.4",
-    "log4js": "^2.0.1",
+    "log4js": "^2.1.0",
     "mkdirp": "^0.5.1",
     "node-sass": "^4.5.3",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "^3.0.0",
     "postcss-loader": "^2.0.6",
     "prettier": "^1.5.2",
-    "promise": "^8.0.0",
+    "promise": "^8.0.1",
     "react-dev-utils": "^3.0.2",
     "react-error-overlay": "^1.0.9",
     "react-hot-loader": "3.0.0-beta.6",
@@ -86,7 +86,7 @@
     "typescript": "^2.4.1",
     "url-loader": "^0.5.9",
     "webpack": "^3.2.0",
-    "webpack-bundle-analyzer": "^2.8.2",
+    "webpack-bundle-analyzer": "^2.8.3",
     "webpack-chunk-hash": "^0.4.0",
     "webpack-closure-compiler": "^2.1.4",
     "webpack-dev-server": "^2.5.1",
@@ -119,12 +119,18 @@
   },
   "jest": {
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}"
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.spec.{js,jsx,ts,tsx}"
     ],
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       ".d.ts"
     ],
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.test.json"
+      }
+    },
     "setupFiles": [
       "<rootDir>/config/polyfills.js"
     ],
