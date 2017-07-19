@@ -14,10 +14,9 @@
     border: 1px dotted $color-medium-grey;
     color: $color-medium-grey;
     cursor: pointer;
-
     transition:
-      background-color .25s ease,
-      color .25s ease;
+      background-color 0.25s ease,
+      color 0.25s ease;
 
     &:hover {
       background-color: $color-light-grey;
@@ -34,10 +33,10 @@
   }
 
   i:not(:last-child) {
-    margin: 0 .5rem;
+    margin: 0 0.5rem;
   }
 
   i:last-child {
-    margin-left: .5rem;
+    margin-left: 0.5rem;
   }
 }

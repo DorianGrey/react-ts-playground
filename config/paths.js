@@ -51,7 +51,7 @@ module.exports = {
   yarnLockFile: resolveApp("yarn.lock"),
   testsSetup: resolveApp("src/setupTests.ts"),
   appNodeModules: resolveApp("node_modules"),
-  styleLintConfig: resolveApp(".stylelintrc"),
+  styleLintConfig: resolveApp("stylelint.config.js"),
   publicUrl: getPublicUrl(resolveApp("package.json")),
   servedPath: getServedPath(resolveApp("package.json"))
 };

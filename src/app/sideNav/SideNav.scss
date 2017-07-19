@@ -6,7 +6,6 @@
   top: $header-height;
   height: calc(100vh - #{$header-height});
   width: $side-nav-width;
-
   background-color: $color-black;
   color: $color-white;
 
@@ -29,16 +28,16 @@
     width: $side-nav-width;
     white-space: nowrap;
     transition:
-      background-color .25s ease,
-      width .25s linear;
+      background-color 0.25s ease,
+      width 0.25s linear;
 
     a {
       display: block;
       background-color: $color-black;
       transition:
-        background-color .25s ease,
-        color .25s ease,
-        width .25s linear;
+        background-color 0.25s ease,
+        color 0.25s ease,
+        width 0.25s linear;
       overflow: hidden;
 
       &.selected {

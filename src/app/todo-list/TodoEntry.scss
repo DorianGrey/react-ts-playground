@@ -6,12 +6,11 @@
   margin: auto;
   width: 50%;
   padding: 1em;
-
   border: 1px solid $color-medium-grey;
 
   .headline {
     justify-content: space-between;
-    padding-bottom: .5rem;
+    padding-bottom: 0.5rem;
   }
 
   .content {
@@ -31,7 +30,7 @@
     input, select, textarea {
       width: 100%;
       min-width: 100%;
-      margin-bottom: .5rem;
+      margin-bottom: 0.5rem;
     }
 
     .todo-creation-controls {

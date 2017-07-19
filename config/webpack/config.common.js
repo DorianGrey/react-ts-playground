@@ -260,6 +260,22 @@ const nodeOptions = {
  * Export the target config.
  */
 module.exports = function(isDev, env, extractTextPluginOptions) {
+  /*
+    There is a curious glitch in the stylelint plugin:
+    - In dev (watch) mode, if quiet is set to `false`, every output is generated twice.
+    - In build mode, if it is not set to `false`, no error detail output is generated. However,
+      it gets generated properly once this field is set to `false`.
+   */
+  const styleLintConfig = {
+    failOnError: !isDev,
+    configFile: paths.styleLintConfig,
+    files: "src/**/*.scss",
+    syntax: "scss"
+  };
+  if (!isDev) {
+    styleLintConfig.quiet = false;
+  }
+
   return {
     resolve: resolveOptions,
     module: {
@@ -323,12 +339,7 @@ module.exports = function(isDev, env, extractTextPluginOptions) {
         formatter: "codeframe"
       }),
       // This plugin lints your SCSS stylesheets.
-      new StyleLintPlugin({
-        failOnError: !isDev,
-        configFile: paths.styleLintConfig,
-        files: "src/**/*.scss",
-        syntax: "scss"
-      })
+      new StyleLintPlugin(styleLintConfig)
     ],
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.
