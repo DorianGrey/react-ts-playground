@@ -1,5 +1,4 @@
 import * as React from "react";
-import { ReactNode } from "react";
 
 let permissionCallback: Promise<string> | null;
 
@@ -36,7 +35,7 @@ export function sendNotification(
 }
 
 export default function NotificationProvider(
-  props: Readonly<{ children?: ReactNode }>
+  props: Readonly<{ children?: React.ReactNode }>
 ) {
   requestNotificationPermission();
 

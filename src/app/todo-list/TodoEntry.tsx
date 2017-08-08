@@ -2,7 +2,6 @@
 import "./TodoEntry.scss";
 
 import * as React from "react";
-import { FormEvent } from "react";
 import {
   FormattedDate,
   FormattedMessage,
@@ -144,7 +143,7 @@ class EditableTodo extends React.Component<EditableTodoProps, any> {
     });
   }
 
-  createTodo(event: FormEvent<never>) {
+  createTodo(event: React.FormEvent<never>) {
     event.preventDefault();
     this.props.createOrUpdateTodo(
       this.state.currentTodoData.headline as string,
