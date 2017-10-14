@@ -9,7 +9,6 @@ import {
   injectIntl
 } from "react-intl";
 
-import * as Flatpickr from "flatpickr";
 import linkstate from "linkstate";
 import pick from "lodash-es/pick";
 
@@ -31,18 +30,14 @@ function ReadOnlyTodo(todo: TodoEntryProps & { onEdit: () => void }) {
   return (
     <div className="todo-entry">
       <div className="row headline">
-        <div className="h3">
-          {todo.headline}
-        </div>
+        <div className="h3">{todo.headline}</div>
         <div className="todo-controls">
           <i className="fa fa-edit" onClick={todo.onEdit} />
           <i className="fa fa-close" onClick={todo.onDelete} />
         </div>
       </div>
       <div className="row content">
-        <div>
-          {todo.description}
-        </div>
+        <div>{todo.description}</div>
         <div className="column">
           <div>
             <b>
@@ -85,7 +80,6 @@ class EditableTodo extends React.Component<EditableTodoProps, any> {
   descriptionInput: HTMLTextAreaElement;
   headlineInput: HTMLInputElement;
   deadlineInput: HTMLInputElement;
-  flatpickr: Flatpickr;
 
   state = {
     currentTodoData: pick(this.props, [
@@ -99,14 +93,14 @@ class EditableTodo extends React.Component<EditableTodoProps, any> {
     ? "todos.newTodo.update"
     : "todos.newTodo.create";
 
-  private flatpickrOptions: Flatpickr.Options = {
-    defaultDate: this.state.currentTodoData.deadline,
-    enableTime: true,
-    locale: this.props.intl.locale, // TODO: Need lang pack here.
-    time_24hr: this.props.intl.locale !== "en",
-    minDate: new Date(),
-    onChange: this.setTodoDeadline.bind(this)
-  };
+  // private flatpickrOptions: Flatpickr.Options = {
+  //   defaultDate: this.state.currentTodoData.deadline,
+  //   enableTime: true,
+  //   locale: this.props.intl.locale, // TODO: Need lang pack here.
+  //   time_24hr: this.props.intl.locale !== "en",
+  //   minDate: new Date(),
+  //   onChange: this.setTodoDeadline.bind(this)
+  // };
 
   constructor(props: EditableTodoProps, context: any) {
     super(props, context);
@@ -118,7 +112,7 @@ class EditableTodo extends React.Component<EditableTodoProps, any> {
   }
 
   componentWillUnmount(): void {
-    this.flatpickr.destroy();
+    // this.flatpickr.destroy();
   }
 
   setHeadlineInput(input: HTMLInputElement) {
@@ -131,7 +125,7 @@ class EditableTodo extends React.Component<EditableTodoProps, any> {
 
   setDeadlineInput(input: HTMLInputElement) {
     this.deadlineInput = input;
-    this.flatpickr = new Flatpickr(this.deadlineInput, this.flatpickrOptions);
+    // this.flatpickr = new Flatpickr(this.deadlineInput, this.flatpickrOptions);
   }
 
   setTodoDeadline(selectedDates: Date[]) {

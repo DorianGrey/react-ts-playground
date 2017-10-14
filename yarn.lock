@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-"@types/flatpickr@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@types/flatpickr/-/flatpickr-3.0.2.tgz#b8938bb4ab186eb0a384112ab357549234424cf2"
-
 "@types/history@*":
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.6.0.tgz#093d67ed780d889c9543f6dca24ebee0b6b9fc45"
@@ -2381,10 +2377,6 @@ flat-cache@^1.2.1:
     del "^2.0.2"
     graceful-fs "^4.1.2"
     write "^0.2.1"
-
-flatpickr@3.1.5:
-  version "3.1.5"
-  resolved "https://registry.yarnpkg.com/flatpickr/-/flatpickr-3.1.5.tgz#32b13ac2361c5f9d01484353a4f34cf5f079bc6e"
 
 flatten@^1.0.2:
   version "1.0.2"
