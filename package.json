@@ -65,7 +65,7 @@
     "promise": "^8.0.1",
     "react-dev-utils": "^4.1.0",
     "react-error-overlay": "^2.0.2",
-    "react-hot-loader": "3.0.0",
+    "react-hot-loader": "3.1.1",
     "resolve-url-loader": "^2.1.1",
     "rimraf": "^2.6.2",
     "sass-loader": "^6.0.6",
