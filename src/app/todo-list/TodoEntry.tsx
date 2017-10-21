@@ -1,6 +1,4 @@
 // tslint:disable max-classes-per-file
-import "./TodoEntry.scss";
-
 import * as React from "react";
 import {
   FormattedDate,
@@ -9,9 +7,9 @@ import {
   injectIntl
 } from "react-intl";
 
-import linkstate from "linkstate";
 import pick from "lodash-es/pick";
 
+import linkstate from "../../temporaryHacks/linkstate";
 import { TodoModel } from "./todo.model";
 
 export interface TodoEntryProps extends Partial<TodoModel> {

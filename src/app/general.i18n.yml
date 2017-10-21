@@ -5,3 +5,14 @@ languages:
   en:
     de: Englisch
     en: English
+
+nav:
+  testRoute1:
+    de: Test Weg 1
+    en: Test Route 1
+  todos:
+    de: Aufgabenliste
+    en: Todo list
+  testRoute3:
+    de: Test Weg 3
+    en: Test Route 3

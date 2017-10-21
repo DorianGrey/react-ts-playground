@@ -1,5 +1,3 @@
-import "./TodoList.scss";
-
 import * as React from "react";
 import { FormattedMessage, InjectedIntlProps, injectIntl } from "react-intl";
 import { connect } from "react-redux";
@@ -101,24 +99,24 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
   }
 
   render() {
-    const displayContent = this.state.showNewTodoBlock
-      ? <TodoEntry
-          editable
-          createOrUpdateTodo={this.createTodo}
-          onCancel={this.hideNewTodoBlock}
-          onDelete={noop}
-        />
-      : <div className="new-todo" onClick={this.showNewTodoBlock}>
-          <i className="fa fa-plus-circle" />
-        </div>;
+    const displayContent = this.state.showNewTodoBlock ? (
+      <TodoEntry
+        editable
+        createOrUpdateTodo={this.createTodo}
+        onCancel={this.hideNewTodoBlock}
+        onDelete={noop}
+      />
+    ) : (
+      <div className="new-todo" onClick={this.showNewTodoBlock}>
+        <i className="fa fa-plus-circle" />
+      </div>
+    );
     return (
       <div className="todo-list">
         <h2>
           <FormattedMessage id="todos.list" />
         </h2>
-        <ul>
-          {this.props.todos.map(this.createTodoEntry)}
-        </ul>
+        <ul>{this.props.todos.map(this.createTodoEntry)}</ul>
         {displayContent}
       </div>
     );

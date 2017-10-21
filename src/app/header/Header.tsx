@@ -1,5 +1,3 @@
-import "./Header.scss";
-
 import * as React from "react";
 import { FormattedDate, FormattedMessage } from "react-intl";
 

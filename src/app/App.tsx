@@ -1,4 +1,4 @@
-import "./App.scss";
+// import "./App.scss";
 
 import * as React from "react";
 import { IntlProvider } from "react-intl-redux";
@@ -13,24 +13,24 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Provider as StoreProvider } from "react-redux";
 import { Store } from "redux";
 
+import NavigationDrawer from "react-md/lib/NavigationDrawers";
+
 import NotFound from "./404/404";
-import Header from "./header/Header";
+// import Header from "./header/Header";
 import Loading from "./Loading";
-import NotificationProvider from "./notifications/NotificationProvider";
-import SideNav from "./sideNav/SideNav";
+// import NotificationProvider from "./notifications/NotificationProvider";
+import NaviLink from "./naviLink";
 import { AppState } from "./state";
 
 function withLoader<T>(loader: () => Promise<T>) {
-  return Loadable(
-    {
-      loader,
-      loading: Loading,
-      render(loaded: any, props: any) {
-        const Component = loaded.default;
-        return <Component {...props} />;
-      }
-    } as OptionsWithRender<LoadingComponentProps, any>
-  );
+  return Loadable({
+    loader,
+    loading: Loading,
+    render(loaded: any, props: any) {
+      const Component = loaded.default;
+      return <Component {...props} />;
+    }
+  } as OptionsWithRender<LoadingComponentProps, any>);
 }
 
 export interface AppProps {
@@ -48,31 +48,58 @@ export default function App(props: AppProps) {
     import(/* webpackChunkName: "parseParamTest" */ "./routes/ParseParamsTestRoute")
   );
 
+  const navItems = [
+    {
+      label: "nav.testRoute1",
+      to: "/tr0",
+      icon: "perm_contact_calendar"
+    },
+    {
+      label: "nav.todos",
+      to: "/todo-list",
+      icon: "assignment"
+    },
+    {
+      label: "nav.testRoute3",
+      to: "/lazy-test/faq?bla=true",
+      icon: "question_answer"
+    }
+  ];
+
   return (
     <StoreProvider store={props.store}>
       <IntlProvider>
-        <NotificationProvider>
-          <Router>
-            <div>
-              <Header />
-
-              <SideNav />
-
-              <div id="app-body">
-                <Switch>
+        <Router>
+          <Route
+            render={({ location }) => (
+              <NavigationDrawer
+                drawerTitle={"Testing react-md"}
+                toolbarTitle={"Example app"}
+                navItems={navItems.map(p => <NaviLink {...p} key={p.to} />)}
+              >
+                <Switch key={location.key}>
                   <Redirect exact from="/" to="/tr0" />
-                  <Route path="/tr0" component={AsyncTestRoute1} />
-                  <Route path="/todo-list" component={AsyncTestRoute2} />
+                  <Route
+                    path="/tr0"
+                    component={AsyncTestRoute1}
+                    location={location}
+                  />
+                  <Route
+                    path="/todo-list"
+                    component={AsyncTestRoute2}
+                    location={location}
+                  />
                   <Route
                     path="/lazy-test/:id"
                     component={AsyncParseParamsTestRoute}
+                    location={location}
                   />
                   <Route component={NotFound} />
                 </Switch>
-              </div>
-            </div>
-          </Router>
-        </NotificationProvider>
+              </NavigationDrawer>
+            )}
+          />
+        </Router>
       </IntlProvider>
     </StoreProvider>
   );
