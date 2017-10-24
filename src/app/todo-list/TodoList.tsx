@@ -1,3 +1,5 @@
+import "./TodoList.scss";
+
 import * as React from "react";
 import { FormattedMessage, InjectedIntlProps, injectIntl } from "react-intl";
 import { connect } from "react-redux";
@@ -5,6 +7,8 @@ import { Dispatch } from "redux";
 
 import { List } from "immutable";
 import noop from "lodash-es/noop";
+
+import FontIcon from "react-md/lib/FontIcons/FontIcon";
 
 import { sendNotification } from "../notifications/NotificationProvider";
 import { AppState } from "../state";
@@ -99,6 +103,8 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
   }
 
   render() {
+    // TODO: A new todo currently causes a react error regarding controlled components:
+    // https://reactjs.org/docs/forms.html#controlled-components
     const displayContent = this.state.showNewTodoBlock ? (
       <TodoEntry
         editable
@@ -108,7 +114,7 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
       />
     ) : (
       <div className="new-todo" onClick={this.showNewTodoBlock}>
-        <i className="fa fa-plus-circle" />
+        <FontIcon>add_circle_outline</FontIcon>
       </div>
     );
     return (
@@ -116,7 +122,7 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
         <h2>
           <FormattedMessage id="todos.list" />
         </h2>
-        <ul>{this.props.todos.map(this.createTodoEntry)}</ul>
+        {this.props.todos.map(this.createTodoEntry)}
         {displayContent}
       </div>
     );
@@ -124,15 +130,14 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
 
   private createTodoEntry(todo: TodoModel) {
     return (
-      <li key={todo.id}>
-        <TodoEntry
-          editable={false}
-          onDelete={this.deleteTodo(todo.id)}
-          createOrUpdateTodo={this.createTodo}
-          onCancel={noop}
-          {...todo}
-        />
-      </li>
+      <TodoEntry
+        key={todo.id}
+        editable={false}
+        onDelete={this.deleteTodo(todo.id)}
+        createOrUpdateTodo={this.createTodo}
+        onCancel={noop}
+        {...todo}
+      />
     );
   }
 

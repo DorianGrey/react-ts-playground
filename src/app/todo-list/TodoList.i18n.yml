@@ -12,8 +12,12 @@ todos:
         de: Beschreibung...
         en: Description...
       deadline:
-        de: Fällig bis...
-        en: Deadline...
+        date:
+          de: Datum auswählen
+          en: Select appointment date
+        time:
+          de: Uhrzeit auswählen
+          en: Select appointment time
     created:
       de: "Angelegt:"
       en: "Created:"
