@@ -75,7 +75,6 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
   ) {
     this.setState({ showNewTodoBlock: false });
 
-    // TODO: Eval "id" parameter.
     if (id) {
       const oldTodo = this.props.todos.find(e => !!e && e.id === id);
 
@@ -103,8 +102,6 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
   }
 
   render() {
-    // TODO: A new todo currently causes a react error regarding controlled components:
-    // https://reactjs.org/docs/forms.html#controlled-components
     const displayContent = this.state.showNewTodoBlock ? (
       <TodoEntry
         editable
@@ -120,6 +117,7 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
     return (
       <div className="todo-list">
         <h2>
+          <FormattedMessage id="todos.list" />
           <FormattedMessage id="todos.list" />
         </h2>
         {this.props.todos.map(this.createTodoEntry)}
@@ -156,6 +154,10 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  injectIntl(TodoList)
+// Split HOC generation to multiple values to attempt to work around a RHL issue
+// regarding HOC unwrapping...
+const withIntlInjected = injectIntl(TodoList);
+const connected = connect(mapStateToProps, mapDispatchToProps)(
+  withIntlInjected
 );
+export default connected;

@@ -85,6 +85,7 @@ type EditableTodoProps = Partial<TodoModel> &
 class EditableTodo extends React.Component<EditableTodoProps, any> {
   state = {
     currentTodoData: pick(this.props, [
+      "id",
       "headline",
       "description",
       "deadline"
@@ -97,6 +98,14 @@ class EditableTodo extends React.Component<EditableTodoProps, any> {
 
   constructor(props: EditableTodoProps, context: any) {
     super(props, context);
+
+    // Set these values to an empty string by default to properly work around a switch between
+    // controlled and not-controlled components. See:
+    // https://reactjs.org/docs/forms.html#controlled-components
+    this.state.currentTodoData.headline =
+      this.state.currentTodoData.headline || "";
+    this.state.currentTodoData.description =
+      this.state.currentTodoData.description || "";
 
     this.createTodo = this.createTodo.bind(this);
     this.updateHeadline = this.updateHeadline.bind(this);
@@ -240,7 +249,7 @@ class EditableTodo extends React.Component<EditableTodoProps, any> {
           >
             <FormattedMessage id={this.submitButtonTranslationId} />
           </Button>
-          <Button primary raised onClick={onCancel}>
+          <Button secondary raised onClick={onCancel}>
             <FormattedMessage id="todos.newTodo.cancel" />
           </Button>
         </CardActions>

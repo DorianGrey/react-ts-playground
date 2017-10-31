@@ -57,10 +57,6 @@ const navItems = [
 ];
 
 const navigationItems = navItems.map(p => <NaviLink {...p} key={p.to} />);
-// navigationItems.push(
-//   <Divider key={"divider"} />,
-//   <ListItem key={"lp"} component={LanguagePicker} primaryText={""} />
-// );
 
 // TODO: Attempt to get a more detailed typing ...
 class Navigation extends React.Component<any & InjectedIntlProps, any> {

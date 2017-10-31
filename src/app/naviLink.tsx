@@ -32,8 +32,6 @@ const NaviLink = (props: NaviLinkProps) => {
           leftIcon = <FontIcon>{icon}</FontIcon>;
         }
 
-        // TODO: Check match, fix it!
-
         return (
           <ListItem
             component={RouterLink}
