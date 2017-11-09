@@ -1,42 +1,16 @@
-@import "../../styles/typography";
-
 .todo-list {
-  ul {
-    padding: 0;
-    list-style-type: none;
-  }
-
-  .new-todo {
-    width: 50%;
-    margin: auto;
-    font-size: 3em;
-    text-align: center;
-    border: 1px dotted $color-medium-grey;
-    color: $color-medium-grey;
-    cursor: pointer;
-    transition:
-      background-color 0.25s ease,
-      color 0.25s ease;
-
-    &:hover {
-      background-color: $color-light-grey;
-      color: $color-black;
-    }
+  > div {
+    margin-top: 0.5rem;
   }
 }
 
-.todo-controls {
-  font-size: 1.5em;
+.new-todo {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 
-  i {
-    cursor: pointer;
-  }
-
-  i:not(:last-child) {
-    margin: 0 0.5rem;
-  }
-
-  i:last-child {
-    margin-left: 0.5rem;
+  .material-icons.md-icon {
+    font-size: 5em;
   }
 }

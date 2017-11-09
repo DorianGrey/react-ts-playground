@@ -49,13 +49,22 @@ export function DeleteTodo(id: number) {
   };
 }
 
-export const initialTodoList: TodoState = List.of<TodoModel>({
-  id: 1,
-  headline: "Test todo",
-  description: "A lot of stuff to be done!",
-  deadline: new Date(Date.now() + 60 * 60 * 1000),
-  created: new Date()
-});
+export const initialTodoList: TodoState = List.of<TodoModel>(
+  {
+    id: 1,
+    headline: "Test todo",
+    description: "A lot of stuff to be done!",
+    deadline: new Date(Date.now() + 60 * 60 * 1000),
+    created: new Date()
+  },
+  {
+    id: 2,
+    headline: "Test todo2",
+    description: "A lot of stuff to be done!",
+    deadline: new Date(Date.now() + 60 * 60 * 1000),
+    created: new Date()
+  }
+);
 
 export const todosReducer = (
   state: TodoState = initialTodoList,

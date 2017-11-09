@@ -1,11 +1,7 @@
-import "./Header.scss";
-
 import * as React from "react";
-import { FormattedDate, FormattedMessage } from "react-intl";
+import { FormattedDate } from "react-intl";
 
-import LanguagePicker from "../language-picker/LanguagePicker";
-
-export default class Header extends React.Component<any, any> {
+export default class CurrentTime extends React.Component<any, any> {
   state: {
     date: Date;
   } = {
@@ -19,10 +15,10 @@ export default class Header extends React.Component<any, any> {
   }
 
   componentWillMount(): void {
-    this.interval = setInterval(
+    this.interval = (setInterval(
       () => this.setState({ date: new Date() }),
       1000
-    );
+    ) as any) as number; // God-damn node-typings ...
   }
 
   componentWillUnmount(): void {
@@ -33,8 +29,7 @@ export default class Header extends React.Component<any, any> {
 
   render() {
     return (
-      <header>
-        <FormattedMessage id="header.title" />
+      <div style={{ textAlign: "center", color: "white" }}>
         <FormattedDate
           value={this.state.date}
           year="numeric"
@@ -44,8 +39,7 @@ export default class Header extends React.Component<any, any> {
           minute="2-digit"
           second="2-digit"
         />
-        <LanguagePicker />
-      </header>
+      </div>
     );
   }
 }

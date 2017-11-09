@@ -8,6 +8,8 @@ import { Dispatch } from "redux";
 import { List } from "immutable";
 import noop from "lodash-es/noop";
 
+import FontIcon from "react-md/lib/FontIcons/FontIcon";
+
 import { sendNotification } from "../notifications/NotificationProvider";
 import { AppState } from "../state";
 import { TodoModel } from "./todo.model";
@@ -73,7 +75,6 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
   ) {
     this.setState({ showNewTodoBlock: false });
 
-    // TODO: Eval "id" parameter.
     if (id) {
       const oldTodo = this.props.todos.find(e => !!e && e.id === id);
 
@@ -101,24 +102,25 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
   }
 
   render() {
-    const displayContent = this.state.showNewTodoBlock
-      ? <TodoEntry
-          editable
-          createOrUpdateTodo={this.createTodo}
-          onCancel={this.hideNewTodoBlock}
-          onDelete={noop}
-        />
-      : <div className="new-todo" onClick={this.showNewTodoBlock}>
-          <i className="fa fa-plus-circle" />
-        </div>;
+    const displayContent = this.state.showNewTodoBlock ? (
+      <TodoEntry
+        editable
+        createOrUpdateTodo={this.createTodo}
+        onCancel={this.hideNewTodoBlock}
+        onDelete={noop}
+      />
+    ) : (
+      <div className="new-todo" onClick={this.showNewTodoBlock}>
+        <FontIcon>add_circle_outline</FontIcon>
+      </div>
+    );
     return (
       <div className="todo-list">
         <h2>
           <FormattedMessage id="todos.list" />
+          <FormattedMessage id="todos.list" />
         </h2>
-        <ul>
-          {this.props.todos.map(this.createTodoEntry)}
-        </ul>
+        {this.props.todos.map(this.createTodoEntry)}
         {displayContent}
       </div>
     );
@@ -126,15 +128,14 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
 
   private createTodoEntry(todo: TodoModel) {
     return (
-      <li key={todo.id}>
-        <TodoEntry
-          editable={false}
-          onDelete={this.deleteTodo(todo.id)}
-          createOrUpdateTodo={this.createTodo}
-          onCancel={noop}
-          {...todo}
-        />
-      </li>
+      <TodoEntry
+        key={todo.id}
+        editable={false}
+        onDelete={this.deleteTodo(todo.id)}
+        createOrUpdateTodo={this.createTodo}
+        onCancel={noop}
+        {...todo}
+      />
     );
   }
 
@@ -153,6 +154,10 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  injectIntl(TodoList)
+// Split HOC generation to multiple values to attempt to work around a RHL issue
+// regarding HOC unwrapping...
+const withIntlInjected = injectIntl(TodoList);
+const connected = connect(mapStateToProps, mapDispatchToProps)(
+  withIntlInjected
 );
+export default connected;

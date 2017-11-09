@@ -3,7 +3,10 @@ import "./styles/index.scss";
 import identity from "lodash-es/identity";
 import * as React from "react";
 import { render } from "react-dom";
+// react-hot-loader is skipped in prod mode, however tslint does not recognize this or knows about it, thus...
+// tslint:disable
 import { AppContainer } from "react-hot-loader";
+// tslint:enable
 
 import App from "./app/App";
 import { initialAppState } from "./app/state";
@@ -22,12 +25,7 @@ if (process.env.NODE_ENV === "production") {
 } else {
   wrapWithRhlContainer = <P extends React.DOMAttributes<T>, T extends Element>(
     elem: React.DOMElement<P, T>
-  ) =>
-    (
-      <AppContainer>
-        {elem}
-      </AppContainer>
-    ) as React.DOMElement<P, T>;
+  ) => <AppContainer>{elem}</AppContainer> as React.DOMElement<P, T>;
 }
 
 function getContainer() {
