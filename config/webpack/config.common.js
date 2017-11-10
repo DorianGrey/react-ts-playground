@@ -11,7 +11,6 @@ const ModuleScopePlugin = require("react-dev-utils/ModuleScopePlugin");
 
 const paths = require("../paths");
 const loadingAnimation = require("../../src/generated/loading.scss.json");
-const webpackEnv = require("./build-env");
 
 /*
  Define various constants to be used in multiple different configs here.
@@ -190,25 +189,14 @@ const RULE_WEBFONTS = function() {
 // "file" loader makes sure those assets get served by WebpackDevServer.
 // When you `import` an asset, you get its (virtual) filename.
 // In production, they would get copied to the `build` folder.
+// This loader doesn't use a "test" so it will catch all modules
+// that fall through the other loaders.
 const RULE_COVER_NON_MATCHED = {
-  exclude: [
-    /\.html$/,
-    // We have to write /\.(js|jsx)(\?.*)?$/ rather than just /\.(js|jsx)$/
-    // because you might change the hot reloading server from the custom one
-    // to Webpack's built-in webpack-dev-server/client?/, which would not
-    // get properly excluded by /\.(js|jsx)$/ because of the query string.
-    // Webpack 2 fixes this, but for now we include this hack.
-    // https://github.com/facebookincubator/create-react-app/issues/1713
-    /\.(js|jsx)(\?.*)?$/,
-    /\.(ts|tsx)(\?.*)?$/,
-    /\.s?css$/,
-    /\.json$/,
-    /\.bmp$/,
-    /\.gif$/,
-    /\.jpe?g$/,
-    /\.png$/,
-    /\.(ttf|eot|svg|woff|woff2)/
-  ],
+  // Exclude `js` files to keep "css" loader working as it injects
+  // it's runtime that would otherwise processed through "file" loader.
+  // Also exclude `html` and `json` extensions so they get processed
+  // by webpacks internal loaders.
+  exclude: [/\.js$/, /\.html$/, /\.json$/],
   loader: require.resolve("file-loader"),
   options: {
     name: "static/media/[name].[hash:8].[ext]"
@@ -245,6 +233,7 @@ const resolveOptions = {
 };
 
 const nodeOptions = {
+  dgram: "empty",
   fs: "empty",
   net: "empty",
   tls: "empty",
@@ -284,18 +273,19 @@ module.exports = function(isDev, env, extractTextPluginOptions) {
         // TODO: Disable require.ensure as it's not a standard language feature.
         // We are waiting for https://github.com/facebookincubator/create-react-app/issues/2176.
         // { parser: { requireEnsure: false } },
-        RULE_EXT_JS,
-        // ** ADDING/UPDATING LOADERS **
-        // The "file" loader handles all assets unless explicitly excluded.
-        // The `exclude` list *must* be updated with every change to loader extensions.
-        // When adding a new loader, you must add its `test`
-        // as a new entry in the `exclude` list in the "file" loader.
-
-        RULE_COVER_NON_MATCHED,
-        RULE_IMAGES,
-        RULE_EXT_TSX(isDev),
-        RULE_SCSS(isDev, extractTextPluginOptions),
-        RULE_WEBFONTS()
+        {
+          // "oneOf" will traverse all following loaders until one will
+          // match the requirements. When no loader matches it will fall
+          // back to the "file" loader at the end of the loader list.
+          oneOf: [
+            RULE_EXT_JS,
+            RULE_EXT_TSX(isDev),
+            RULE_IMAGES,
+            RULE_SCSS(isDev, extractTextPluginOptions),
+            RULE_WEBFONTS(),
+            RULE_COVER_NON_MATCHED
+          ]
+        }
         // ** STOP ** Are you adding a new loader?
         // Remember to add the new extension(s) to the "file" loader exclusion list.
       ]

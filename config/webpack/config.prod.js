@@ -11,14 +11,12 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const InlineChunkManifestHtmlWebpackPlugin = require("inline-chunk-manifest-html-webpack-plugin");
 const SWPrecacheWebpackPlugin = require("sw-precache-webpack-plugin");
 const merge = require("webpack-merge");
-const ClosureCompilerPlugin = require("webpack-closure-compiler");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 
 const commonConfig = require("./config.common");
 const paths = require("../paths");
 const getClientEnvironment = require("../env");
-const webpackEnv = require("./build-env");
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -26,6 +24,8 @@ const publicPath = paths.servedPath;
 // Some apps do not use client-side routing with pushState.
 // For these, "homepage" can be set to "." to enable relative asset paths.
 const shouldUseRelativeAssetPaths = publicPath === "./";
+// Source maps are resource heavy and can cause out of memory issue for large source files.
+const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== "false";
 // `publicUrl` is just like `publicPath`, but we will provide it to our app
 // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
 // Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.
@@ -51,32 +51,6 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
     { publicPath: Array(cssFilename.split("/").length).join("../") }
   : {};
 
-// Determine minifier. Note that without its 'ADVANCED' mode, the closure compiler does
-// necessarily generate smaller results. Although - in most cases - the results ARE smaller
-// than with UglifyJs, at least several KB. However, it also takes longer to build.
-const minifier = webpackEnv.useClosureCompiler
-  ? new ClosureCompilerPlugin({
-      compiler: {
-        language_in: "ECMASCRIPT5",
-        language_out: "ECMASCRIPT5"
-        // Note: compilation_level: 'ADVANCED' does not work (yet?).
-      },
-      concurrency: 3
-    })
-  : new UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        // This feature has been reported as buggy a few times, such as:
-        // https://github.com/mishoo/UglifyJS2/issues/1964
-        // We'll wait with enabling it by default until it is more solid.
-        reduce_vars: false
-      },
-      output: {
-        comments: false
-      },
-      sourceMap: true
-    });
-
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
 // The development configuration is different and lives in a separate file.
@@ -87,7 +61,7 @@ module.exports = merge.smart(
     bail: true,
     // We generate sourcemaps in production. This is slow but gives good results.
     // You can exclude the *.map files from the build during deployment.
-    devtool: "source-map",
+    devtool: shouldUseSourceMap ? "source-map" : false,
     // In production, we only want to load the polyfills and the app code.
     entry: [require.resolve("../polyfills"), paths.appIndexJs],
     output: {
@@ -102,7 +76,9 @@ module.exports = merge.smart(
       publicPath: publicPath,
       // Point sourcemap entries to original disk location
       devtoolModuleFilenameTemplate: info =>
-        path.relative(paths.appSrc, info.absoluteResourcePath)
+        path
+          .relative(paths.appSrc, info.absoluteResourcePath)
+          .replace(/\\/g, "/")
     },
 
     plugins: [
@@ -130,10 +106,25 @@ module.exports = merge.smart(
 
       // EO
 
-      // Plugin to let the whole build fail on any error; i.e. do not tolerate these
+      // Plugin to let the whole build fail on any error; i.e. do not tolerate these/
       new NoEmitOnErrorsPlugin(),
       // Minify the code.
-      minifier,
+      new UglifyJsPlugin({
+        compress: {
+          warnings: false,
+          // This feature has been reported as buggy a few times, such as:
+          // https://github.com/mishoo/UglifyJS2/issues/1964
+          // We'll wait with enabling it by default until it is more solid.
+          reduce_vars: false
+        },
+        output: {
+          comments: false,
+          // Turned on because emoji and regex is not minified properly using default
+          // https://github.com/facebookincubator/create-react-app/issues/2488
+          ascii_only: true
+        },
+        sourceMap: true
+      }),
       // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
       new ExtractTextPlugin({
         filename: cssFilename

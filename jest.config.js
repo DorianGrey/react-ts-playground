@@ -30,7 +30,7 @@ module.exports = {
   "transform": {
     "^.+\\.s?css$": "<rootDir>/config/jest/cssTransform.js",
     "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js",
-    "^(?!.*\\.(css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+    "^(?!.*\\.(js|jsx|mjs|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
   },
   "transformIgnorePatterns": [
     "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$"
