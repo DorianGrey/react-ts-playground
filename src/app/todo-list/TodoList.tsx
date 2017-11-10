@@ -118,7 +118,6 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
       <div className="todo-list">
         <h2>
           <FormattedMessage id="todos.list" />
-          <FormattedMessage id="todos.list" />
         </h2>
         {this.props.todos.map(this.createTodoEntry)}
         {displayContent}
