@@ -3,6 +3,7 @@ import "./styles/index.scss";
 import identity from "lodash-es/identity";
 import * as React from "react";
 import { render } from "react-dom";
+import * as WebFontLoader from "webfontloader";
 // react-hot-loader is skipped in prod mode, however tslint does not recognize this or knows about it, thus...
 // tslint:disable
 import { AppContainer } from "react-hot-loader";
@@ -13,6 +14,13 @@ import { initialAppState } from "./app/state";
 import configureStore from "./app/store";
 import { bootloader } from "./bootloader";
 import registerServiceWorker from "./registerServiceWorker";
+
+// Import here instead of using the template - reduce initial loading time.
+WebFontLoader.load({
+  google: {
+    families: ["Roboto:300,400,500,700", "Material Icons"]
+  }
+});
 
 const store = configureStore(initialAppState);
 
