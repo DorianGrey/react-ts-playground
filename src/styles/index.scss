@@ -1,14 +1,5 @@
-@import "~react-md/src/scss/react-md";
-
 $md-light-theme: false;
-
-@include react-md-everything;
-
-// Native font stack, see https://www.smashingmagazine.com/2015/11/using-system-ui-fonts-practical-guide/ .
-// Note: "Roboto" was put a little bit lower on that list to not conflict with Google Maps, which loads the Roboto font.
-// To avoid some crazy hacks to suppress this loading behavior, we'll put it somewhere lower so that it's only used on Android.
-$font-family-sans-serif:
-  "Roboto", sans-serif,
+$md-font-family: "Roboto",
   // Safari for OS X and iOS (San Francisco)
   -apple-system,
   // Chrome >= 56 for OS X (San Francisco), Windows, Linux and Android
@@ -30,6 +21,10 @@ $font-family-sans-serif:
   // Basic web fallback
   "Helvetica Neue",
   Arial, sans-serif !default;
+
+@import "~react-md/src/scss/react-md";
+
+@include react-md-everything;
 
 body {
   margin: 0;
