@@ -1,6 +1,7 @@
 "use strict";
 
 const express = require("express");
+const compression = require("compression");
 const path = require("path");
 const logger = require("log4js").getLogger("server");
 logger.level = "debug";
@@ -20,6 +21,7 @@ if (serveDirs.length === 0) {
 }
 
 app.use(router);
+app.use(compression());
 
 serveDirs.forEach(dirName => {
   app.use(express.static(path.resolve(process.cwd(), dirName)));
