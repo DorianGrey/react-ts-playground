@@ -84,7 +84,7 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
         headline,
         description,
         deadline
-      });
+      } as TodoModel);
     } else {
       this.props.onTodoAdd(headline, description, deadline);
     }
