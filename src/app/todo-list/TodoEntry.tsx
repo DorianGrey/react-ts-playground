@@ -37,7 +37,7 @@ function ReadOnlyTodo(
   todo: Partial<TodoModel> & TodoEntryProps & { onEdit: () => void }
 ) {
   return (
-    <Card className="md-block-centered">
+    <Card className="md-block-centered" defaultExpanded>
       <CardTitle title={todo.headline} expander />
       <CardText expandable>
         <p>{todo.description}</p>
@@ -125,20 +125,20 @@ class EditableTodo extends React.Component<EditableTodoProps, any> {
     this.props.onEditLeave();
   }
 
-  updateHeadline(newHeadline: string) {
+  updateHeadline(newHeadline: number | string) {
     this.setState({
       currentTodoData: {
         ...this.state.currentTodoData,
-        headline: newHeadline
+        headline: newHeadline as string
       }
     });
   }
 
-  updateDescription(newDescription: string) {
+  updateDescription(newDescription: number | string) {
     this.setState({
       currentTodoData: {
         ...this.state.currentTodoData,
-        description: newDescription
+        description: newDescription as string
       }
     });
   }
@@ -207,6 +207,8 @@ class EditableTodo extends React.Component<EditableTodoProps, any> {
             className="md-cell md-cell--bottom"
             onChange={this.updateHeadline}
             value={this.state.currentTodoData.headline}
+            error={!this.state.currentTodoData.headline}
+            required
           />
           <TextField
             id="autoresizing-2"
@@ -216,7 +218,9 @@ class EditableTodo extends React.Component<EditableTodoProps, any> {
             resize={{ min: 200, max: 250 }}
             rows={2}
             value={this.state.currentTodoData.description}
+            error={!this.state.currentTodoData.description}
             onChange={this.updateDescription}
+            required
           />
           <DatePicker
             id="appointment-date-auto"
@@ -225,7 +229,9 @@ class EditableTodo extends React.Component<EditableTodoProps, any> {
             className="md-cell"
             minDate={new Date()}
             value={this.state.currentTodoData.deadline}
+            error={!this.state.currentTodoData.deadline}
             onChange={this.updateDate}
+            required
           />
           <TimePicker
             id="appointment-time-auto"
@@ -233,7 +239,9 @@ class EditableTodo extends React.Component<EditableTodoProps, any> {
             label={timePlaceholder}
             className="md-cell"
             value={this.state.currentTodoData.deadline}
+            error={!this.state.currentTodoData.deadline}
             onChange={this.updateTime}
+            required
           />
         </CardText>
         <CardActions>
