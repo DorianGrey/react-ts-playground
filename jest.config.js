@@ -29,7 +29,7 @@ module.exports = {
   "testURL": "http://localhost",
   "transform": {
     "^.+\\.s?css$": "<rootDir>/config/jest/cssTransform.js",
-    "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js",
+    "^.+\\.tsx?$": "ts-jest",
     "^(?!.*\\.(js|jsx|mjs|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
   },
   "transformIgnorePatterns": [
