@@ -12,15 +12,16 @@ module.exports = {
       "tsConfigFile": "tsconfig.test.json"
     }
   },
-  "setupFiles": [
-    "<rootDir>/config/polyfills.js"
-  ],
   "moduleFileExtensions": [
     "ts",
     "tsx",
     "js",
     "jsx"
   ],
+  "setupFiles": [
+    "<rootDir>/config/polyfills.js"
+  ],
+  "setupTestFrameworkScriptFile": "<rootDir>config/jest/testSetup.ts",
   "testMatch": [
     "<rootDir>/src/**/__tests__/**/*.ts?(x)",
     "<rootDir>/src/**/?(*.)(spec|test).ts?(x)"
