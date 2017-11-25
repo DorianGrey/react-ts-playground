@@ -1,18 +1,16 @@
 import { addLocaleData } from "react-intl";
-import * as de from "react-intl/locale-data/de";
-import * as en from "react-intl/locale-data/en";
+import languagePackDe from "./languagePacks/de";
+import languagePackEn from "./languagePacks/en";
+import { Translations } from "./languagePacks/languagePack";
 
-import translationsDe from "../../generated/translations.de";
-import translationsEn from "../../generated/translations.en";
+addLocaleData([...languagePackDe.localeData, ...languagePackEn.localeData]);
 
-addLocaleData([...de, ...en]);
-
-export function getMessagesForLang(lang: string): { [key: string]: string } {
+export function getMessagesForLang(lang: string): Translations {
   switch (lang) {
     case "de":
-      return translationsDe;
+      return languagePackDe.translations;
     default:
-      return translationsEn;
+      return languagePackEn.translations;
   }
 }
 
