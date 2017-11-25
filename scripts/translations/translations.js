@@ -149,12 +149,13 @@ const formatters = {
 };
 
 exports.compile = (src, dest, opts) => {
-  console.warn(opts);
   // Determine output format / file extension.
   if (!(opts.format in formatters)) {
+    console.warn(
+      `Output format=${opts.format} is not supported. Falling back to 'ts'.`
+    );
     opts.format = "ts";
   }
-  dest = `${dest}.${opts.format}`;
 
   return utils
     .getFiles(src)
@@ -173,6 +174,18 @@ exports.compile = (src, dest, opts) => {
     .then(statistics(_.pick(opts, "verbose", "duplicateThreshold")))
     .then(partials => _.defaultsDeep.apply(_, _.map(partials, "translations")))
     .then(byLanguage)
-    .then(translations => formatters[opts.format](translations))
-    .then(content => utils.writeFile(dest, content));
+    .then(translations => {
+      if (opts.splitPerLang) {
+        const data = Object.keys(translations).map(lang => {
+          const formatted = formatters[opts.format](translations[lang]);
+          const target = `${dest}.${lang}.${opts.format}`;
+          utils.writeFile(target, formatted);
+        });
+        return Promise.all(data);
+      } else {
+        dest = `${dest}.${opts.format}`;
+        const formatted = formatters[opts.format](translations);
+        return utils.writeFile(dest, formatted);
+      }
+    });
 };

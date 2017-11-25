@@ -72,7 +72,8 @@ choosePort(HOST, DEFAULT_PORT)
     const translationsGlob = "src/**/*.i18n.yml";
     const translationsOutputPath = "src/generated/translations";
     const translationOpts = {
-      format: ts
+      format: "ts",
+      splitPerLang: true
     };
     const translationsWatcher = watch(
       translationsGlob,

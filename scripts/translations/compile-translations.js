@@ -29,6 +29,11 @@ let argv = yargs
     alias: "f",
     default: "ts"
   })
+  .option("splitPerLang", {
+    describe: "Generate one output file per lang.",
+    alias: "s",
+    default: false
+  })
   .help("help", "Show this help").argv;
 
 const [filesGlob, output] = argv._;
