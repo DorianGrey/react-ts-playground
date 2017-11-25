@@ -24,12 +24,17 @@ let argv = yargs
     describe: "Limit the allowed translation duplication (in percent)",
     alias: "d"
   })
+  .option("format", {
+    describe: "Output format. Currently available are 'ts' and 'json'.",
+    alias: "f",
+    default: "ts"
+  })
   .help("help", "Show this help").argv;
 
 const [filesGlob, output] = argv._;
 
 if (!argv.noInitialCompile) {
-  compileTranslations(filesGlob, output).catch(e => {
+  compileTranslations(filesGlob, output, argv).catch(e => {
     logger.error(e);
     if (!argv.watch) {
       process.exit(1);
@@ -42,7 +47,7 @@ if (argv.watch) {
   watch(
     filesGlob,
     () => {
-      compileTranslations(filesGlob, output).then(
+      compileTranslations(filesGlob, output, argv).then(
         () => logger.log(`Translations written to ${output}`),
         err => logger.error("Error processing translation:", err)
       );

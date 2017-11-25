@@ -70,11 +70,18 @@ choosePort(HOST, DEFAULT_PORT)
     const compileTranslations = require("./translations/translations").compile;
     const watch = require("./translations/watch");
     const translationsGlob = "src/**/*.i18n.yml";
-    const translationsOutputPath = "src/generated/translations.ts";
+    const translationsOutputPath = "src/generated/translations";
+    const translationOpts = {
+      format: ts
+    };
     const translationsWatcher = watch(
       translationsGlob,
       () => {
-        compileTranslations(translationsGlob, translationsOutputPath).then(
+        compileTranslations(
+          translationsGlob,
+          translationsOutputPath,
+          translationOpts
+        ).then(
           () =>
             console.log(
               `Translations written to ${chalk.cyan(translationsOutputPath)}`

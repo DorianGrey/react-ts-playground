@@ -113,7 +113,7 @@
     "format": "prettier --write \"{src,scripts,config}/**/*.{js,ts,tsx}\"",
     "precommit": "lint-staged",
     "prepush": "npm run test:ci",
-    "translations": "node scripts/translations/compile-translations.js \"src/**/*.i18n.yml\" src/generated/translations.ts"
+    "translations": "node scripts/translations/compile-translations.js \"src/**/*.i18n.yml\" src/generated/translations"
   },
   "lint-staged": {
     "{src,scripts,config}/**/*.{js,ts,tsx}": [

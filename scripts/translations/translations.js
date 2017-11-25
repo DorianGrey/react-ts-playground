@@ -14,8 +14,9 @@ const parseYaml = file => {
   } catch (e) {
     if (e.name === "YAMLException") {
       throw new Error(
-        `Error parsing ${file.path}: [${e.mark.line}:${e.mark
-          .column}] ${e.reason}`
+        `Error parsing ${file.path}: [${e.mark.line}:${e.mark.column}] ${
+          e.reason
+        }`
       );
     } else {
       throw e;
@@ -138,8 +139,24 @@ const byLanguage = translations => {
   return result;
 };
 
-exports.compile = (src, dest, opts) =>
-  utils
+const formatters = {
+  ts(translations) {
+    return `export default ${JSON.stringify(translations, null, 4)};\n`;
+  },
+  json(translations) {
+    return JSON.stringify(translations, null, 4);
+  }
+};
+
+exports.compile = (src, dest, opts) => {
+  console.warn(opts);
+  // Determine output format / file extension.
+  if (!(opts.format in formatters)) {
+    opts.format = "ts";
+  }
+  dest = `${dest}.${opts.format}`;
+
+  return utils
     .getFiles(src)
     .then(paths =>
       Promise.all(
@@ -156,8 +173,6 @@ exports.compile = (src, dest, opts) =>
     .then(statistics(_.pick(opts, "verbose", "duplicateThreshold")))
     .then(partials => _.defaultsDeep.apply(_, _.map(partials, "translations")))
     .then(byLanguage)
-    .then(
-      translations =>
-        `export default ${JSON.stringify(translations, null, 4)};\n`
-    )
+    .then(translations => formatters[opts.format](translations))
     .then(content => utils.writeFile(dest, content));
+};
