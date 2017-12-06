@@ -103,7 +103,7 @@
   "scripts": {
     "prestart": "npm run translations && npm run renderLoadingAnimation",
     "start": "node scripts/start.js",
-    "prebuild": "rimraf build && npm run translations && npm run renderLoadingAnimation",
+    "prebuild": "npm run translations && npm run renderLoadingAnimation",
     "build": "node scripts/build.js",
     "serve": "node scripts/serve.js",
     "test:ci": "node scripts/test.js --env=jsdom --no-cache --verbose --coverage",
