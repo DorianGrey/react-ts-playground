@@ -1,9 +1,9 @@
 import { createStore, Reducer, Store } from "redux";
 import rootReducer, { AppState, initialAppState } from "./state";
 
-export default function configureStore(initialState: AppState | null): Store<
-  AppState
-> {
+export default function configureStore(
+  initialState: AppState | null
+): Store<AppState> {
   const initState = initialState || initialAppState;
   const store = createStore(
     rootReducer,

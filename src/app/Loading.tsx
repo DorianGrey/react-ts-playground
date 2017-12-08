@@ -8,12 +8,12 @@ export default function Loading<T extends LoadingComponentProps>({
   pastDelay
 }: T) {
   if (isLoading) {
-    return pastDelay
-      ? <div id="loader">
-          <div id="box" />
-          <div id="hill" />
-        </div>
-      : null;
+    return pastDelay ? (
+      <div id="loader">
+        <div id="box" />
+        <div id="hill" />
+      </div>
+    ) : null;
   } else if (error) {
     return <div>Error loading component.</div>;
   } else {

@@ -13,19 +13,17 @@ export default (props: any & RouteComponentProps<string | number>) => {
       <p>
         <FormattedMessage id="parseParams.url" />
       </p>
-      <p>
-        {JSON.stringify(params)}
-      </p>
+      <p>{JSON.stringify(params)}</p>
       <hr />
       <p>
         <FormattedMessage id="parseParams.search" />
       </p>
       <ul>
-        {expectedQueryParams.map(entry =>
+        {expectedQueryParams.map(entry => (
           <li key={entry}>
             {entry} => {searchParams.get(entry)}
           </li>
-        )}
+        ))}
       </ul>
     </div>
   );
