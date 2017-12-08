@@ -28,6 +28,7 @@ function withLoader<T>(loader: () => Promise<T>) {
   } as OptionsWithRender<LoadingComponentProps, any>);
 }
 
+// TODO: This will require some configuration like describe here: http://fuse-box.org/page/dynamic-import#loading-split-bundle
 const AsyncTestRoute1: any = withLoader(() =>
   import(/* webpackChunkName: "testRoute1" */ "../routes/testRoute1/TestRoute1")
 );

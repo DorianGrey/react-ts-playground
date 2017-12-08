@@ -5,6 +5,9 @@
 /.awcache
 /.dist
 
+# FuseBox cache
+/.fusebox
+
 # Generated sources
 /src/generated
 

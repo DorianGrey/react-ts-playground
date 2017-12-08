@@ -22,7 +22,7 @@ $md-font-family: "Roboto",
   "Helvetica Neue",
   Arial, sans-serif !default;
 
-@import "~react-md/src/scss/react-md";
+@import "../../node_modules/react-md/src/scss/react-md";
 
 @include react-md-everything;
 

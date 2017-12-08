@@ -6,5 +6,5 @@ declare module "*.scss" {
 
 declare module "*.svg" {
   let __svg__: string;
-  export default __svg__;
+  export = __svg__;
 }
