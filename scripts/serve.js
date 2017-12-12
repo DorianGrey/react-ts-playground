@@ -4,12 +4,13 @@ const express = require("express");
 const compression = require("compression");
 const path = require("path");
 const logger = require("log4js").getLogger("server");
+const argv = require("yargs").argv;
 logger.level = "debug";
 
 const httpProxy = require("http-proxy");
 
 // Enter your proxy rules here.
-const serverPort = 4000;
+const serverPort = argv.port || 4000;
 const app = express();
 const router = express.Router();
 const proxy = httpProxy.createProxyServer();

@@ -8,6 +8,10 @@
 # Generated sources
 /src/generated
 
+# Parcel cache and tmp dir
+.cache
+.tmp
+
 # dependencies
 /node_modules
 
