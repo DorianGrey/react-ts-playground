@@ -1,15 +1,18 @@
 "use strict";
 
+const AutoDllPlugin = require("autodll-webpack-plugin");
 const path = require("path");
 const HotModuleReplacementPlugin = require("webpack/lib/HotModuleReplacementPlugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 const NamedModulesPlugin = require("webpack/lib/NamedModulesPlugin");
 const WatchMissingNodeModulesPlugin = require("react-dev-utils/WatchMissingNodeModulesPlugin");
 const merge = require("webpack-merge");
+const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
 const commonConfig = require("./config.common");
 const paths = require("../paths");
 const getClientEnvironment = require("../env");
+const dllConfig = require("./config.dll");
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -25,9 +28,10 @@ const env = getClientEnvironment(publicUrl);
 // It is focused on developer experience and fast rebuilds.
 // The production configuration is different and lives in a separate file.
 module.exports = merge.smart(commonConfig(true, env, {}), {
+  cache: true,
   // You may want 'eval' instead if you prefer to see the compiled output in DevTools.
   // See the discussion in https://github.com/facebookincubator/create-react-app/issues/343.
-  devtool: "inline-source-map",
+  devtool: "cheap-module-eval-source-map",
   // These are the "entry points" to our application.
   // This means they will be the "root" imports that are included in JS bundle.
   // The first two entry points enable "hot" CSS and auto-refreshes for JS.
@@ -71,7 +75,13 @@ module.exports = merge.smart(commonConfig(true, env, {}), {
       path.resolve(info.absoluteResourcePath).replace(/\\/g, "/")
   },
 
+  context: paths.appRoot,
+
   plugins: [
+    // Speeds up build and rebuild performance drastically.
+    new AutoDllPlugin(dllConfig),
+    // See https://github.com/mzgoddard/hard-source-webpack-plugin
+    new HardSourceWebpackPlugin(),
     // Makes it easier to identify which modules have been reloaded by HMR.
     // Regularly, webpack generates an numeric ID as an identifier for each module.
     // Using this plugin, it instead uses the module's name.
