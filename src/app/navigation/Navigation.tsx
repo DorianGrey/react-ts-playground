@@ -29,13 +29,13 @@ function withLoader<T>(loader: () => Promise<T>) {
 }
 
 const AsyncTestRoute1: any = withLoader(() =>
-  import(/* webpackChunkName: "testRoute1" */ "../routes/TestRoute1")
+  import(/* webpackChunkName: "testRoute1" */ "../routes/testRoute1/TestRoute1")
 );
 const AsyncTestRoute2: any = withLoader(() =>
   import(/* webpackChunkName: "todos" */ "../todo-list/TodoList")
 );
 const AsyncParseParamsTestRoute: any = withLoader(() =>
-  import(/* webpackChunkName: "parseParamTest" */ "../routes/ParseParamsTestRoute")
+  import(/* webpackChunkName: "parseParamTest" */ "../routes/parseParams/ParseParamsTestRoute")
 );
 
 const navItems = [
