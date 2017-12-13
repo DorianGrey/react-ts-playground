@@ -324,7 +324,7 @@ module.exports = function(isDev, env, extractTextPluginOptions) {
       new ForkTsCheckerWebpackPlugin({
         watch: "./src",
         tsconfig: "./tsconfig.json",
-        async: true,
+        async: isDev,
         tslint: "./tslint.json",
         formatter: "codeframe"
       }),
