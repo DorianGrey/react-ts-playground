@@ -29,3 +29,8 @@ $md-font-family: "Roboto",
 body {
   margin: 0;
 }
+
+// Is not set by default, thus...
+.md-toolbar {
+  align-items: center;
+}
