@@ -112,10 +112,14 @@ module.exports = merge.smart(
       new UglifyJsPlugin({
         compress: {
           warnings: false,
-          // This feature has been reported as buggy a few times, such as:
-          // https://github.com/mishoo/UglifyJS2/issues/1964
-          // We'll wait with enabling it by default until it is more solid.
-          reduce_vars: false
+          // Disabled because of an issue with Uglify breaking seemingly valid code:
+          // https://github.com/facebookincubator/create-react-app/issues/2376
+          // Pending further investigation:
+          // https://github.com/mishoo/UglifyJS2/issues/2011
+          comparisons: false
+        },
+        mangle: {
+          safari10: true
         },
         output: {
           comments: false,
@@ -123,7 +127,7 @@ module.exports = merge.smart(
           // https://github.com/facebookincubator/create-react-app/issues/2488
           ascii_only: true
         },
-        sourceMap: true
+        sourceMap: shouldUseSourceMap
       }),
       // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
       new ExtractTextPlugin({
@@ -160,10 +164,7 @@ module.exports = merge.smart(
         // https://github.com/facebookincubator/create-react-app/issues/2237#issuecomment-302693219
         navigateFallbackWhitelist: [/^(?!\/__).*/],
         // Don't precache sourcemaps (they're large) and build asset manifest:
-        staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
-        // Work around Windows path issue in SWPrecacheWebpackPlugin:
-        // https://github.com/facebookincubator/create-react-app/issues/2235
-        stripPrefix: paths.appBuild.replace(/\\/g, "/") + "/"
+        staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/]
       }),
 
       new BundleAnalyzerPlugin({

@@ -68,7 +68,7 @@ const RULE_EXT_TSX = function(isDev) {
 };
 
 const RULE_EXT_JS = {
-  test: /\.js$/,
+  test: /\.(mjs|js)$/,
   use: require.resolve("source-map-loader"),
   enforce: "pre",
   include: paths.appSrc
@@ -131,7 +131,7 @@ const RULE_SCSS = function(isDev, extractTextPluginOptions) {
               ">1%",
               "last 4 versions",
               "Firefox ESR",
-              "not ie < 9" // React doesn't support IE8 anyway
+              "not ie < 11" // There are no relevant usage stats about IE < 11
             ],
             flexbox: "no-2009"
           })
@@ -192,11 +192,11 @@ const RULE_WEBFONTS = function() {
 // This loader doesn't use a "test" so it will catch all modules
 // that fall through the other loaders.
 const RULE_COVER_NON_MATCHED = {
-  // Exclude `js` files to keep "css" loader working as it injects
+  // Exclude `js` and `ts` files to keep "css" loader working as it injects
   // it's runtime that would otherwise processed through "file" loader.
   // Also exclude `html` and `json` extensions so they get processed
   // by webpacks internal loaders.
-  exclude: [/\.js$/, /\.html$/, /\.json$/],
+  exclude: [/\.tsx?/, /\.(mjs|js)$/, /\.html$/, /\.json$/],
   loader: require.resolve("file-loader"),
   options: {
     name: "static/media/[name].[hash:8].[ext]"
@@ -216,7 +216,7 @@ const resolveOptions = {
   // We also include JSX as a common component filename extension to support
   // some tools, although we do not recommend using it, see:
   // https://github.com/facebookincubator/create-react-app/issues/290
-  extensions: [".ts", ".tsx", ".js", ".json", ".jsx"],
+  extensions: [".ts", ".tsx", ".mjs", ".js", ".json", ".jsx"],
   alias: {
     // Support React Native Web
     // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
@@ -228,7 +228,7 @@ const resolveOptions = {
     // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
     // please link the files into your node_modules/ and let module-resolution kick in.
     // Make sure your source files are compiled, as they will not be processed in any way.
-    new ModuleScopePlugin(paths.appSrc)
+    new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson])
   ]
 };
 
