@@ -1,13 +1,12 @@
 import { createStore, Reducer, Store } from "redux";
-import rootReducer, { AppState, initialAppState } from "./state";
+import rootReducer, { AppState } from "./state";
 
 export default function configureStore(
-  initialState: AppState | null
+  initialState: AppState
 ): Store<AppState> {
-  const initState = initialState || initialAppState;
   const store = createStore(
     rootReducer,
-    initState,
+    initialState,
     window["__REDUX_DEVTOOLS_EXTENSION__"] &&
       window["__REDUX_DEVTOOLS_EXTENSION__"]()
   );

@@ -5,9 +5,12 @@ import { render } from "react-dom";
 import * as WebFontLoader from "webfontloader";
 
 import App from "./app/App";
-import { initialAppState } from "./app/state";
+import { loadBrowserLanguagePack } from "./app/i18n/i18n";
+import { AppState, initialAppState } from "./app/state";
 import configureStore from "./app/store";
 import registerServiceWorker from "./registerServiceWorker";
+
+import { Store } from "redux";
 
 // Import here instead of using the template - reduce initial loading time.
 WebFontLoader.load({
@@ -16,7 +19,7 @@ WebFontLoader.load({
   }
 });
 
-const store = configureStore(initialAppState);
+let store: Store<AppState>;
 
 export type AppWrapper = <P extends React.DOMAttributes<T>, T extends Element>(
   s: React.DOMElement<P, T>
@@ -40,22 +43,26 @@ function renderApp(appWrapper: AppWrapper, container: HTMLElement | null) {
 }
 
 export default function main(appWrapper: AppWrapper) {
-  const container = getContainer();
-  if (container != null) {
-    renderApp(appWrapper, container);
-  } else {
-    throw Error("Application anchor could not be found, aborting...");
-  }
+  loadBrowserLanguagePack().then(({ translations }) => {
+    store = configureStore(initialAppState(translations));
 
-  // react-hot-loader 3 API: https://github.com/gaearon/react-hot-loader/tree/master/docs#webpack-2
-  if (process.env.NODE_ENV !== "production" && module.hot) {
-    module.hot.accept("./app/App", function hmr() {
-      renderApp(appWrapper, null);
-    });
+    const container = getContainer();
+    if (container != null) {
+      renderApp(appWrapper, container);
+    } else {
+      throw Error("Application anchor could not be found, aborting...");
+    }
 
-    // TODO: Why is NOT required to do pick up the old state here, handling it over to the next round?
-    /*module.hot.dispose(function (varStore: any) {
-     varStore.oldState = store.getState();
-     });*/
-  }
+    // react-hot-loader 3 API: https://github.com/gaearon/react-hot-loader/tree/master/docs#webpack-2
+    if (process.env.NODE_ENV !== "production" && module.hot) {
+      module.hot.accept("./app/App", function hmr() {
+        renderApp(appWrapper, null);
+      });
+
+      // TODO: Why is NOT required to do pick up the old state here, handling it over to the next round?
+      /*module.hot.dispose(function (varStore: any) {
+         varStore.oldState = store.getState();
+         });*/
+    }
+  });
 }

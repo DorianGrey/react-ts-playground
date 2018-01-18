@@ -6,7 +6,7 @@ import MenuButton from "react-md/lib/Menus/MenuButton";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
-import { getMessagesForLang, getSupportedLanguages } from "../i18n/i18n";
+import { getSupportedLanguages, loadLanguagePack } from "../i18n/i18n";
 import { AppState } from "../state";
 
 export interface LanguagePickerProps {
@@ -23,12 +23,14 @@ const mapStateToProps = (state: AppState) => {
 const mapDispatchToProps = (dispatch: Dispatch<IntlAction>) => {
   return {
     setLanguage: (lang: string) => {
-      dispatch(
-        updateIntl({
-          locale: lang,
-          messages: getMessagesForLang(lang)
-        })
-      );
+      loadLanguagePack(lang).then(({ translations }) => {
+        dispatch(
+          updateIntl({
+            locale: lang,
+            messages: translations
+          })
+        );
+      });
     }
   };
 };

@@ -1,20 +1,29 @@
 import { addLocaleData } from "react-intl";
-import languagePackDe from "./languagePacks/de";
-import languagePackEn from "./languagePacks/en";
-import { Translations } from "./languagePacks/languagePack";
+import { LanguagePack } from "./languagePacks/languagePack";
 
-addLocaleData([...languagePackDe.localeData, ...languagePackEn.localeData]);
-
-export function getMessagesForLang(lang: string): Translations {
-  switch (lang) {
-    case "de":
-      return languagePackDe.translations;
-    default:
-      return languagePackEn.translations;
-  }
+function registerLocaleData(module: { default: LanguagePack }): LanguagePack {
+  addLocaleData(module.default.localeData[0]);
+  return module.default;
 }
 
 export const BROWSER_LANGUAGE = navigator.language.slice(0, 2);
+
+export function loadLanguagePack(lang: string): Promise<LanguagePack> {
+  switch (lang) {
+    case "de":
+      return import(/* webpackChunkName: "lang-de" */ "./languagePacks/de").then(
+        registerLocaleData
+      );
+    default:
+      return import(/* webpackChunkName: "lang-en" */ "./languagePacks/en").then(
+        registerLocaleData
+      );
+  }
+}
+
+export function loadBrowserLanguagePack(): Promise<LanguagePack> {
+  return loadLanguagePack(BROWSER_LANGUAGE);
+}
 
 export function getSupportedLanguages(): string[] {
   return ["de", "en"]; // TODO: Optimize.

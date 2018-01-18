@@ -1,7 +1,8 @@
 import { intlReducer, IntlState } from "react-intl-redux";
 import { combineReducers, Reducer } from "redux";
 
-import { BROWSER_LANGUAGE, getMessagesForLang } from "./i18n/i18n";
+import { BROWSER_LANGUAGE } from "./i18n/i18n";
+import { Translations } from "./i18n/languagePacks/languagePack";
 import {
   initialTodoList,
   todosReducer,
@@ -13,13 +14,15 @@ export interface AppState {
   intl: IntlState;
 }
 
-export const initialAppState: AppState = {
-  todos: initialTodoList,
-  intl: {
-    locale: BROWSER_LANGUAGE,
-    messages: getMessagesForLang(BROWSER_LANGUAGE)
-  }
-};
+export function initialAppState(messages: Translations): AppState {
+  return {
+    todos: initialTodoList,
+    intl: {
+      locale: BROWSER_LANGUAGE,
+      messages
+    }
+  };
+}
 
 export default combineReducers<AppState>({
   todos: todosReducer as Reducer<any>,
