@@ -13,6 +13,7 @@ const SWPrecacheWebpackPlugin = require("sw-precache-webpack-plugin");
 const merge = require("webpack-merge");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
+const rxPaths = require("rxjs/_esm5/path-mapping");
 
 const commonConfig = require("./config.common");
 const paths = require("../paths");
@@ -79,6 +80,10 @@ module.exports = merge.smart(
         path
           .relative(paths.appSrc, info.absoluteResourcePath)
           .replace(/\\/g, "/")
+    },
+
+    resolve: {
+      alias: rxPaths()
     },
 
     plugins: [

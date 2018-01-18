@@ -4,5 +4,6 @@ import { LanguagePack } from "./languagePack";
 
 export default {
   translations: translationsDe,
-  localeData: de
+  localeData: de,
+  language: "de"
 } as LanguagePack;
