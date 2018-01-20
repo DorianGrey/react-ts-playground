@@ -1,12 +1,12 @@
 import * as React from "react";
 import { InjectedIntlProps, injectIntl } from "react-intl";
-import { IntlAction, updateIntl } from "react-intl-redux";
+import { IntlAction } from "react-intl-redux";
 import ListItem from "react-md/lib/Lists/ListItem";
 import MenuButton from "react-md/lib/Menus/MenuButton";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
-import { getMessagesForLang, getSupportedLanguages } from "../i18n/i18n";
+import { getSupportedLanguages, LOAD_LANGUAGE } from "../i18n/i18n";
 import { AppState } from "../state";
 
 export interface LanguagePickerProps {
@@ -23,12 +23,7 @@ const mapStateToProps = (state: AppState) => {
 const mapDispatchToProps = (dispatch: Dispatch<IntlAction>) => {
   return {
     setLanguage: (lang: string) => {
-      dispatch(
-        updateIntl({
-          locale: lang,
-          messages: getMessagesForLang(lang)
-        })
-      );
+      dispatch({ type: LOAD_LANGUAGE, payload: lang });
     }
   };
 };

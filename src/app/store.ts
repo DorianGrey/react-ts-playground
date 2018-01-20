@@ -1,15 +1,22 @@
-import { createStore, Reducer, Store } from "redux";
-import rootReducer, { AppState, initialAppState } from "./state";
+import { applyMiddleware, compose, createStore, Reducer, Store } from "redux";
+import { combineEpics, createEpicMiddleware } from "redux-observable";
+import rootReducer, { AppState } from "./state";
+
+import { loadLanguageEpic } from "./i18n/i18n";
 
 export default function configureStore(
-  initialState: AppState | null
+  initialState: AppState
 ): Store<AppState> {
-  const initState = initialState || initialAppState;
+  const rootEpic = combineEpics(loadLanguageEpic);
+  const epicMiddleware = createEpicMiddleware(rootEpic);
+
+  const composeEnhancers =
+    window["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] || compose;
+
   const store = createStore(
     rootReducer,
-    initState,
-    window["__REDUX_DEVTOOLS_EXTENSION__"] &&
-      window["__REDUX_DEVTOOLS_EXTENSION__"]()
+    initialState,
+    composeEnhancers(applyMiddleware(epicMiddleware))
   );
 
   if (module.hot) {
