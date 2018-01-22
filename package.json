@@ -42,6 +42,8 @@
     "app-root-path": "^2.0.1",
     "autodll-webpack-plugin": "^0.3.8",
     "autoprefixer": "^7.2.5",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.12",
     "case-sensitive-paths-webpack-plugin": "^2.1.1",
     "chalk": "^2.3.0",
     "cli-highlight": "1.2.3",

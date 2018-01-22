@@ -86,6 +86,18 @@ module.exports = merge.smart(
       alias: rxPaths()
     },
 
+    module: {
+      rules: [
+        {
+          test: /\.jsx?/,
+          include: [/node_modules\/react/],
+          use: {
+            loader: require.resolve("babel-loader")
+          }
+        }
+      ]
+    },
+
     plugins: [
       // Plugins for optimized caching usage.
       // Used plugins and setup primarily based on https://webpack.js.org/guides/caching/.
