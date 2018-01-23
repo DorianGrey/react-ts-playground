@@ -3,11 +3,12 @@
 const path = require("path");
 const { NoEmitOnErrorsPlugin } = require("webpack");
 const CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
-const HashedModuleIdsPlugin = require("webpack/lib/HashedModuleIdsPlugin");
 const NamedModulesPlugin = require("webpack/lib/NamedModulesPlugin");
+const NamedChunksPlugin = require("webpack/lib/NamedChunksPlugin");
 const UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
 const ModuleConcatenationPlugin = require("webpack/lib/optimize/ModuleConcatenationPlugin");
 
+const NameAllModulesPlugin = require("name-all-modules-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const InlineChunkManifestHtmlWebpackPlugin = require("inline-chunk-manifest-html-webpack-plugin");
 const SWPrecacheWebpackPlugin = require("sw-precache-webpack-plugin");
@@ -15,6 +16,7 @@ const merge = require("webpack-merge");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 const rxPaths = require("rxjs/_esm5/path-mapping");
+const ShakePlugin = require("webpack-common-shake").Plugin;
 
 const commonConfig = require("./config.common");
 const paths = require("../paths");
@@ -91,17 +93,35 @@ module.exports = merge.smart(
       // Plugins for optimized caching usage.
       // Used plugins and setup primarily based on https://webpack.js.org/guides/caching/.
 
-      // For more consistent module IDs
-      // new HashedModuleIdsPlugin(),
-
+      // For more consistent module identifiers.
       new NamedModulesPlugin(),
+      // In case any chunk does NOT yet have a name...
+      new NamedChunksPlugin(chunk => {
+        if (chunk.name) {
+          return chunk.name;
+        }
+        return chunk
+          .mapModules(m => {
+            if (!m.context || !m.request) {
+              return null;
+            }
+            return path.relative(m.context, m.request);
+          })
+          .filter(Boolean)
+          .join("_");
+      }),
+
       // Creates a dynamic vendor chunk by including all entries from the `node_modules` directory.
       new CommonsChunkPlugin({
         name: "vendor",
         minChunks: ({ resource }) => /node_modules/.test(resource)
       }),
-      // Externalizes the application manifest.
-      new CommonsChunkPlugin("manifest"),
+      // Externalizes the application runtime.
+      new CommonsChunkPlugin("runtime"),
+
+      // In case anyone does NOT yet have a name...
+      new NameAllModulesPlugin(),
+
       // Generate a manifest file which contains a mapping of all asset filenames
       // to their corresponding output file so that tools can pick it up without
       // having to parse `index.html`.
@@ -116,6 +136,10 @@ module.exports = merge.smart(
 
       // Plugin to let the whole build fail on any error; i.e. do not tolerate these/
       new NoEmitOnErrorsPlugin(),
+
+      // Improved tree-shaking for CJS modules... at least as far as safely possible.
+      new ShakePlugin(),
+
       // Minify the code.
       new UglifyJsPlugin({
         compress: {
