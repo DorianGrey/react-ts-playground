@@ -4,6 +4,7 @@ const path = require("path");
 const { NoEmitOnErrorsPlugin } = require("webpack");
 const CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 const HashedModuleIdsPlugin = require("webpack/lib/HashedModuleIdsPlugin");
+const NamedModulesPlugin = require("webpack/lib/NamedModulesPlugin");
 const UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
 const ModuleConcatenationPlugin = require("webpack/lib/optimize/ModuleConcatenationPlugin");
 
@@ -91,7 +92,9 @@ module.exports = merge.smart(
       // Used plugins and setup primarily based on https://webpack.js.org/guides/caching/.
 
       // For more consistent module IDs
-      new HashedModuleIdsPlugin(),
+      // new HashedModuleIdsPlugin(),
+
+      new NamedModulesPlugin(),
       // Creates a dynamic vendor chunk by including all entries from the `node_modules` directory.
       new CommonsChunkPlugin({
         name: "vendor",
