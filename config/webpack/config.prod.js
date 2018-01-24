@@ -55,6 +55,8 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
     { publicPath: Array(cssFilename.split("/").length).join("../") }
   : {};
 
+const compatChunks = ["whatwg-fetch", "promise", "object-assign"];
+
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
 // The development configuration is different and lives in a separate file.
@@ -67,7 +69,10 @@ module.exports = merge.smart(
     // You can exclude the *.map files from the build during deployment.
     devtool: shouldUseSourceMap ? "source-map" : false,
     // In production, we only want to load the polyfills and the app code.
-    entry: [require.resolve("../polyfills"), paths.appIndexJsProd],
+    entry: {
+      app: [require.resolve("../polyfills"), paths.appIndexJsProd],
+      browserCompat: path.resolve(paths.appSrc, "browserCompat.js")
+    },
     output: {
       // The build folder.
       path: paths.appBuild,
@@ -114,7 +119,9 @@ module.exports = merge.smart(
       // Creates a dynamic vendor chunk by including all entries from the `node_modules` directory.
       new CommonsChunkPlugin({
         name: "vendor",
-        minChunks: ({ resource }) => /node_modules/.test(resource)
+        minChunks: ({ resource }) =>
+          /node_modules/.test(resource) &&
+          compatChunks.every(e => resource.indexOf(e) < 0)
       }),
       // Externalizes the application runtime.
       new CommonsChunkPlugin("runtime"),

@@ -6,6 +6,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const StyleLintPlugin = require("stylelint-webpack-plugin");
+const HtmlWebpackConditionalAssets = require("./plugins/htmlWebpackConditionalAssets");
 const InterpolateHtmlPlugin = require("react-dev-utils/InterpolateHtmlPlugin");
 const ModuleScopePlugin = require("react-dev-utils/ModuleScopePlugin");
 
@@ -301,6 +302,15 @@ module.exports = function(isDev, env, extractTextPluginOptions) {
       // May manipulate various <script>-attributes. Atm., it only sets "defer" to all script tags.
       new ScriptExtHtmlWebpackPlugin({
         defaultAttribute: "defer"
+      }),
+
+      new HtmlWebpackConditionalAssets({
+        assets: [
+          {
+            chunkName: "browserCompat",
+            condition: `!("fetch" in window && "Promise" in window && "assign" in Object)`
+          }
+        ]
       }),
       // Makes some environment variables available to the JS code, for example:
       // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.
