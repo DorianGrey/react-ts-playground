@@ -16,6 +16,7 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
+    "strictPropertyInitialization": false, // Problematic editor support, so disabled for now.
     "strict": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedParameters": true,
