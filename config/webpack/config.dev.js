@@ -27,7 +27,9 @@ const env = getClientEnvironment(publicUrl);
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.
 // The production configuration is different and lives in a separate file.
-module.exports = merge.smart(commonConfig(true, env, {}), {
+module.exports = merge.smart(commonConfig(true, env), {
+  // Set development mode
+  mode: "development",
   cache: true,
   // You may want 'eval' instead if you prefer to see the compiled output in DevTools.
   // See the discussion in https://github.com/facebookincubator/create-react-app/issues/343.
@@ -76,6 +78,10 @@ module.exports = merge.smart(commonConfig(true, env, {}), {
   },
 
   context: paths.appRoot,
+
+  optimization: {
+    namedModules: true
+  },
 
   plugins: [
     // Speeds up build and rebuild performance drastically.
