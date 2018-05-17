@@ -1,10 +1,7 @@
 import * as React from "react";
 
 import { InjectedIntlProps, injectIntl } from "react-intl";
-import Loadable, {
-  LoadingComponentProps,
-  OptionsWithRender
-} from "react-loadable";
+import * as Loadable from "react-loadable";
 import { Redirect, Route, Switch, withRouter } from "react-router";
 
 import NavigationDrawer from "react-md/lib/NavigationDrawers";
@@ -16,6 +13,8 @@ import CurrentTime from "../currentTime/CurrentTime";
 import LanguagePicker from "../language-picker/LanguagePicker";
 import Loading from "../Loading";
 import NaviLink from "../naviLink";
+import LoadingComponentProps = LoadableExport.LoadingComponentProps;
+import OptionsWithRender = LoadableExport.OptionsWithRender;
 
 function withLoader<T>(loader: () => Promise<T>) {
   return Loadable({

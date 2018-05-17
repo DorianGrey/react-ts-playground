@@ -29,7 +29,8 @@
       "DOM",
       "ES5",
       "ScriptHost",
-      "ES2015.Promise"
+      "ES2015.Promise",
+      "ES2015.Symbol"
     ]
   },
   "exclude": [
