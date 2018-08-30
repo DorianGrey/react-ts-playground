@@ -87,6 +87,7 @@
   },
   "linterOptions": {
     "exclude": [
+      "config/**/*.mjs",
       "node_modules/**/*.ts"
     ]
   }

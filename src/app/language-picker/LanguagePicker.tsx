@@ -1,6 +1,5 @@
-import * as React from "react";
+import React from "react";
 import { InjectedIntlProps, injectIntl } from "react-intl";
-import { IntlAction } from "react-intl-redux";
 import ListItem from "react-md/lib/Lists/ListItem";
 import MenuButton from "react-md/lib/Menus/MenuButton";
 import { connect } from "react-redux";
@@ -20,7 +19,9 @@ const mapStateToProps = (state: AppState) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<IntlAction>) => {
+const mapDispatchToProps = (
+  dispatch: Dispatch<{ type: string; payload: string }>
+) => {
   return {
     setLanguage: (lang: string) => {
       dispatch({ type: LOAD_LANGUAGE, payload: lang });
@@ -61,6 +62,7 @@ function LanguagePicker(props: LanguagePickerProps & InjectedIntlProps) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  injectIntl<never>(LanguagePicker)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(injectIntl(LanguagePicker));

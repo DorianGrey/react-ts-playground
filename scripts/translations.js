@@ -2,11 +2,16 @@
 
 const yaml = require("js-yaml");
 const _ = require("lodash");
-const fs = require("fs");
-const path = require("path");
-const logger = require("log4js").getLogger("translations");
 
-const utils = require("./utils");
+const utils = require("./util/fileUtils");
+const { log } = require("../config/logger");
+
+const defaultOpts = {
+  verbose: false,
+  duplicateThreshold: 5,
+  format: "ts",
+  splitPerLang: false
+};
 
 const parseYaml = file => {
   try {
@@ -83,9 +88,9 @@ const statistics = opts => partials => {
 
     if (_.size(conflictingKeys) > 0) {
       _.each(conflictingKeys, (translations, key) => {
-        logger.error(`Conflict for "${key}":`);
+        log.error(`Conflict for "${key}":`);
         _.each(translations, t => {
-          logger.error(
+          log.error(
             `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.value}`
           );
         });
@@ -96,9 +101,9 @@ const statistics = opts => partials => {
     }
     if (opts.verbose) {
       _.each(duplicatedValues, (translations, value) => {
-        logger.debug(`Duplicated value for "${value}":`);
+        log.debug(`Duplicated value for "${value}":`);
         _.each(translations, t => {
-          logger.debug(
+          log.debug(
             `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.key}`
           );
         });
@@ -106,7 +111,7 @@ const statistics = opts => partials => {
     }
 
     const duplicatedValuesPercent =
-      _.size(duplicatedValues) / translations.length * 100;
+      (_.size(duplicatedValues) / translations.length) * 100;
     if (!_.isUndefined(opts.duplicateThreshold)) {
       if (duplicatedValuesPercent > opts.duplicateThreshold) {
         return Promise.reject(
@@ -118,13 +123,13 @@ const statistics = opts => partials => {
         );
       }
     }
-    logger.debug(
+    log.debug(
       `Translation duplicates: ${_.size(
         duplicatedValues
       )} (${duplicatedValuesPercent.toFixed(1)}%)`
     );
   } else {
-    logger.debug(`Translation duplicates: 0 / 0%; There are no translations!`);
+    log.debug(`Translation duplicates: 0 / 0%; There are no translations!`);
   }
   return partials;
 };
@@ -148,10 +153,21 @@ const formatters = {
   }
 };
 
+/**
+ * Function to compile a set of translations in .yml format to a typescript file.
+ *
+ * @param src The files to pick up for compilation. In most cases, this is a glob.
+ * @param dest The destination file.
+ * @param opts Specific build options. Atm., the following are supported:
+ *             "verbose": Log some additional information.
+ *             "duplicateThreshold": Limit the allowed translation duplication (in percent).
+ */
 exports.compile = (src, dest, opts) => {
+  opts = _.defaults(opts, { ...defaultOpts });
+
   // Determine output format / file extension.
   if (!(opts.format in formatters)) {
-    console.warn(
+    log.warn(
       `Output format=${opts.format} is not supported. Falling back to 'ts'.`
     );
     opts.format = "ts";
@@ -179,7 +195,7 @@ exports.compile = (src, dest, opts) => {
         const data = Object.keys(translations).map(lang => {
           const formatted = formatters[opts.format](translations[lang]);
           const target = `${dest}.${lang}.${opts.format}`;
-          utils.writeFile(target, formatted);
+          return utils.writeFile(target, formatted);
         });
         return Promise.all(data);
       } else {
@@ -188,4 +204,37 @@ exports.compile = (src, dest, opts) => {
         return utils.writeFile(dest, formatted);
       }
     });
+};
+
+/**
+ * Creates a watcher for compiling the translations on every change to them.
+ * Note that incremental builds are not possible, so it will simply execute the
+ * `compile` function above.
+ *
+ * @param src The files to pick up for compilation. In most cases, this is a glob.
+ * @param dest The destination file.
+ * @param opts Specific build options. Atm., the following are supported:
+ *             "verbose": Log some additional information.
+ *             "duplicateThreshold": Limit the allowed translation duplication (in percent).
+ *             "chokidarOpts": Options to be forwarded to chokidar.
+ * @return The watcher created by `chokidar`.
+ */
+exports.watch = (src, dest, opts) => {
+  opts = _.defaults(opts, { ...defaultOpts });
+  const watch = require("./translations/watch");
+  return watch(
+    src,
+    () => {
+      exports
+        .compile(src, dest, opts)
+        .then(
+          () => log.debug(`Translations written to ${dest}`),
+          err => log.error(`Error processing translation: ${err}`)
+        );
+    },
+    {
+      events: ["change", "unlink"],
+      chokidarOpts: opts.chokidarOpts
+    }
+  );
 };

@@ -1,4 +1,4 @@
-import * as de from "react-intl/locale-data/de";
+import de from "react-intl/locale-data/de";
 import translationsDe from "../../../generated/translations.de";
 import { LanguagePack } from "./languagePack";
 

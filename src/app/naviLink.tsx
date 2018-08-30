@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { FormattedMessage } from "react-intl";
 import FontIcon from "react-md/lib/FontIcons/FontIcon";
 import ListItem from "react-md/lib/Lists/ListItem";

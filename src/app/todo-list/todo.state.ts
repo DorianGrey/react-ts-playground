@@ -1,4 +1,4 @@
-import { List } from "immutable";
+import findIndex from "lodash-es/findIndex";
 import { Action } from "redux";
 
 import { TodoModel } from "./todo.model";
@@ -10,7 +10,7 @@ interface TodoAction<P> extends Action {
 export type TodoAddAction = TodoAction<TodoModel>;
 export type TodoUpdateAction = TodoAction<TodoModel>;
 export type TodoDeleteAction = TodoAction<{ id: number }>;
-export type TodoState = List<TodoModel>;
+export type TodoState = TodoModel[];
 
 const ACTION_TYPES = {
   ADD_TODO: "ADD_TODO",
@@ -49,7 +49,7 @@ export function DeleteTodo(id: number) {
   };
 }
 
-export const initialTodoList: TodoState = List.of<TodoModel>(
+export const initialTodoList: TodoState = [
   {
     id: 1,
     headline: "Test todo",
@@ -64,7 +64,7 @@ export const initialTodoList: TodoState = List.of<TodoModel>(
     deadline: new Date(Date.now() + 60 * 60 * 1000),
     created: new Date()
   }
-);
+];
 
 export const todosReducer = (
   state: TodoState = initialTodoList,
@@ -72,19 +72,19 @@ export const todosReducer = (
 ) => {
   switch (action.type) {
     case ACTION_TYPES.ADD_TODO:
-      return state.push((action as TodoAddAction).payload);
+      return [...state, action.payload];
     case ACTION_TYPES.UPDATE_TODO:
       const act = action as TodoUpdateAction;
-      const oldIndex = state.findIndex(e => !!e && e.id === act.payload.id);
+      const oldIndex = findIndex(state, e => !!e && e.id === act.payload.id);
       if (oldIndex >= 0) {
-        return state.set(oldIndex, act.payload);
+        const newState = [...state];
+        newState[oldIndex] = act.payload;
+        return newState;
       } else {
         return state;
       }
     case ACTION_TYPES.DELETE_TODO:
-      return state.filter(
-        (e: TodoModel) => e.id !== (action as TodoDeleteAction).payload.id
-      );
+      return state.filter((e: TodoModel) => e.id !== action.payload.id);
     default:
       return state;
   }

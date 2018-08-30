@@ -1,6 +1,6 @@
 import "./TestRoute1.scss";
 
-import * as React from "react";
+import React from "react";
 import { FormattedMessage } from "react-intl";
 
 import logo from "../../../importedAssets/logo.svg";

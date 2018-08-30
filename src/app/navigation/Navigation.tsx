@@ -1,7 +1,7 @@
-import * as React from "react";
+import React from "react";
 
 import { InjectedIntlProps, injectIntl } from "react-intl";
-import * as Loadable from "react-loadable";
+import Loadable from "react-loadable";
 import { Redirect, Route, Switch, withRouter } from "react-router";
 
 import NavigationDrawer from "react-md/lib/NavigationDrawers";
@@ -93,4 +93,4 @@ class Navigation extends React.Component<any & InjectedIntlProps, any> {
   }
 }
 
-export default withRouter(injectIntl(Navigation));
+export default withRouter(injectIntl(Navigation) as any); // Typing workaround ...

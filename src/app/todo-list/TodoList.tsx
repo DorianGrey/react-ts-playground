@@ -1,11 +1,11 @@
 import "./TodoList.scss";
 
-import * as React from "react";
+import React from "react";
 import { FormattedMessage, InjectedIntlProps, injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
-import { List } from "immutable";
+import find from "lodash-es/find";
 import noop from "lodash-es/noop";
 
 import FontIcon from "react-md/lib/FontIcons/FontIcon";
@@ -24,7 +24,7 @@ import TodoEntry from "./TodoEntry";
 
 // Todo list.
 export interface TodoListProps {
-  todos: List<TodoModel>;
+  todos: TodoModel[];
   onTodoAdd: (headline: string, description: string, deadline: Date) => void;
   onTodoUpdate: (todo: TodoModel) => void;
   onTodoDelete: (id: number) => void;
@@ -47,7 +47,7 @@ const mapDispatchToProps = (
       dispatch(UpdateTodo(updated));
     },
     onTodoDelete: (id: number) => {
-      dispatch(DeleteTodo(id));
+      (dispatch as Dispatch<TodoDeleteAction>)(DeleteTodo(id));
     }
   };
 };
@@ -76,7 +76,7 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
     this.setState({ showNewTodoBlock: false });
 
     if (id) {
-      const oldTodo = this.props.todos.find(e => !!e && e.id === id);
+      const oldTodo = find(this.props.todos, e => !!e && e.id === id);
 
       this.props.onTodoUpdate({
         ...oldTodo,
@@ -114,12 +114,17 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
         <FontIcon>add_circle_outline</FontIcon>
       </div>
     );
+    // Do this up-front to be able to use the forced cast easier.
+    const todoList = this.props.todos.map(m =>
+      this.createTodoEntry(m as TodoModel)
+    );
+
     return (
       <div className="todo-list">
         <h2>
           <FormattedMessage id="todos.list" />
         </h2>
-        {this.props.todos.map(this.createTodoEntry)}
+        {todoList}
         {displayContent}
       </div>
     );
@@ -156,7 +161,8 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
 // Split HOC generation to multiple values to attempt to work around a RHL issue
 // regarding HOC unwrapping...
 const withIntlInjected = injectIntl(TodoList);
-const connected = connect(mapStateToProps, mapDispatchToProps)(
-  withIntlInjected
-);
+const connected = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withIntlInjected);
 export default connected;

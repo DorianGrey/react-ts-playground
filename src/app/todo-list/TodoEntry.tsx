@@ -1,5 +1,5 @@
 // tslint:disable max-classes-per-file
-import * as React from "react";
+import React from "react";
 import {
   FormattedDate,
   FormattedMessage,
@@ -42,7 +42,8 @@ function ReadOnlyTodo(
       <CardText expandable>
         <p>{todo.description}</p>
         <p>
-          <FormattedMessage id="todos.entry.created" />&nbsp;
+          <FormattedMessage id="todos.entry.created" />
+          &nbsp;
           <FormattedDate
             value={todo.created as Date}
             year="numeric"
@@ -54,7 +55,8 @@ function ReadOnlyTodo(
           />
         </p>
         <p>
-          <FormattedMessage id="todos.entry.deadline" />&nbsp;
+          <FormattedMessage id="todos.entry.deadline" />
+          &nbsp;
           <FormattedDate
             value={todo.deadline as Date}
             year="numeric"
