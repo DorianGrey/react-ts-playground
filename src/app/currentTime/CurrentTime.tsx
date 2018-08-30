@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { FormattedDate } from "react-intl";
 
 export default class CurrentTime extends React.Component<any, any> {

@@ -8,7 +8,7 @@ export default function configureStore(
   initialState: AppState
 ): Store<AppState> {
   const rootEpic = combineEpics(loadLanguageEpic);
-  const epicMiddleware = createEpicMiddleware(rootEpic);
+  const epicMiddleware = createEpicMiddleware();
 
   const composeEnhancers =
     window["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] || compose;
@@ -18,6 +18,8 @@ export default function configureStore(
     initialState,
     composeEnhancers(applyMiddleware(epicMiddleware))
   );
+
+  epicMiddleware.run(rootEpic);
 
   if (module.hot) {
     module.hot.accept("./state", () => {

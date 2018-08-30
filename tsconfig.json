@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
-    "outDir": "build/dist",
-    "target": "es5",
+    "outDir": "build",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "target": "esnext",
     "module": "esnext",
     "forceConsistentCasingInFileNames": true,
     "emitDecoratorMetadata": true,
@@ -24,27 +26,21 @@
     "typeRoots": [
       "node_modules/@types"
     ],
-    "jsx": "react",
+    "jsx": "preserve",
     "lib": [
-      "DOM",
-      "ES5",
-      "ScriptHost",
-      "ES2015.Promise",
-      "ES2015.Symbol"
+      "dom",
+      "es5",
+      "scripthost",
+      "es2015.iterable",
+      "es2015.promise",
+      "es2015.proxy"
     ]
   },
   "exclude": [
     "node_modules",
     "build",
     "scripts",
-    "acceptance-tests",
-    "webpack",
-    "jest",
     "src/setupTests.ts",
     "src/generated"
-  ],
-  "types": [
-    "typePatches"
-  ],
-  "skipBabel": true
+  ]
 }

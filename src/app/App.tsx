@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { IntlProvider } from "react-intl-redux";
 
 // Note: We have to import these from different packages to always get the proper typings ... DAFUQ?!

@@ -1,6 +1,6 @@
 import "./404.scss";
 
-import * as React from "react";
+import React from "react";
 
 export default () => {
   return (

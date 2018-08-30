@@ -3,10 +3,8 @@ import { updateIntl } from "react-intl-redux";
 import { AnyAction } from "redux";
 import { ofType } from "redux-observable";
 
-import { Observable } from "rxjs/Observable";
-import { fromPromise } from "rxjs/observable/fromPromise";
-import { map } from "rxjs/operators/map";
-import { switchMap } from "rxjs/operators/switchMap";
+import { from, Observable } from "rxjs";
+import { map, switchMap } from "rxjs/operators";
 
 import { LanguagePack } from "./languagePacks/languagePack";
 
@@ -44,7 +42,7 @@ export const loadLanguageEpic = (action$: Observable<AnyAction>) =>
   action$.pipe(
     ofType(LOAD_LANGUAGE),
     switchMap((action: AnyAction) =>
-      fromPromise(loadLanguagePack(action.payload as string))
+      from(loadLanguagePack(action.payload as string))
     ),
     map((langPack: LanguagePack) =>
       updateIntl({
