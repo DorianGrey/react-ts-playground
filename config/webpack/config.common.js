@@ -2,7 +2,7 @@ const autoprefixer = require("autoprefixer");
 const path = require("path");
 const { DefinePlugin, IgnorePlugin } = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const StyleLintPlugin = require("stylelint-webpack-plugin");
@@ -88,7 +88,7 @@ const RULE_IMAGES = {
   }
 };
 
-const RULE_SCSS = function(isDev, extractTextPluginOptions) {
+const RULE_SCSS = function(isDev) {
   // Development mode docs:
   // "postcss" loader applies autoprefixer to our CSS.
   // "css" loader resolves paths in CSS and adds assets as dependencies.
@@ -102,7 +102,7 @@ const RULE_SCSS = function(isDev, extractTextPluginOptions) {
   // "css" loader resolves paths in CSS and adds assets as dependencies.
   // "style" loader normally turns CSS into JS modules injecting <style>,
   // but unlike in development configuration, we do something different.
-  // `ExtractTextPlugin` first applies the "postcss" and "css" loaders
+  // `MiniCssExtractPlugin` first applies the "postcss" and "css" loaders
   // (second argument), then grabs the result CSS and puts it into a
   // separate file in our build process. This way we actually ship
   // a single CSS file in production instead of JS code injecting <style>
@@ -148,24 +148,12 @@ const RULE_SCSS = function(isDev, extractTextPluginOptions) {
     }
   ];
 
-  const result = { test: /\.scss$/ };
-  const styleLoader = require.resolve("style-loader");
-
-  if (isDev) {
-    result.use = [styleLoader].concat(scssLoaderChain);
-  } else {
-    result.use = ExtractTextPlugin.extract(
-      Object.assign(
-        {
-          fallback: styleLoader,
-          use: scssLoaderChain
-        },
-        extractTextPluginOptions
-      )
-    );
-  }
-
-  return result;
+  return {
+    test: /\.scss$/,
+    use: [
+      isDev ? require.resolve("style-loader") : MiniCssExtractPlugin.loader
+    ].concat(scssLoaderChain)
+  };
 };
 
 const RULE_WEBFONTS = function() {
@@ -248,7 +236,7 @@ const nodeOptions = {
 /**
  * Export the target config.
  */
-module.exports = function(isDev, env, extractTextPluginOptions) {
+module.exports = function(isDev, env) {
   /*
     There is a curious glitch in the stylelint plugin:
     - In dev (watch) mode, if quiet is set to `false`, every output is generated twice.
@@ -281,7 +269,7 @@ module.exports = function(isDev, env, extractTextPluginOptions) {
             RULE_EXT_JS,
             RULE_EXT_TSX(isDev),
             RULE_IMAGES,
-            RULE_SCSS(isDev, extractTextPluginOptions),
+            RULE_SCSS(isDev),
             RULE_WEBFONTS(),
             RULE_COVER_NON_MATCHED
           ]
@@ -290,12 +278,19 @@ module.exports = function(isDev, env, extractTextPluginOptions) {
         // Remember to add the new extension(s) to the "file" loader exclusion list.
       ]
     },
+
+    optimization: {
+      noEmitOnErrors: true,
+      namedChunks: true
+    },
+
     plugins: [
       // Makes some environment variables available in index.html.
       // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
       // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
       // In development, this will be an empty string.
-      new InterpolateHtmlPlugin(env.raw),
+      // TODO: Re-enabled for webpack 4 once available.
+      // new InterpolateHtmlPlugin(env.raw),
       // Generates an `index.html` file with the <script> injected.
       PLUGIN_HTML(isDev),
       // May manipulate various <script>-attributes. Atm., it only sets "defer" to all script tags.
