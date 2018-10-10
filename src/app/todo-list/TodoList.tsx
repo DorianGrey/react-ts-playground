@@ -98,7 +98,9 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
         body: headline
       },
       5000
-    );
+    ).catch(error => {
+      console.error("Could not send notification:", error);
+    });
   }
 
   render() {
