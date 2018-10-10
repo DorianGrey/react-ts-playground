@@ -6,7 +6,7 @@ function requestNotificationPermission(): void {
   // Let's check if the browser supports notifications
   if (!("Notification" in window)) {
     permissionCallback = Promise.reject<string>("unavailable");
-  } else if (window["Notification"].permission !== "denied") {
+  } else if (Notification.permission !== "denied") {
     // Otherwise, we need to ask the user for permission
     permissionCallback = Notification.requestPermission();
   }

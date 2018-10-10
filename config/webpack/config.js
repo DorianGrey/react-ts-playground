@@ -8,7 +8,8 @@ const {
 const TerserPlugin = require("terser-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
-const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
+// FIXME: Disabled temporarily - reason: https://stackoverflow.com/questions/52566349/referenceerror-undefinedcreateprovider-is-not-defined
+// const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCssnanoPlugin = require("@intervolga/optimize-cssnano-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -345,7 +346,7 @@ module.exports = function() {
           path.resolve(info.absoluteResourcePath).replace(/\\/g, "/")
         )
         .end()
-      .plugin("hard-source")
+      /*.plugin("hard-source")
         .use(HardSourceWebpackPlugin, [
           {
             info: {
@@ -353,7 +354,7 @@ module.exports = function() {
             }
           }
         ])
-        .end()
+        .end()*/
       .plugin("hot")
         .use(HotModuleReplacementPlugin)
         .end()
@@ -388,8 +389,9 @@ module.exports = function() {
       .removeEmptyChunks(true)
       .runtimeChunk({ name: "runtime" })
       .minimize(true)
-      .minimizer([
-        new TerserPlugin({
+      .minimizer("js")
+      .use(TerserPlugin, [
+        {
           terserOptions: {
             compress: {
               warnings: false,
@@ -412,7 +414,7 @@ module.exports = function() {
           sourceMap: true,
           cache: true,
           parallel: true
-        })
+        }
       ]);
 
     // Extract styles
