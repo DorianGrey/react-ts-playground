@@ -112,18 +112,22 @@
     "test": "node scripts/test.js",
     "inspect": "node scripts/inspect.js",
     "format": "prettier --write \"{src,scripts,config}/**/*.{js,ts,tsx}\"",
-    "lint": "tslint -c tslint.json -p tsconfig.json --fix && stylelint \"src/**/*.scss\""
+    "lint": "tslint -c tslint.json -p tsconfig.json --fix -t codeFrame && stylelint \"src/**/*.scss\" --fix"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint && lint-staged",
+      "pre-commit": "lint-staged",
       "pre-push": "yarn test:ci"
     }
   },
   "lint-staged": {
     "{src,scripts,config}/**/*.{js,ts,tsx}": [
+      "tslint -c tslint.json -p tsconfig.json --fix -t codeFrame",
       "prettier --write",
       "git add"
+    ],
+    "assets/styles/**/*.scss": [
+      "stylelint --fix"
     ]
   },
   "resolutions": {
