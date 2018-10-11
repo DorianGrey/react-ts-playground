@@ -1,27 +1,43 @@
 const path = require("path");
 const Config = require("webpack-chain");
-const {
-  EnvironmentPlugin,
-  HotModuleReplacementPlugin,
-  IgnorePlugin
-} = require("webpack");
-const TerserPlugin = require("terser-webpack-plugin");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
-const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
-// FIXME: Disabled temporarily - reason: https://stackoverflow.com/questions/52566349/referenceerror-undefinedcreateprovider-is-not-defined
-// const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCssnanoPlugin = require("@intervolga/optimize-cssnano-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const { GenerateSW } = require("workbox-webpack-plugin");
-const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
-const WebpackChunkHash = require("webpack-chunk-hash");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
 const objectHash = require("node-object-hash");
 const rxPaths = require("rxjs/_esm5/path-mapping");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+// FIXME: Disabled temporarily - reason: https://stackoverflow.com/questions/52566349/referenceerror-undefinedcreateprovider-is-not-defined
+// const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
+
+// Plugins resolvable via path, i.e. require.resolve - is faster than a full require(...)
+// esp. for those used only under particular circumstances.
+const EnvironmentPlugin = require.resolve("webpack/lib/EnvironmentPlugin");
+const HotModuleReplacementPlugin = require.resolve(
+  "webpack/lib/HotModuleReplacementPlugin"
+);
+const IgnorePlugin = require.resolve("webpack/lib/IgnorePlugin");
+const BundleAnalyzerPlugin = require.resolve(
+  "webpack-bundle-analyzer/lib/BundleAnalyzerPlugin"
+);
+const CaseSensitivePathsPlugin = require.resolve(
+  "case-sensitive-paths-webpack-plugin"
+);
+const TerserPlugin = require.resolve("terser-webpack-plugin");
+const OptimizeCssnanoPlugin = require.resolve(
+  "@intervolga/optimize-cssnano-plugin"
+);
+const HtmlWebpackPlugin = require.resolve("html-webpack-plugin");
+const ScriptExtHtmlWebpackPlugin = require.resolve(
+  "script-ext-html-webpack-plugin"
+);
+const ForkTsCheckerWebpackPlugin = require.resolve(
+  "fork-ts-checker-webpack-plugin"
+);
+const FriendlyErrorsWebpackPlugin = require.resolve(
+  "friendly-errors-webpack-plugin"
+);
+const WebpackChunkHash = require.resolve("webpack-chunk-hash");
+const CopyWebpackPlugin = require.resolve("copy-webpack-plugin");
+const CleanWebpackPlugin = require.resolve("clean-webpack-plugin");
+const GenerateSW = require("workbox-webpack-plugin/build/generate-sw");
 
 const BuildStatsFormatterPlugin = require("./plugins/BuildStatsFormatterPlugin");
 const loadingAnimation = require("../../scripts/util/renderLoading")().css;

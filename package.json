@@ -121,8 +121,12 @@
     }
   },
   "lint-staged": {
-    "{src,scripts,config}/**/*.{js,ts,tsx}": [
+    "{src,scripts,config}/**/*.{ts,tsx}": [
       "tslint -c tslint.json -p tsconfig.json --fix -t codeFrame",
+      "prettier --write",
+      "git add"
+    ],
+    "{src,scripts,config}/**/*.js": [
       "prettier --write",
       "git add"
     ],
