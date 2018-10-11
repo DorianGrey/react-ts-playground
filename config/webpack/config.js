@@ -187,12 +187,14 @@ module.exports = function() {
       .use("ts-loader")
         .loader(require.resolve("ts-loader"))
         .options({
-          // disable type checker - we will use it in fork plugin
-          transpileOnly: true,
+          // disable type checker in development mode. - we will use it in fork plugin
+          transpileOnly: !isProd,
           silent: true
         })
         .end()
-      .include.add(paths.appSrc).end()
+      .include
+        .add(paths.appSrc)
+        .end();
 
   // Setup loader list with fallback
   // prettier-ignore
@@ -258,17 +260,6 @@ module.exports = function() {
     {
       additionalTransformers: [transformer],
       additionalFormatters: [formatter]
-    }
-  ]);
-
-  // Setup parallel typechecker
-  config.plugin("fork-ts-checker").use(ForkTsCheckerWebpackPlugin, [
-    {
-      watch: paths.appSrc,
-      tsconfig: paths.appTsConfig,
-      async: !isProd,
-      tslint: false,
-      formatter: "codeframe"
     }
   ]);
 
@@ -371,6 +362,18 @@ module.exports = function() {
           }
         ])
         .end()*/
+        // Setup parallel typechecker - not for production, is handled by ts-loader on it.
+      .plugin("fork-ts-checker")
+        .use(ForkTsCheckerWebpackPlugin, [
+          {
+            watch: paths.appSrc,
+            tsconfig: paths.appTsConfig,
+            async: !isProd,
+            tslint: false,
+            formatter: "codeframe"
+          }
+        ])
+        .end()
       .plugin("hot")
         .use(HotModuleReplacementPlugin)
         .end()
