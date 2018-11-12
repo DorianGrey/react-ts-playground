@@ -383,8 +383,8 @@ class BuildStatsFormatterPlugin {
       const colorer = assetTooLarge
         ? chalk.yellow
         : assetMayBeExtractedChunk
-          ? chalk.grey
-          : chalk.cyan;
+        ? chalk.grey
+        : chalk.cyan;
 
       const assetName = colorer(
         alignPad(asset.name, longestFileNameSize - (asset.folder.length + 1))

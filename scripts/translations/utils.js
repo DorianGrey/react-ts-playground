@@ -14,26 +14,19 @@ module.exports = {
   },
   readFile(src) {
     return new Promise((resolve, reject) =>
-      fs.readFile(
-        src,
-        "utf-8",
-        (e, content) => (e ? reject(e) : resolve(content))
+      fs.readFile(src, "utf-8", (e, content) =>
+        e ? reject(e) : resolve(content)
       )
     );
   },
   writeFile(dest, content, options) {
     return new Promise((resolve, reject) =>
-      mkdirp(
-        path.dirname(dest),
-        e =>
-          e
-            ? reject(e)
-            : fs.writeFile(
-                dest,
-                content,
-                options || {},
-                e => (e ? reject(e) : resolve())
-              )
+      mkdirp(path.dirname(dest), e =>
+        e
+          ? reject(e)
+          : fs.writeFile(dest, content, options || {}, e =>
+              e ? reject(e) : resolve()
+            )
       )
     );
   }
