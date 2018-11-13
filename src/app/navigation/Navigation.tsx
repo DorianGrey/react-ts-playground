@@ -1,7 +1,6 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 
 import { InjectedIntlProps, injectIntl } from "react-intl";
-import Loadable from "react-loadable";
 import { Redirect, Route, Switch, withRouter } from "react-router";
 
 import NavigationDrawer from "react-md/lib/NavigationDrawers";
@@ -13,28 +12,28 @@ import CurrentTime from "../currentTime/CurrentTime";
 import LanguagePicker from "../language-picker/LanguagePicker";
 import Loading from "../Loading";
 import NaviLink from "../naviLink";
-import LoadingComponentProps = LoadableExport.LoadingComponentProps;
-import OptionsWithRender = LoadableExport.OptionsWithRender;
 
-function withLoader<T>(loader: () => Promise<T>) {
-  return Loadable({
-    loader,
-    loading: Loading,
-    render(loaded: any, props: any) {
-      const Component = loaded.default;
-      return <Component {...props} />;
-    }
-  } as OptionsWithRender<LoadingComponentProps, any>);
+// TODO: Some more precise typing would be useful here...
+function WaitingComponent(Component: any) {
+  return (props: any) => (
+    <Suspense fallback={<Loading />}>
+      <Component {...props} />
+    </Suspense>
+  );
 }
 
-const AsyncTestRoute1: any = withLoader(() =>
-  import(/* webpackChunkName: "testRoute1" */ "../routes/testRoute1/TestRoute1")
+const AsyncTestRoute1 = WaitingComponent(
+  lazy(() =>
+    import(/* webpackChunkName: "testRoute1" */ "../routes/testRoute1/TestRoute1")
+  )
 );
-const AsyncTestRoute2: any = withLoader(() =>
-  import(/* webpackChunkName: "todos" */ "../todo-list/TodoList")
+const AsyncTestRoute2 = WaitingComponent(
+  lazy(() => import(/* webpackChunkName: "todos" */ "../todo-list/TodoList"))
 );
-const AsyncParseParamsTestRoute: any = withLoader(() =>
-  import(/* webpackChunkName: "parseParamTest" */ "../routes/parseParams/ParseParamsTestRoute")
+const AsyncParseParamsTestRoute = WaitingComponent(
+  lazy(() =>
+    import(/* webpackChunkName: "parseParamTest" */ "../routes/parseParams/ParseParamsTestRoute")
+  )
 );
 
 const navItems = [
@@ -83,7 +82,7 @@ class Navigation extends React.Component<any & InjectedIntlProps, any> {
           />
           <Route
             path="/lazy-test/:id"
-            component={AsyncParseParamsTestRoute}
+            component={WaitingComponent(AsyncParseParamsTestRoute)}
             location={location}
           />
           <Route component={NotFound} />
