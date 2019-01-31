@@ -34,9 +34,7 @@ export function sendNotification(
   }
 }
 
-export default function NotificationProvider(
-  props: Readonly<{ children?: React.ReactNode }>
-) {
+export default function NotificationProvider(props: { children: JSX.Element }) {
   requestNotificationPermission();
 
   return React.Children.only(props.children);
