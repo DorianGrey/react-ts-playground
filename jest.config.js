@@ -2,6 +2,7 @@ const babelConfig = require("./babel.config");
 babelConfig.plugins.push("@babel/plugin-transform-modules-commonjs");
 
 module.exports = {
+  preset: "ts-jest",
   collectCoverageFrom: [
     "src/**/*.{js,jsx,ts,tsx}",
     "!src/**/*.spec.{js,jsx,ts,tsx}"
@@ -33,10 +34,12 @@ module.exports = {
   setupFiles: [
     "<rootDir>/config/jest/polyfills.js"
   ],
-  setupTestFrameworkScriptFile: "<rootDir>config/jest/testSetup.ts",
+  setupFilesAfterEnv: [
+    "<rootDir>config/jest/testSetup.ts",
+  ],
   testMatch: [
     "<rootDir>/src/**/__tests__/**/*.ts?(x)",
-    "<rootDir>/src/**/?(*.)(spec|test).ts?(x)"
+    "<rootDir>/src/**/*.{spec,test}.{ts,tsx}"
   ],
   testEnvironment: "jsdom",
   testURL: "http://localhost",

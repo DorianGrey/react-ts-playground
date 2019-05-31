@@ -36,7 +36,7 @@ const FriendlyErrorsWebpackPlugin = require.resolve(
 );
 const WebpackChunkHash = require.resolve("webpack-chunk-hash");
 const CopyWebpackPlugin = require.resolve("copy-webpack-plugin");
-const CleanWebpackPlugin = require.resolve("clean-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const GenerateSW = require("workbox-webpack-plugin/build/generate-sw");
 
 const BuildStatsFormatterPlugin = require("./plugins/BuildStatsFormatterPlugin");
@@ -472,13 +472,11 @@ module.exports = function() {
     ]);
 
     config.plugin("clean").use(CleanWebpackPlugin, [
-      [paths.appBuild],
       {
-        root: paths.resolveApp(),
         verbose: false,
         // Required to get the `BuildStatsFormatterPlugin` working correctly - otherwise,
         // it could not pick up the previous output file paths.
-        beforeEmit: true
+        cleanOnceBeforeBuildPatterns: true
       }
     ]);
 

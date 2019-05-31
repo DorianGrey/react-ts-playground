@@ -64,7 +64,6 @@
     "no-string-literal": false,
     "no-submodule-imports": false,
     "no-switch-case-fall-through": true,
-    "no-use-before-declare": true,
     "no-var-keyword": true,
     "no-var-requires": true,
     "object-literal-sort-keys": false,
