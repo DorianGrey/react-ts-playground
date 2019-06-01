@@ -2,7 +2,13 @@ import React from "react";
 
 import { InjectedIntlProps, injectIntl } from "react-intl";
 import Loadable from "react-loadable";
-import { Redirect, Route, Switch, withRouter } from "react-router";
+import {
+  Redirect,
+  Route,
+  Switch,
+  withRouter,
+  RouteComponentProps
+} from "react-router";
 
 import NavigationDrawer from "react-md/lib/NavigationDrawers";
 
@@ -13,28 +19,33 @@ import CurrentTime from "../currentTime/CurrentTime";
 import LanguagePicker from "../language-picker/LanguagePicker";
 import Loading from "../Loading";
 import NaviLink from "../naviLink";
-import LoadingComponentProps = LoadableExport.LoadingComponentProps;
-import OptionsWithRender = LoadableExport.OptionsWithRender;
 
-function withLoader<T>(loader: () => Promise<T>) {
+type T1 = typeof import(/* webpackChunkName: "testRoute1" */ "../routes/testRoute1/TestRoute1");
+type T2 = typeof import(/* webpackChunkName: "todos" */ "../todo-list/TodoList");
+type T3 = typeof import(/* webpackChunkName: "parseParamTest" */ "../routes/parseParams/ParseParamsTestRoute");
+
+function withLoader(loader: () => Promise<T1 | T2 | T3>) {
   return Loadable({
     loader,
     loading: Loading,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     render(loaded: any, props: any) {
       const Component = loaded.default;
       return <Component {...props} />;
     }
-  } as OptionsWithRender<LoadingComponentProps, any>);
+  });
 }
 
-const AsyncTestRoute1: any = withLoader(() =>
+const AsyncTestRoute1 = withLoader(() =>
   import(/* webpackChunkName: "testRoute1" */ "../routes/testRoute1/TestRoute1")
 );
-const AsyncTestRoute2: any = withLoader(() =>
+const AsyncTestRoute2 = withLoader(() =>
   import(/* webpackChunkName: "todos" */ "../todo-list/TodoList")
 );
-const AsyncParseParamsTestRoute: any = withLoader(() =>
-  import(/* webpackChunkName: "parseParamTest" */ "../routes/parseParams/ParseParamsTestRoute")
+const AsyncParseParamsTestRoute = withLoader(() =>
+  import(
+    /* webpackChunkName: "parseParamTest" */ "../routes/parseParams/ParseParamsTestRoute"
+  )
 );
 
 const navItems = [
@@ -58,8 +69,14 @@ const navItems = [
 const navigationItems = navItems.map(p => <NaviLink {...p} key={p.to} />);
 
 // TODO: Attempt to get a more detailed typing ...
-class Navigation extends React.Component<any & InjectedIntlProps, any> {
-  constructor(props: any, context: any) {
+class Navigation extends React.Component<
+  InjectedIntlProps & RouteComponentProps<string | number>,
+  unknown
+> {
+  constructor(
+    props: InjectedIntlProps & RouteComponentProps<string | number>,
+    context: unknown
+  ) {
     super(props, context);
   }
 
@@ -93,4 +110,4 @@ class Navigation extends React.Component<any & InjectedIntlProps, any> {
   }
 }
 
-export default withRouter(injectIntl(Navigation) as any); // Typing workaround ...
+export default withRouter(injectIntl(Navigation));

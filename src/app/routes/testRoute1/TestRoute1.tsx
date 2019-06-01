@@ -1,11 +1,11 @@
 import "./TestRoute1.scss";
 
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { FormattedMessage } from "react-intl";
 
 import logo from "../../../importedAssets/logo.svg";
 
-export default () => (
+export const TestRoute1: FunctionComponent = () => (
   <div>
     <h2>TestRoute 1</h2>
     <div className="App">
@@ -18,3 +18,5 @@ export default () => (
     </div>
   </div>
 );
+
+export default TestRoute1;

@@ -1,0 +1,13 @@
+{
+    "src/**/*.{ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "{scripts,config}/**/*.js": [
+      "prettier --write",
+      "git add"
+    ],
+    "assets/styles/**/*.scss": [
+      "stylelint --fix"
+    ]
+  }

@@ -25,6 +25,6 @@ export function initialAppState(messages: Translations): AppState {
 }
 
 export default combineReducers<AppState>({
-  todos: todosReducer as Reducer<any>,
-  intl: intlReducer as Reducer<any>
+  todos: todosReducer as Reducer,
+  intl: intlReducer as Reducer
 });

@@ -16,7 +16,7 @@ export interface AppProps {
 }
 
 // Only use text contents for intl formatting.
-function Fragment(props: any) {
+function Fragment(props: { children: string }) {
   return props.children;
 }
 

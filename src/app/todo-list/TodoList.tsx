@@ -52,12 +52,15 @@ const mapDispatchToProps = (
   };
 };
 
-class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
+class TodoList extends React.Component<
+  TodoListProps & InjectedIntlProps,
+  unknown
+> {
   state = {
     showNewTodoBlock: false
   };
 
-  constructor(props: TodoListProps & InjectedIntlProps, context: any) {
+  constructor(props: TodoListProps & InjectedIntlProps, context: unknown) {
     super(props, context);
 
     this.createTodo = this.createTodo.bind(this);
@@ -78,13 +81,18 @@ class TodoList extends React.Component<TodoListProps & InjectedIntlProps, any> {
     if (id) {
       const oldTodo = find(this.props.todos, e => !!e && e.id === id);
 
+      // Should neven happen, but just in case...
+      if (!oldTodo) {
+        return;
+      }
+
       this.props.onTodoUpdate({
         ...oldTodo,
         id,
         headline,
         description,
         deadline
-      } as TodoModel);
+      });
     } else {
       this.props.onTodoAdd(headline, description, deadline);
     }

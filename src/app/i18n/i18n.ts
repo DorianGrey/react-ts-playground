@@ -16,15 +16,16 @@ function registerLocaleData(module: { default: LanguagePack }): LanguagePack {
 export const BROWSER_LANGUAGE = navigator.language.slice(0, 2);
 
 export function loadLanguagePack(lang: string): Promise<LanguagePack> {
+  // eslint-disable-next-line sonarjs/no-small-switch
   switch (lang) {
     case "de":
-      return import(/* webpackChunkName: "lang-de" */ "./languagePacks/de").then(
-        registerLocaleData
-      );
+      return import(
+        /* webpackChunkName: "lang-de" */ "./languagePacks/de"
+      ).then(registerLocaleData);
     default:
-      return import(/* webpackChunkName: "lang-en" */ "./languagePacks/en").then(
-        registerLocaleData
-      );
+      return import(
+        /* webpackChunkName: "lang-en" */ "./languagePacks/en"
+      ).then(registerLocaleData);
   }
 }
 
