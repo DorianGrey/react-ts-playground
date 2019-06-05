@@ -1,40 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { InjectedIntlProps, injectIntl } from "react-intl";
 import ListItem from "react-md/lib/Lists/ListItem";
 import MenuButton from "react-md/lib/Menus/MenuButton";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 
-import { getSupportedLanguages, LOAD_LANGUAGE } from "../i18n/i18n";
-import { AppState } from "../state";
+import { getSupportedLanguages } from "../i18n/i18n";
+import { IntlConfigContext } from "../provider/IntlConfigProvider";
 
 export interface LanguagePickerProps {
   language: string;
   setLanguage: (lang: string) => void;
 }
 
-const mapStateToProps = (state: AppState) => {
-  return {
-    language: state.intl.locale
-  };
-};
-
-const mapDispatchToProps = (
-  dispatch: Dispatch<{ type: string; payload: string }>
-) => {
-  return {
-    setLanguage: (lang: string) => {
-      dispatch({ type: LOAD_LANGUAGE, payload: lang });
-    }
-  };
-};
-
-function LanguagePicker(props: LanguagePickerProps & InjectedIntlProps) {
+function LanguagePicker(props: InjectedIntlProps) {
   const languages = getSupportedLanguages();
 
-  function handleChange(value: string) {
-    props.setLanguage(value);
-  }
+  const { loadLanguage } = useContext(IntlConfigContext);
 
   const items = languages.map(lang => ({
     label: props.intl.formatMessage({ id: `languages.${lang}` }),
@@ -46,7 +26,7 @@ function LanguagePicker(props: LanguagePickerProps & InjectedIntlProps) {
       key={value}
       primaryText={label}
       active={props.intl.locale === value}
-      onClick={handleChange.bind(null, value)}
+      onClick={loadLanguage.bind(null, value)}
     />
   ));
 
@@ -62,7 +42,4 @@ function LanguagePicker(props: LanguagePickerProps & InjectedIntlProps) {
   );
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(injectIntl(LanguagePicker));
+export default injectIntl(LanguagePicker);

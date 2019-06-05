@@ -1,10 +1,4 @@
 import { addLocaleData } from "react-intl";
-import { updateIntl } from "react-intl-redux";
-import { AnyAction } from "redux";
-import { ofType } from "redux-observable";
-
-import { from, Observable } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
 
 import { LanguagePack } from "./languagePacks/languagePack";
 
@@ -36,19 +30,3 @@ export function loadBrowserLanguagePack(): Promise<LanguagePack> {
 export function getSupportedLanguages(): string[] {
   return ["de", "en"]; // TODO: Optimize.
 }
-
-export const LOAD_LANGUAGE = "loadLanguage";
-
-export const loadLanguageEpic = (action$: Observable<AnyAction>) =>
-  action$.pipe(
-    ofType(LOAD_LANGUAGE),
-    switchMap((action: AnyAction) =>
-      from(loadLanguagePack(action.payload as string))
-    ),
-    map((langPack: LanguagePack) =>
-      updateIntl({
-        locale: langPack.language,
-        messages: langPack.translations
-      })
-    )
-  );

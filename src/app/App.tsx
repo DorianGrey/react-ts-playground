@@ -1,5 +1,4 @@
 import React from "react";
-import { IntlProvider } from "react-intl-redux";
 
 // Note: We have to import these from different packages to always get the proper typings ... DAFUQ?!
 import { BrowserRouter as Router } from "react-router-dom";
@@ -10,26 +9,24 @@ import { Store } from "redux";
 import Navigation from "./navigation/Navigation";
 import NotificationProvider from "./notifications/NotificationProvider";
 import { AppState } from "./state";
+import { IntlConfigProvider } from "./provider/IntlConfigProvider";
+import { Translations } from "./i18n/languagePacks/languagePack";
 
 export interface AppProps {
   store: Store<AppState>;
-}
-
-// Only use text contents for intl formatting.
-function Fragment(props: { children: string }) {
-  return props.children;
+  translations: Translations;
 }
 
 export default function App(props: AppProps) {
   return (
     <StoreProvider store={props.store}>
-      <IntlProvider textComponent={Fragment}>
+      <IntlConfigProvider initialTranslations={props.translations}>
         <NotificationProvider>
           <Router>
             <Navigation />
           </Router>
         </NotificationProvider>
-      </IntlProvider>
+      </IntlConfigProvider>
     </StoreProvider>
   );
 }

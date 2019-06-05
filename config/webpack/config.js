@@ -1,7 +1,6 @@
 const path = require("path");
 const Config = require("webpack-chain");
 const objectHash = require("node-object-hash");
-const rxPaths = require("rxjs/_esm5/path-mapping");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 // FIXME: Disabled temporarily - reason: https://stackoverflow.com/questions/52566349/referenceerror-undefinedcreateprovider-is-not-defined
@@ -392,14 +391,6 @@ module.exports = function() {
       .devtoolModuleFilenameTemplate(info =>
         path.relative(paths.appSrc, info.absoluteResourcePath).replace(/\\/g, "/")
       );
-
-    // Setup rxPaths() for module.alias.
-    const rxResolvedPaths = rxPaths();
-    for (const p in rxResolvedPaths) {
-      if (rxResolvedPaths.hasOwnProperty(p)) {
-        config.resolve.alias.set(p, rxResolvedPaths[p]);
-      }
-    }
 
     // Set production optimization config.
     config.optimization

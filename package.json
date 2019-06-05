@@ -21,7 +21,6 @@
     "@types/react": "16.8.19",
     "@types/react-dom": "^16.8.4",
     "@types/react-intl": "^2.3.17",
-    "@types/react-intl-redux": "^0.1.11",
     "@types/react-loadable": "^5.5.1",
     "@types/react-redux": "^7.0.9",
     "@types/react-router": "5.0.1",
@@ -98,15 +97,12 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-intl": "^2.9.0",
-    "react-intl-redux": "^2.1.1",
     "react-loadable": "^5.5.0",
     "react-md": "1.12.0",
     "react-redux": "^7.0.3",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
     "redux": "4.0.1",
-    "redux-observable": "^1.1.0",
-    "rxjs": "^6.5.2",
     "webfontloader": "^1.6.28"
   },
   "scripts": {
