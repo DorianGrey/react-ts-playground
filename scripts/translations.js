@@ -19,9 +19,7 @@ const parseYaml = file => {
   } catch (e) {
     if (e.name === "YAMLException") {
       throw new Error(
-        `Error parsing ${file.path}: [${e.mark.line}:${e.mark.column}] ${
-          e.reason
-        }`
+        `Error parsing ${file.path}: [${e.mark.line}:${e.mark.column}] ${e.reason}`
       );
     } else {
       throw e;
