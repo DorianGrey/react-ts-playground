@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useState, useContext } from "react";
 import { IntlProvider } from "react-intl";
 
 import { Translations } from "../i18n/languagePacks/languagePack";
@@ -15,7 +15,7 @@ interface IntlConfigContext {
   loadLanguage: (lang: string) => void;
 }
 
-export const IntlConfigContext = React.createContext<IntlConfigContext>({
+const IntlConfigContext = React.createContext<IntlConfigContext>({
   locale: BROWSER_LANGUAGE,
   translations: {},
   loadLanguage: (_lang: string) => {}
@@ -62,3 +62,7 @@ export const IntlConfigProvider: FunctionComponent<IntlConfigProviderProps> = ({
     </IntlConfigContext.Provider>
   );
 };
+
+export function useIntlConfig() {
+  return useContext(IntlConfigContext);
+}

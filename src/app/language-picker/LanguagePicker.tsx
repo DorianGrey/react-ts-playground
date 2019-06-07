@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import { InjectedIntlProps, injectIntl } from "react-intl";
 import ListItem from "react-md/lib/Lists/ListItem";
 import MenuButton from "react-md/lib/Menus/MenuButton";
 
 import { getSupportedLanguages } from "../i18n/i18n";
-import { IntlConfigContext } from "../provider/IntlConfigProvider";
+import { useIntlConfig } from "../provider/IntlConfigProvider";
 
 export interface LanguagePickerProps {
   language: string;
@@ -14,7 +14,7 @@ export interface LanguagePickerProps {
 function LanguagePicker(props: InjectedIntlProps) {
   const languages = getSupportedLanguages();
 
-  const { loadLanguage } = useContext(IntlConfigContext);
+  const { loadLanguage } = useIntlConfig();
 
   const items = languages.map(lang => ({
     label: props.intl.formatMessage({ id: `languages.${lang}` }),
