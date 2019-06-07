@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 
 import { InjectedIntlProps, injectIntl } from "react-intl";
 import Loadable from "react-loadable";
@@ -68,46 +68,33 @@ const navItems = [
 
 const navigationItems = navItems.map(p => <NaviLink {...p} key={p.to} />);
 
-// TODO: Attempt to get a more detailed typing ...
-class Navigation extends React.Component<
-  InjectedIntlProps & RouteComponentProps<string | number>,
-  unknown
-> {
-  constructor(
-    props: InjectedIntlProps & RouteComponentProps<string | number>,
-    context: unknown
-  ) {
-    super(props, context);
-  }
-
-  render() {
-    const { location, intl } = this.props;
-
-    return (
-      <NavigationDrawer
-        footer={<CurrentTime />}
-        toolbarTitle={intl.formatMessage({ id: "header.title" })}
-        toolbarActions={<LanguagePicker />}
-        navItems={navigationItems}
-      >
-        <Switch key={location.key}>
-          <Redirect exact from="/" to="/tr0" />
-          <Route path="/tr0" component={AsyncTestRoute1} location={location} />
-          <Route
-            path="/todo-list"
-            component={AsyncTestRoute2}
-            location={location}
-          />
-          <Route
-            path="/lazy-test/:id"
-            component={AsyncParseParamsTestRoute}
-            location={location}
-          />
-          <Route component={NotFound} />
-        </Switch>
-      </NavigationDrawer>
-    );
-  }
-}
+const Navigation: FunctionComponent<
+  InjectedIntlProps & RouteComponentProps<string | number>
+> = ({ location, intl }) => {
+  return (
+    <NavigationDrawer
+      footer={<CurrentTime />}
+      toolbarTitle={intl.formatMessage({ id: "header.title" })}
+      toolbarActions={<LanguagePicker />}
+      navItems={navigationItems}
+    >
+      <Switch key={location.key}>
+        <Redirect exact from="/" to="/tr0" />
+        <Route path="/tr0" component={AsyncTestRoute1} location={location} />
+        <Route
+          path="/todo-list"
+          component={AsyncTestRoute2}
+          location={location}
+        />
+        <Route
+          path="/lazy-test/:id"
+          component={AsyncParseParamsTestRoute}
+          location={location}
+        />
+        <Route component={NotFound} />
+      </Switch>
+    </NavigationDrawer>
+  );
+};
 
 export default withRouter(injectIntl(Navigation));

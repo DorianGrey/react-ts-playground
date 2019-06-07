@@ -7,7 +7,6 @@ import { Provider as StoreProvider } from "react-redux";
 import { Store } from "redux";
 
 import Navigation from "./navigation/Navigation";
-import NotificationProvider from "./notifications/NotificationProvider";
 import { AppState } from "./state";
 import { IntlConfigProvider } from "./provider/IntlConfigProvider";
 import { Translations } from "./i18n/languagePacks/languagePack";
@@ -21,11 +20,9 @@ export default function App(props: AppProps) {
   return (
     <StoreProvider store={props.store}>
       <IntlConfigProvider initialTranslations={props.translations}>
-        <NotificationProvider>
-          <Router>
-            <Navigation />
-          </Router>
-        </NotificationProvider>
+        <Router>
+          <Navigation />
+        </Router>
       </IntlConfigProvider>
     </StoreProvider>
   );

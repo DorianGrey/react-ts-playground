@@ -6,10 +6,9 @@ const expectedQueryParams = ["bla"];
 
 export const ParseParamsTestRoute: FunctionComponent<
   RouteComponentProps<string | number>
-> = props => {
+> = ({ location: { search }, match: { params } }) => {
   // Note: This might require a URLSearchParams polyfill, like https://github.com/jerrybendy/url-search-params-polyfill.
-  const searchParams = new URLSearchParams(props.location.search);
-  const params = props.match.params;
+  const searchParams = new URLSearchParams(search);
   return (
     <div>
       <p>

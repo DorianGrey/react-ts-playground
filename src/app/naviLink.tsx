@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { FormattedMessage } from "react-intl";
 import FontIcon from "react-md/lib/FontIcons/FontIcon";
 import ListItem from "react-md/lib/Lists/ListItem";
@@ -20,17 +20,16 @@ function isActive(url: string, pathname: string): boolean {
   return url.indexOf(pathname) >= 0;
 }
 
-const NaviLink = (props: NaviLinkProps) => {
-  const { label, to, exact, icon } = props;
+const NaviLink: FunctionComponent<NaviLinkProps> = ({
+  label,
+  to,
+  exact,
+  icon
+}) => {
   return (
     <Route path={to} exact={exact}>
       {({ location }) => {
         const match = isActive(to, location.pathname);
-
-        let leftIcon;
-        if (icon) {
-          leftIcon = <FontIcon>{icon}</FontIcon>;
-        }
 
         return (
           <ListItem
@@ -38,7 +37,7 @@ const NaviLink = (props: NaviLinkProps) => {
             active={match}
             to={to}
             primaryText={<FormattedMessage id={label} />}
-            leftIcon={leftIcon}
+            leftIcon={icon ? <FontIcon>{icon}</FontIcon> : undefined}
           />
         );
       }}
