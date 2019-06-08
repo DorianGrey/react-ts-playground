@@ -1,6 +1,6 @@
 import "./TodoList.scss";
 
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useState, useEffect } from "react";
 import { FormattedMessage, InjectedIntlProps, injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -20,7 +20,10 @@ import {
   UpdateTodo
 } from "./todo.state";
 import TodoEntry from "./TodoEntry";
-import { useNotification } from "../hooks/useNotification";
+import {
+  sendNotification,
+  requestNotificationPermission
+} from "../util/notification";
 
 // Todo list.
 export interface TodoListProps {
@@ -60,7 +63,12 @@ const TodoList: FunctionComponent<TodoListProps & InjectedIntlProps> = ({
   intl
 }) => {
   const [showNewTodoBlock, setShowNewTodoBlock] = useState(false);
-  const [, sendNotification] = useNotification();
+
+  // Ask for permission once up-front to simplify successive requests.
+  useEffect(() => {
+    requestNotificationPermission();
+  }, []);
+
   const createTodo = (
     headline: string,
     description: string,
