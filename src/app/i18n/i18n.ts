@@ -9,17 +9,19 @@ function registerLocaleData(module: { default: LanguagePack }): LanguagePack {
 
 export const BROWSER_LANGUAGE = navigator.language.slice(0, 2);
 
-export function loadLanguagePack(lang: string): Promise<LanguagePack> {
+export async function loadLanguagePack(lang: string): Promise<LanguagePack> {
   // eslint-disable-next-line sonarjs/no-small-switch
   switch (lang) {
     case "de":
-      return import(
+      const mod1 = await import(
         /* webpackChunkName: "lang-de" */ "./languagePacks/de"
-      ).then(registerLocaleData);
+      );
+      return registerLocaleData(mod1);
     default:
-      return import(
+      const mod2 = await import(
         /* webpackChunkName: "lang-en" */ "./languagePacks/en"
-      ).then(registerLocaleData);
+      );
+      return registerLocaleData(mod2);
   }
 }
 
