@@ -7,36 +7,19 @@ module.exports = {
     "src/**/*.{js,jsx,ts,tsx}",
     "!src/**/*.spec.{js,jsx,ts,tsx}"
   ],
-  coverageReporters: [
-    "json",
-    "lcov",
-    "cobertura",
-    "text"
-  ],
+  coverageReporters: ["json", "lcov", "cobertura", "text"],
   coverageDirectory: "<rootDir>/test-results/coverage",
-  coveragePathIgnorePatterns: [
-    "/node_modules/",
-    ".d.ts"
-  ],
+  coveragePathIgnorePatterns: ["/node_modules/", ".d.ts"],
   globals: {
     "ts-jest": {
       tsConfig: "tsconfig.json",
       babelConfig: babelConfig
     }
   },
-  moduleFileExtensions: [
-    "ts",
-    "tsx",
-    "js",
-    "jsx"
-  ],
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
   reporters: ["default", "jest-junit"],
-  setupFiles: [
-    "<rootDir>/config/jest/polyfills.js"
-  ],
-  setupFilesAfterEnv: [
-    "<rootDir>config/jest/testSetup.ts",
-  ],
+  setupFiles: ["<rootDir>/config/jest/polyfills.js"],
+  setupFilesAfterEnv: ["@testing-library/react/cleanup-after-each"],
   testMatch: [
     "<rootDir>/src/**/__tests__/**/*.ts?(x)",
     "<rootDir>/src/**/*.{spec,test}.{ts,tsx}"
@@ -49,9 +32,7 @@ module.exports = {
     "^.+\\.jsx?$": "babel-jest",
     "^(?!.*\\.(js|jsx|mjs|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
   },
-  transformIgnorePatterns: [
-    "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$"
-  ],
+  transformIgnorePatterns: ["[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$"],
   moduleNameMapper: {
     "^react-native$": "react-native-web"
   },

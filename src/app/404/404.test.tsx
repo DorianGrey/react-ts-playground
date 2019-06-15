@@ -1,15 +1,12 @@
-import { mount, shallow } from "enzyme";
 import React from "react";
+import { render } from "@testing-library/react";
 
 import NotFound from "./404";
 
 describe("Default rendering test", () => {
-  it("renders without crashing", () => {
-    expect(() => shallow(<NotFound />)).not.toThrow();
-  });
+  it("renders content as intended", () => {
+    const rendered = render(<NotFound />);
 
-  it("renders the expected content", () => {
-    const rendered = mount(<NotFound />);
-    expect(rendered.find("#not-found-page").length).toBe(1);
+    expect(rendered.container).toMatchSnapshot();
   });
 });
