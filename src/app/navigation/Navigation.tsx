@@ -12,7 +12,7 @@ import {
 
 import NavigationDrawer from "react-md/lib/NavigationDrawers";
 
-import NotFound from "../404/404";
+import { NotFoundPage } from "../404/404";
 // import NotificationProvider from "./notifications/NotificationProvider";
 
 import CurrentTime from "../currentTime/CurrentTime";
@@ -91,7 +91,7 @@ const Navigation: FunctionComponent<
           component={AsyncParseParamsTestRoute}
           location={location}
         />
-        <Route component={NotFound} />
+        <Route component={NotFoundPage} />
       </Switch>
     </NavigationDrawer>
   );

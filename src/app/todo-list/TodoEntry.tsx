@@ -1,4 +1,3 @@
-// tslint:disable max-classes-per-file
 import React from "react";
 import {
   FormattedDate,
@@ -84,7 +83,7 @@ type EditableTodoProps = Partial<TodoModel> &
   TodoEntryProps &
   InjectedIntlProps & { onEditLeave: () => void };
 
-class EditableTodo extends React.Component<EditableTodoProps, any> {
+class EditableTodo extends React.Component<EditableTodoProps, unknown> {
   state = {
     currentTodoData: pick(this.props, [
       "id",
@@ -98,7 +97,7 @@ class EditableTodo extends React.Component<EditableTodoProps, any> {
     ? "todos.newTodo.update"
     : "todos.newTodo.create";
 
-  constructor(props: EditableTodoProps, context: any) {
+  constructor(props: EditableTodoProps, context: unknown) {
     super(props, context);
 
     // Set these values to an empty string by default to properly work around a switch between
@@ -180,7 +179,7 @@ class EditableTodo extends React.Component<EditableTodoProps, any> {
     });
   }
 
-  render(): JSX.Element | any {
+  render() {
     const titlePlaceHolder = this.props.intl.formatMessage({
       id: "todos.entry.placeholder.tag"
     });
@@ -270,7 +269,7 @@ class EditableTodo extends React.Component<EditableTodoProps, any> {
 
 class TodoEntry extends React.Component<
   Partial<TodoModel> & TodoEntryProps & InjectedIntlProps,
-  any
+  unknown
 > {
   state = {
     editable: this.props.editable
@@ -278,7 +277,7 @@ class TodoEntry extends React.Component<
 
   constructor(
     props: Partial<TodoModel> & TodoEntryProps & InjectedIntlProps,
-    context: any
+    context: unknown
   ) {
     super(props, context);
 
@@ -286,7 +285,7 @@ class TodoEntry extends React.Component<
     this.setReadable = this.setReadable.bind(this);
   }
 
-  render(): JSX.Element | any {
+  render() {
     if (this.state.editable) {
       return <EditableTodo {...this.props} onEditLeave={this.setReadable} />;
     } else {
@@ -304,4 +303,3 @@ class TodoEntry extends React.Component<
 }
 
 export default injectIntl(TodoEntry);
-// tslint:enable max-class-per-file

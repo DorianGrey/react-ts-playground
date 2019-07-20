@@ -2,7 +2,7 @@ import "./404.scss";
 
 import React from "react";
 
-export default () => {
+export const NotFoundPage = () => {
   return (
     <div id="not-found-page">
       <h2>404 | Well, That about Wraps It Up for This Page</h2>

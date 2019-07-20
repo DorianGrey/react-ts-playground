@@ -31,13 +31,7 @@ function renderApp(container: HTMLElement | null, translations: Translations) {
   // Use this if you want to test the loading animation, or for any kind of defer timing.
   // setTimeout(() => render(wrapWithRhlContainer(<App /> as React.DOMElement<any, any>), container), 1000);
 
-  render(
-    <App store={store} translations={translations} /> as React.DOMElement<
-      any,
-      any
-    >,
-    container
-  );
+  render(<App store={store} translations={translations} />, container);
   registerServiceWorker();
 }
 

@@ -2,19 +2,13 @@
 // TypeScript and TsLint configurations.
 
 export function bootloader(main: () => void): void {
-  switch (document.readyState) {
-    case "loading":
-      const domReadyHandler = () => {
-        document.removeEventListener(
-          "DOMContentLoaded",
-          domReadyHandler,
-          false
-        );
-        main();
-      };
-      document.addEventListener("DOMContentLoaded", domReadyHandler, false);
-      break;
-    default:
+  if (document.readyState === "loading") {
+    const domReadyHandler = () => {
+      document.removeEventListener("DOMContentLoaded", domReadyHandler, false);
       main();
+    };
+    document.addEventListener("DOMContentLoaded", domReadyHandler, false);
+  } else {
+    main();
   }
 }
