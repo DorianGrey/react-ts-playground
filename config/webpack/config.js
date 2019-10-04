@@ -133,7 +133,9 @@ module.exports = function() {
     .loader(require.resolve("sass-loader"))
     .options({
       sourceMap: true, // Has to be true always, since the resolve-url-loader requires it to properly map the resource paths.
-      outputStyle: isProd ? "compressed": "nested"
+      sassOptions: {
+        outputStyle: isProd ? "compressed": "nested"
+      }
     })
     .end();
 

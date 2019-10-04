@@ -1,10 +1,5 @@
-import React from "react";
-import {
-  FormattedDate,
-  FormattedMessage,
-  InjectedIntlProps,
-  injectIntl
-} from "react-intl";
+import React, { FC, useState } from "react";
+import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
 
 import Button from "react-md/lib/Buttons/Button";
 import Card from "react-md/lib/Cards/Card";
@@ -15,8 +10,6 @@ import TextField from "react-md/lib/TextFields/TextField";
 
 import DatePicker from "react-md/lib/Pickers/DatePickerContainer";
 import TimePicker from "react-md/lib/Pickers/TimePickerContainer";
-
-import pick from "lodash-es/pick";
 
 import { TodoModel } from "./todo.model";
 
@@ -80,226 +73,176 @@ function ReadOnlyTodo(
 }
 
 type EditableTodoProps = Partial<TodoModel> &
-  TodoEntryProps &
-  InjectedIntlProps & { onEditLeave: () => void };
+  TodoEntryProps & { onEditLeave: () => void };
 
-class EditableTodo extends React.Component<EditableTodoProps, unknown> {
-  state = {
-    currentTodoData: pick(this.props, [
-      "id",
-      "headline",
-      "description",
-      "deadline"
-    ]) as Partial<TodoModel>
-  };
+const EditableTodo: FC<EditableTodoProps> = ({
+  id,
+  headline,
+  description,
+  deadline,
+  createOrUpdateTodo,
+  onEditLeave,
+  onCancel
+}) => {
+  const [currentTodoData, setCurrentTodoData] = useState<Partial<TodoModel>>({
+    id,
+    headline: headline || "",
+    description: description || "",
+    deadline
+  });
+  const { formatMessage, locale } = useIntl();
 
-  submitButtonTranslationId = this.state.currentTodoData.headline
+  const submitButtonTranslationId = currentTodoData.headline
     ? "todos.newTodo.update"
     : "todos.newTodo.create";
 
-  constructor(props: EditableTodoProps, context: unknown) {
-    super(props, context);
-
-    // Set these values to an empty string by default to properly work around a switch between
-    // controlled and not-controlled components. See:
-    // https://reactjs.org/docs/forms.html#controlled-components
-    this.state.currentTodoData.headline =
-      this.state.currentTodoData.headline || "";
-    this.state.currentTodoData.description =
-      this.state.currentTodoData.description || "";
-
-    this.createTodo = this.createTodo.bind(this);
-    this.updateHeadline = this.updateHeadline.bind(this);
-    this.updateDescription = this.updateDescription.bind(this);
-    this.updateDate = this.updateDate.bind(this);
-    this.updateTime = this.updateTime.bind(this);
-  }
-
-  createTodo() {
-    this.props.createOrUpdateTodo(
-      this.state.currentTodoData.headline as string,
-      this.state.currentTodoData.description as string,
-      this.state.currentTodoData.deadline as Date,
-      this.props.id
+  const createTodo = () => {
+    createOrUpdateTodo(
+      currentTodoData.headline as string,
+      currentTodoData.description as string,
+      currentTodoData.deadline as Date,
+      id
     );
 
-    this.props.onEditLeave();
-  }
-
-  updateHeadline(newHeadline: number | string) {
-    this.setState({
-      currentTodoData: {
-        ...this.state.currentTodoData,
-        headline: newHeadline as string
-      }
-    });
-  }
-
-  updateDescription(newDescription: number | string) {
-    this.setState({
-      currentTodoData: {
-        ...this.state.currentTodoData,
-        description: newDescription as string
-      }
-    });
-  }
-
-  updateDate(_formatted: string, newDate: Date) {
-    const newValue = newDate;
-    if (this.state.currentTodoData.deadline) {
-      newDate.setHours(
-        this.state.currentTodoData.deadline.getHours(),
-        this.state.currentTodoData.deadline.getMinutes()
-      );
-    }
-
-    this.setState({
-      currentTodoData: {
-        ...this.state.currentTodoData,
-        deadline: newValue
-      }
-    });
-  }
-
-  updateTime(_formatted: string, newDate: Date) {
-    const newValue = newDate;
-    if (this.state.currentTodoData.deadline) {
-      newDate.setFullYear(
-        this.state.currentTodoData.deadline.getFullYear(),
-        this.state.currentTodoData.deadline.getMonth(),
-        this.state.currentTodoData.deadline.getDay()
-      );
-    }
-
-    this.setState({
-      currentTodoData: {
-        ...this.state.currentTodoData,
-        deadline: newValue
-      }
-    });
-  }
-
-  render() {
-    const titlePlaceHolder = this.props.intl.formatMessage({
-      id: "todos.entry.placeholder.tag"
-    });
-    const descriptionPlaceholder = this.props.intl.formatMessage({
-      id: "todos.entry.placeholder.description"
-    });
-    const datePlaceHolder = this.props.intl.formatMessage({
-      id: "todos.entry.placeholder.deadline.date"
-    });
-    const timePlaceholder = this.props.intl.formatMessage({
-      id: "todos.entry.placeholder.deadline.time"
-    });
-
-    const onCancel = this.state.currentTodoData.id
-      ? this.props.onEditLeave
-      : this.props.onCancel;
-
-    return (
-      <Card className="md-block-centered">
-        <CardText>
-          <TextField
-            id="floating-center-title"
-            label={titlePlaceHolder}
-            lineDirection="center"
-            placeholder={titlePlaceHolder}
-            className="md-cell md-cell--bottom"
-            onChange={this.updateHeadline}
-            value={this.state.currentTodoData.headline}
-            error={!this.state.currentTodoData.headline}
-            required
-          />
-          <TextField
-            id="autoresizing-2"
-            className="md-cell md-cell--bottom"
-            label={descriptionPlaceholder}
-            placeholder={descriptionPlaceholder}
-            resize={{ min: 200, max: 250 }}
-            rows={2}
-            value={this.state.currentTodoData.description}
-            error={!this.state.currentTodoData.description}
-            onChange={this.updateDescription}
-            required
-          />
-          <DatePicker
-            id="appointment-date-auto"
-            locales={this.props.intl.locale}
-            label={datePlaceHolder}
-            className="md-cell"
-            minDate={new Date()}
-            value={this.state.currentTodoData.deadline}
-            error={!this.state.currentTodoData.deadline}
-            onChange={this.updateDate}
-            required
-          />
-          <TimePicker
-            id="appointment-time-auto"
-            locales={this.props.intl.locale}
-            label={timePlaceholder}
-            className="md-cell"
-            value={this.state.currentTodoData.deadline}
-            error={!this.state.currentTodoData.deadline}
-            onChange={this.updateTime}
-            required
-          />
-        </CardText>
-        <CardActions>
-          <Button
-            primary
-            raised
-            onClick={this.createTodo}
-            disabled={
-              !this.state.currentTodoData.headline ||
-              !this.state.currentTodoData.description ||
-              !this.state.currentTodoData.deadline
-            }
-          >
-            <FormattedMessage id={this.submitButtonTranslationId} />
-          </Button>
-          <Button secondary raised onClick={onCancel}>
-            <FormattedMessage id="todos.newTodo.cancel" />
-          </Button>
-        </CardActions>
-      </Card>
-    );
-  }
-}
-
-class TodoEntry extends React.Component<
-  Partial<TodoModel> & TodoEntryProps & InjectedIntlProps,
-  unknown
-> {
-  state = {
-    editable: this.props.editable
+    onEditLeave();
   };
 
-  constructor(
-    props: Partial<TodoModel> & TodoEntryProps & InjectedIntlProps,
-    context: unknown
-  ) {
-    super(props, context);
+  const updateHeadline = (newHeadline: number | string) => {
+    setCurrentTodoData({
+      ...currentTodoData,
+      headline: newHeadline as string
+    });
+  };
 
-    this.setEditable = this.setEditable.bind(this);
-    this.setReadable = this.setReadable.bind(this);
-  }
+  const updateDescription = (newDescription: number | string) => {
+    setCurrentTodoData({
+      ...currentTodoData,
+      description: newDescription as string
+    });
+  };
 
-  render() {
-    if (this.state.editable) {
-      return <EditableTodo {...this.props} onEditLeave={this.setReadable} />;
-    } else {
-      return <ReadOnlyTodo {...this.props} onEdit={this.setEditable} />;
+  const updateDate = (_formatted: string, newDate: Date) => {
+    const newValue = newDate;
+    if (currentTodoData.deadline) {
+      newDate.setHours(
+        currentTodoData.deadline.getHours(),
+        currentTodoData.deadline.getMinutes()
+      );
     }
-  }
 
-  private setEditable(): void {
-    this.setState({ editable: true });
-  }
+    setCurrentTodoData({
+      ...currentTodoData,
+      deadline: newValue
+    });
+  };
 
-  private setReadable(): void {
-    this.setState({ editable: false });
-  }
-}
+  const updateTime = (_formatted: string, newDate: Date) => {
+    const newValue = newDate;
+    if (currentTodoData.deadline) {
+      newDate.setFullYear(
+        currentTodoData.deadline.getFullYear(),
+        currentTodoData.deadline.getMonth(),
+        currentTodoData.deadline.getDay()
+      );
+    }
 
-export default injectIntl(TodoEntry);
+    setCurrentTodoData({
+      ...currentTodoData,
+      deadline: newValue
+    });
+  };
+
+  const titlePlaceHolder = formatMessage({
+    id: "todos.entry.placeholder.tag"
+  });
+  const descriptionPlaceholder = formatMessage({
+    id: "todos.entry.placeholder.description"
+  });
+  const datePlaceHolder = formatMessage({
+    id: "todos.entry.placeholder.deadline.date"
+  });
+  const timePlaceholder = formatMessage({
+    id: "todos.entry.placeholder.deadline.time"
+  });
+
+  const handleCancel = currentTodoData.id ? onEditLeave : onCancel;
+  return (
+    <Card className="md-block-centered">
+      <CardText>
+        <TextField
+          id="floating-center-title"
+          label={titlePlaceHolder}
+          lineDirection="center"
+          placeholder={titlePlaceHolder}
+          className="md-cell md-cell--bottom"
+          onChange={updateHeadline}
+          value={currentTodoData.headline}
+          error={!currentTodoData.headline}
+          required
+        />
+        <TextField
+          id="autoresizing-2"
+          className="md-cell md-cell--bottom"
+          label={descriptionPlaceholder}
+          placeholder={descriptionPlaceholder}
+          resize={{ min: 200, max: 250 }}
+          rows={2}
+          value={currentTodoData.description}
+          error={!currentTodoData.description}
+          onChange={updateDescription}
+          required
+        />
+        <DatePicker
+          id="appointment-date-auto"
+          locales={locale}
+          label={datePlaceHolder}
+          className="md-cell"
+          minDate={new Date()}
+          value={currentTodoData.deadline}
+          error={!currentTodoData.deadline}
+          onChange={updateDate}
+          required
+        />
+        <TimePicker
+          id="appointment-time-auto"
+          locales={locale}
+          label={timePlaceholder}
+          className="md-cell"
+          value={currentTodoData.deadline}
+          error={!currentTodoData.deadline}
+          onChange={updateTime}
+          required
+        />
+      </CardText>
+      <CardActions>
+        <Button
+          primary
+          raised
+          onClick={createTodo}
+          disabled={
+            !currentTodoData.headline ||
+            !currentTodoData.description ||
+            !currentTodoData.deadline
+          }
+        >
+          <FormattedMessage id={submitButtonTranslationId} />
+        </Button>
+        <Button secondary raised onClick={handleCancel}>
+          <FormattedMessage id="todos.newTodo.cancel" />
+        </Button>
+      </CardActions>
+    </Card>
+  );
+};
+
+const TodoEntry: FC<Partial<TodoModel> & TodoEntryProps> = props => {
+  const [isEditable, setIsEditable] = useState(props.editable);
+
+  if (isEditable) {
+    return <EditableTodo {...props} onEditLeave={() => setIsEditable(false)} />;
+  } else {
+    return <ReadOnlyTodo {...props} onEdit={() => setIsEditable(true)} />;
+  }
+};
+
+export default TodoEntry;

@@ -1,13 +1,14 @@
-import React, { FunctionComponent, useState, useContext } from "react";
+import React, { FC, FunctionComponent, useState, useContext } from "react";
 import { IntlProvider } from "react-intl";
 
 import { Translations } from "../i18n/languagePacks/languagePack";
 import { BROWSER_LANGUAGE, loadLanguagePack } from "../i18n/i18n";
 
 // Only use text contents for intl formatting.
-function Fragment(props: { children: string }) {
-  return props.children;
-}
+// TODO: Figure out the typing problem. Sounds weird.
+const Fragment: FC = ({ children }) => {
+  return <>{children}</>;
+};
 
 interface IntlConfigContext {
   locale: string;

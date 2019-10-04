@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 
-import { InjectedIntlProps, injectIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import Loadable from "react-loadable";
 import {
   Redirect,
@@ -68,13 +68,14 @@ const navItems = [
 
 const navigationItems = navItems.map(p => <NaviLink {...p} key={p.to} />);
 
-const Navigation: FunctionComponent<
-  InjectedIntlProps & RouteComponentProps<string | number>
-> = ({ location, intl }) => {
+const Navigation: FunctionComponent<RouteComponentProps<string | number>> = ({
+  location
+}) => {
+  const { formatMessage } = useIntl();
   return (
     <NavigationDrawer
       footer={<CurrentTime />}
-      toolbarTitle={intl.formatMessage({ id: "header.title" })}
+      toolbarTitle={formatMessage({ id: "header.title" })}
       toolbarActions={<LanguagePicker />}
       navItems={navigationItems}
     >
@@ -97,4 +98,4 @@ const Navigation: FunctionComponent<
   );
 };
 
-export default withRouter(injectIntl(Navigation));
+export default withRouter(Navigation);

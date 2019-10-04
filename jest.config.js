@@ -19,7 +19,6 @@ module.exports = {
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
   reporters: ["default", "jest-junit"],
   setupFiles: ["<rootDir>/config/jest/polyfills.js"],
-  setupFilesAfterEnv: ["@testing-library/react/cleanup-after-each"],
   testMatch: [
     "<rootDir>/src/**/__tests__/**/*.ts?(x)",
     "<rootDir>/src/**/*.{spec,test}.{ts,tsx}"

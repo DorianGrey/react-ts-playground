@@ -1,23 +1,19 @@
 import React from "react";
-import { InjectedIntlProps, injectIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import ListItem from "react-md/lib/Lists/ListItem";
 import MenuButton from "react-md/lib/Menus/MenuButton";
 
 import { getSupportedLanguages } from "../i18n/i18n";
 import { useIntlConfig } from "../provider/IntlConfigProvider";
 
-export interface LanguagePickerProps {
-  language: string;
-  setLanguage: (lang: string) => void;
-}
-
-function LanguagePicker(props: InjectedIntlProps) {
+function LanguagePicker() {
   const languages = getSupportedLanguages();
 
+  const { formatMessage, locale } = useIntl();
   const { loadLanguage } = useIntlConfig();
 
   const items = languages.map(lang => ({
-    label: props.intl.formatMessage({ id: `languages.${lang}` }),
+    label: formatMessage({ id: `languages.${lang}` }),
     value: lang
   }));
 
@@ -25,7 +21,7 @@ function LanguagePicker(props: InjectedIntlProps) {
     <ListItem
       key={value}
       primaryText={label}
-      active={props.intl.locale === value}
+      active={locale === value}
       onClick={loadLanguage.bind(null, value)}
     />
   ));
@@ -42,4 +38,4 @@ function LanguagePicker(props: InjectedIntlProps) {
   );
 }
 
-export default injectIntl(LanguagePicker);
+export default LanguagePicker;

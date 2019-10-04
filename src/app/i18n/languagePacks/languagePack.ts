@@ -5,5 +5,4 @@ export interface Translations {
 export interface LanguagePack {
   language: string;
   translations: Translations;
-  localeData: ReactIntl.LocaleData;
 }

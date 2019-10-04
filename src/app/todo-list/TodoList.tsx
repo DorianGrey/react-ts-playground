@@ -1,7 +1,7 @@
 import "./TodoList.scss";
 
-import React, { FunctionComponent, useState, useEffect } from "react";
-import { FormattedMessage, InjectedIntlProps, injectIntl } from "react-intl";
+import React, { FC, useState, useEffect } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import FontIcon from "react-md/lib/FontIcons/FontIcon";
 
 import find from "lodash-es/find";
@@ -15,9 +15,10 @@ import {
 } from "../util/notification";
 import { useTodos } from "../provider/TodosProvider";
 
-const TodoList: FunctionComponent<InjectedIntlProps> = ({ intl }) => {
+const TodoList: FC = () => {
   const [showNewTodoBlock, setShowNewTodoBlock] = useState(false);
   const { addTodo, updateTodo, deleteTodo, todos } = useTodos();
+  const { formatMessage } = useIntl();
 
   // Ask for permission once up-front to simplify successive requests.
   useEffect(() => {
@@ -52,7 +53,7 @@ const TodoList: FunctionComponent<InjectedIntlProps> = ({ intl }) => {
     }
 
     sendNotification(
-      intl.formatMessage({
+      formatMessage({
         id: `todos.newTodo.${id ? "updated" : "added"}`
       }),
       {
@@ -102,7 +103,4 @@ const TodoList: FunctionComponent<InjectedIntlProps> = ({ intl }) => {
   );
 };
 
-// Split HOC generation to multiple values to attempt to work around a RHL issue
-// regarding HOC unwrapping...
-const withIntlInjected = injectIntl(TodoList);
-export default withIntlInjected;
+export default TodoList;
