@@ -2,67 +2,22 @@ import "./TodoList.scss";
 
 import React, { FunctionComponent, useState, useEffect } from "react";
 import { FormattedMessage, InjectedIntlProps, injectIntl } from "react-intl";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
+import FontIcon from "react-md/lib/FontIcons/FontIcon";
 
 import find from "lodash-es/find";
 import noop from "lodash-es/noop";
 
-import FontIcon from "react-md/lib/FontIcons/FontIcon";
-
-import { AppState } from "../state";
 import { TodoModel } from "./todo.model";
-import {
-  AddTodo,
-  DeleteTodo,
-  TodoAddAction,
-  TodoDeleteAction,
-  UpdateTodo
-} from "./todo.state";
 import TodoEntry from "./TodoEntry";
 import {
   sendNotification,
   requestNotificationPermission
 } from "../util/notification";
+import { useTodos } from "../provider/TodosProvider";
 
-// Todo list.
-export interface TodoListProps {
-  todos: TodoModel[];
-  onTodoAdd: (headline: string, description: string, deadline: Date) => void;
-  onTodoUpdate: (todo: TodoModel) => void;
-  onTodoDelete: (id: number) => void;
-}
-
-const mapStateToProps = (state: AppState) => {
-  return {
-    todos: state.todos
-  };
-};
-
-const mapDispatchToProps = (
-  dispatch: Dispatch<TodoAddAction> | Dispatch<TodoDeleteAction>
-) => {
-  return {
-    onTodoAdd: (headline: string, description: string, deadline: Date) => {
-      dispatch(AddTodo(headline, description, deadline));
-    },
-    onTodoUpdate: (updated: TodoModel) => {
-      dispatch(UpdateTodo(updated));
-    },
-    onTodoDelete: (id: number) => {
-      (dispatch as Dispatch<TodoDeleteAction>)(DeleteTodo(id));
-    }
-  };
-};
-
-const TodoList: FunctionComponent<TodoListProps & InjectedIntlProps> = ({
-  todos,
-  onTodoUpdate,
-  onTodoAdd,
-  onTodoDelete,
-  intl
-}) => {
+const TodoList: FunctionComponent<InjectedIntlProps> = ({ intl }) => {
   const [showNewTodoBlock, setShowNewTodoBlock] = useState(false);
+  const { addTodo, updateTodo, deleteTodo, todos } = useTodos();
 
   // Ask for permission once up-front to simplify successive requests.
   useEffect(() => {
@@ -85,7 +40,7 @@ const TodoList: FunctionComponent<TodoListProps & InjectedIntlProps> = ({
         return;
       }
 
-      onTodoUpdate({
+      updateTodo({
         ...oldTodo,
         id,
         headline,
@@ -93,7 +48,7 @@ const TodoList: FunctionComponent<TodoListProps & InjectedIntlProps> = ({
         deadline
       });
     } else {
-      onTodoAdd(headline, description, deadline);
+      addTodo(headline, description, deadline);
     }
 
     sendNotification(
@@ -114,7 +69,7 @@ const TodoList: FunctionComponent<TodoListProps & InjectedIntlProps> = ({
     <TodoEntry
       key={todo.id}
       editable={false}
-      onDelete={() => onTodoDelete(todo.id)}
+      onDelete={() => deleteTodo(todo.id)}
       createOrUpdateTodo={createTodo}
       onCancel={noop}
       {...todo}
@@ -150,8 +105,4 @@ const TodoList: FunctionComponent<TodoListProps & InjectedIntlProps> = ({
 // Split HOC generation to multiple values to attempt to work around a RHL issue
 // regarding HOC unwrapping...
 const withIntlInjected = injectIntl(TodoList);
-const connected = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withIntlInjected);
-export default connected;
+export default withIntlInjected;
