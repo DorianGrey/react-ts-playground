@@ -17,19 +17,29 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
+    "skipLibCheck": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": false, // Problematic editor support, so disabled for now.
     "strict": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "typeRoots": [
-      "node_modules/@types"
+    "types": [
+      "jest",
+      "lodash-es",
+      "react",
+      "react-dom",
+      "react-loadable",
+      "react-router",
+      "react-router-dom",
+      "webfontloader",
+      "webpack-env"
     ],
+
     "jsx": "preserve",
     "lib": [
       "dom",
-      "es5",
+      "ES2015",
       "scripthost",
       "es2015.iterable",
       "es2015.promise",

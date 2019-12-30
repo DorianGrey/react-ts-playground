@@ -4,9 +4,9 @@ import { RouteComponentProps } from "react-router";
 
 const expectedQueryParams = ["bla"];
 
-export const ParseParamsTestRoute: FunctionComponent<
-  RouteComponentProps<string | number>
-> = ({ location: { search }, match: { params } }) => {
+export const ParseParamsTestRoute: FunctionComponent<RouteComponentProps<
+  string | number
+>> = ({ location: { search }, match: { params } }) => {
   // Note: This might require a URLSearchParams polyfill, like https://github.com/jerrybendy/url-search-params-polyfill.
   const searchParams = new URLSearchParams(search);
   return (

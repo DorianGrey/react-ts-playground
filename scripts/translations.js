@@ -223,12 +223,10 @@ exports.watch = (src, dest, opts) => {
   return watch(
     src,
     () => {
-      exports
-        .compile(src, dest, opts)
-        .then(
-          () => log.debug(`Translations written to ${dest}`),
-          err => log.error(`Error processing translation: ${err}`)
-        );
+      exports.compile(src, dest, opts).then(
+        () => log.debug(`Translations written to ${dest}`),
+        err => log.error(`Error processing translation: ${err}`)
+      );
     },
     {
       events: ["change", "unlink"],
