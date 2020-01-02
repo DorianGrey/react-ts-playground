@@ -1,12 +1,14 @@
-import React, { FunctionComponent } from "react";
+import React, { FC } from "react";
 import { FormattedMessage } from "react-intl";
-import { RouteComponentProps } from "react-router";
+import { useHistory, useRouteMatch } from "react-router";
 
 const expectedQueryParams = ["bla"];
 
-export const ParseParamsTestRoute: FunctionComponent<RouteComponentProps<
-  string | number
->> = ({ location: { search }, match: { params } }) => {
+export const ParseParamsTestRoute: FC = () => {
+  const {
+    location: { search }
+  } = useHistory();
+  const { params } = useRouteMatch();
   // Note: This might require a URLSearchParams polyfill, like https://github.com/jerrybendy/url-search-params-polyfill.
   const searchParams = new URLSearchParams(search);
   return (

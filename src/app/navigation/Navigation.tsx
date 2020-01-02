@@ -1,7 +1,6 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, FC } from "react";
 
 import { useIntl } from "react-intl";
-import Loadable from "react-loadable";
 import {
   Redirect,
   Route,
@@ -17,36 +16,42 @@ import { NotFoundPage } from "../404/404";
 
 import CurrentTime from "../currentTime/CurrentTime";
 import LanguagePicker from "../language-picker/LanguagePicker";
-import Loading from "../Loading";
 import NaviLink from "../naviLink";
+import { AsyncRoute } from "./AsyncRoute";
 
-type T1 = typeof import(/* webpackChunkName: "testRoute1" */ "../routes/testRoute1/TestRoute1");
-type T2 = typeof import(/* webpackChunkName: "todos" */ "../todo-list/TodoList");
-type T3 = typeof import(/* webpackChunkName: "parseParamTest" */ "../routes/parseParams/ParseParamsTestRoute");
+const AsyncTestRoute1: FC = () => {
+  return (
+    <AsyncRoute
+      loader={() =>
+        import(
+          /* webpackChunkName: "testRoute1" */ "../routes/testRoute1/TestRoute1"
+        )
+      }
+    />
+  );
+};
 
-function withLoader(loader: () => Promise<T1 | T2 | T3>) {
-  return Loadable({
-    loader,
-    loading: Loading,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    render(loaded: any, props: any) {
-      const Component = loaded.default;
-      return <Component {...props} />;
-    }
-  });
-}
+const AsyncTestRoute2: FC = () => {
+  return (
+    <AsyncRoute
+      loader={() =>
+        import(/* webpackChunkName: "todos" */ "../todo-list/TodoList")
+      }
+    />
+  );
+};
 
-const AsyncTestRoute1 = withLoader(() =>
-  import(/* webpackChunkName: "testRoute1" */ "../routes/testRoute1/TestRoute1")
-);
-const AsyncTestRoute2 = withLoader(() =>
-  import(/* webpackChunkName: "todos" */ "../todo-list/TodoList")
-);
-const AsyncParseParamsTestRoute = withLoader(() =>
-  import(
-    /* webpackChunkName: "parseParamTest" */ "../routes/parseParams/ParseParamsTestRoute"
-  )
-);
+const AsyncParseParamsTestRoute: FC = () => {
+  return (
+    <AsyncRoute
+      loader={() =>
+        import(
+          /* webpackChunkName: "parseParamTest" */ "../routes/parseParams/ParseParamsTestRoute"
+        )
+      }
+    />
+  );
+};
 
 const navItems = [
   {

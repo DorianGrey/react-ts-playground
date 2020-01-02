@@ -29,7 +29,6 @@
       "lodash-es",
       "react",
       "react-dom",
-      "react-loadable",
       "react-router",
       "react-router-dom",
       "webfontloader",
