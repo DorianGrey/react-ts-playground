@@ -126,6 +126,6 @@
     "yarn": ">=1.0.0"
   },
   "jest-junit": {
-    "output": "./test-results/junit/junit.xml"
+    "outputDirectory": "./test-results/junit/"
   }
 }
