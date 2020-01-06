@@ -1,11 +1,12 @@
-import React, { FunctionComponent } from "react";
+import React, { FC } from "react";
 import { FormattedDate } from "react-intl";
+
 import { useCurrentDateTime } from "../hooks/useCurrentDateTime";
 
-const CurrentTime: FunctionComponent = () => {
+const CurrentTime: FC = () => {
   const [dateTime] = useCurrentDateTime();
   return (
-    <div style={{ textAlign: "center", color: "white" }}>
+    <div>
       <FormattedDate
         value={dateTime}
         year="numeric"

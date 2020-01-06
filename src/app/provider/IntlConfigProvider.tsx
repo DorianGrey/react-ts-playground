@@ -1,49 +1,42 @@
 import React, { FC, FunctionComponent, useState, useContext } from "react";
 import { IntlProvider } from "react-intl";
+import noop from "lodash-es/noop";
 
-import { Translations } from "../i18n/languagePacks/languagePack";
+import { Translations, LanguagePack } from "../i18n/languagePacks/languagePack";
 import { BROWSER_LANGUAGE, loadLanguagePack } from "../i18n/i18n";
 
 // Only use text contents for intl formatting.
-// TODO: Figure out the typing problem. Sounds weird.
 const Fragment: FC = ({ children }) => {
   return <>{children}</>;
 };
 
 interface IntlConfigContext {
   locale: string;
+  dateLocale: Locale;
   translations: Translations;
   loadLanguage: (lang: string) => void;
 }
 
 const IntlConfigContext = React.createContext<IntlConfigContext>({
   locale: BROWSER_LANGUAGE,
+  dateLocale: {} as Locale,
   translations: {},
-  loadLanguage: (_lang: string) => {}
+  loadLanguage: noop
 });
 
 interface IntlConfigProviderProps {
-  initialTranslations?: Translations;
+  initialLangPack: LanguagePack;
 }
 
 export const IntlConfigProvider: FunctionComponent<IntlConfigProviderProps> = ({
   children,
-  initialTranslations
+  initialLangPack
 }) => {
-  const [intlState, setIntl] = useState<{
-    locale: string;
-    translations: Translations;
-  }>({
-    locale: BROWSER_LANGUAGE,
-    translations: initialTranslations || {}
-  });
+  const [intlState, setIntl] = useState<LanguagePack>(initialLangPack);
 
   const loadLanguage = (lang: string) =>
     loadLanguagePack(lang).then(langPack => {
-      setIntl({
-        locale: langPack.language,
-        translations: langPack.translations
-      });
+      setIntl(langPack);
     });
 
   return (

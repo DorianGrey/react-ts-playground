@@ -1,6 +1,9 @@
 import React, { FC } from "react";
 import { FormattedMessage } from "react-intl";
 import { useHistory, useRouteMatch } from "react-router";
+import Divider from "@material-ui/core/Divider";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
 
 const expectedQueryParams = ["bla"];
 
@@ -17,17 +20,17 @@ export const ParseParamsTestRoute: FC = () => {
         <FormattedMessage id="parseParams.url" />
       </p>
       <p>{JSON.stringify(params)}</p>
-      <hr />
+      <Divider />
       <p>
         <FormattedMessage id="parseParams.search" />
       </p>
-      <ul>
+      <List>
         {expectedQueryParams.map(entry => (
-          <li key={entry}>
-            {entry} {"=>"} {searchParams.get(entry)}
-          </li>
+          <ListItem key={entry}>
+            {">"} {entry} {"=>"} {searchParams.get(entry)}
+          </ListItem>
         ))}
-      </ul>
+      </List>
     </div>
   );
 };

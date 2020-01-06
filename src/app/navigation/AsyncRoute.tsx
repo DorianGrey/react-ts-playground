@@ -13,7 +13,7 @@ export function AsyncRoute({ loader }: AsyncRouteProps) {
   const LazyRoute = lazy(loader);
   return (
     <ErrorBoundary fallback={<div>Error loading component.</div>}>
-      <Suspense fallback={LoadingIndicator}>
+      <Suspense fallback={<LoadingIndicator />}>
         <LazyRoute />
       </Suspense>
     </ErrorBoundary>

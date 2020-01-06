@@ -1,4 +1,6 @@
 import React, { createContext, FC, useContext, useState } from "react";
+import noop from "lodash-es/noop";
+
 import { TodoModel } from "../todo-list/todo.model";
 
 interface TodosContext {
@@ -10,9 +12,9 @@ interface TodosContext {
 
 const TodosContext = createContext<TodosContext>({
   todos: [],
-  addTodo: (_headline: string, _description: string, _deadline: Date) => {},
-  updateTodo: (_todo: TodoModel) => {},
-  deleteTodo: (_id: number) => {}
+  addTodo: noop,
+  updateTodo: noop,
+  deleteTodo: noop
 });
 
 export const TodosProvider: FC = ({ children }) => {

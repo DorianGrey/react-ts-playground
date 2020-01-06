@@ -3,6 +3,7 @@ export interface Translations {
 }
 
 export interface LanguagePack {
-  language: string;
+  locale: string;
   translations: Translations;
+  dateLocale: Locale;
 }

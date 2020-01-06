@@ -1,106 +1,73 @@
-import React, { FunctionComponent, FC } from "react";
+import React, { FunctionComponent } from "react";
 
-import { useIntl } from "react-intl";
-import {
-  Redirect,
-  Route,
-  Switch,
-  withRouter,
-  RouteComponentProps
-} from "react-router";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
-import NavigationDrawer from "react-md/lib/NavigationDrawers";
+import { Routes } from "./Routes";
+import { NavigationDrawer } from "./NavigationDrawer";
 
-import { NotFoundPage } from "../404/404";
-// import NotificationProvider from "./notifications/NotificationProvider";
-
-import CurrentTime from "../currentTime/CurrentTime";
-import LanguagePicker from "../language-picker/LanguagePicker";
-import NaviLink from "../naviLink";
-import { AsyncRoute } from "./AsyncRoute";
-
-const AsyncTestRoute1: FC = () => {
-  return (
-    <AsyncRoute
-      loader={() =>
-        import(
-          /* webpackChunkName: "testRoute1" */ "../routes/testRoute1/TestRoute1"
-        )
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    // Little override stuff to provide more likely defaults.
+    "@global": {
+      body: {
+        fontFamily: [
+          "Roboto",
+          /* Safari for OS X and iOS (San Francisco) */
+          "-apple-system",
+          /* Chrome >= 56 for OS X (San Francisco), Windows, Linux and Android */
+          "system-ui",
+          /* Chrome < 56 for OS X (San Francisco) */
+          "BlinkMacSystemFont",
+          /* Windows */
+          "Segoe UI",
+          /* KDE */
+          "Oxygen",
+          /* Ubuntu */
+          "Ubuntu",
+          /* Gnome */
+          "Cantarell",
+          /* FF OS */
+          "Fira Sans",
+          /* Older android versions */
+          "Droid Sans",
+          /* Basic web fallback */
+          "Helvetica Neue",
+          "Arial",
+          "sans-serif"
+        ].join(",")
       }
-    />
-  );
-};
+    },
+    root: {
+      display: "flex"
+    },
+    toolbar: {
+      ...theme.mixins.toolbar,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    content: {
+      flexGrow: 1,
+      padding: theme.spacing(3)
+    }
+  })
+);
 
-const AsyncTestRoute2: FC = () => {
+const Navigation: FunctionComponent = () => {
+  const classes = useStyles();
+
   return (
-    <AsyncRoute
-      loader={() =>
-        import(/* webpackChunkName: "todos" */ "../todo-list/TodoList")
-      }
-    />
+    <div className={classes.root}>
+      {/* Nav drawer */}
+      <NavigationDrawer />
+
+      {/* Content */}
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <Routes />
+      </main>
+    </div>
   );
 };
 
-const AsyncParseParamsTestRoute: FC = () => {
-  return (
-    <AsyncRoute
-      loader={() =>
-        import(
-          /* webpackChunkName: "parseParamTest" */ "../routes/parseParams/ParseParamsTestRoute"
-        )
-      }
-    />
-  );
-};
-
-const navItems = [
-  {
-    label: "nav.testRoute1",
-    to: "/tr0",
-    icon: "perm_contact_calendar"
-  },
-  {
-    label: "nav.todos",
-    to: "/todo-list",
-    icon: "assignment"
-  },
-  {
-    label: "nav.testRoute3",
-    to: "/lazy-test/faq?bla=true",
-    icon: "question_answer"
-  }
-];
-
-const navigationItems = navItems.map(p => <NaviLink {...p} key={p.to} />);
-
-const Navigation: FunctionComponent<RouteComponentProps<string | number>> = ({
-  location
-}) => {
-  const { formatMessage } = useIntl();
-  return (
-    <NavigationDrawer
-      footer={<CurrentTime />}
-      toolbarTitle={formatMessage({ id: "header.title" })}
-      toolbarActions={<LanguagePicker />}
-      navItems={navigationItems}
-    >
-      <Switch key={location.key}>
-        <Redirect exact from="/" to="/tr0" />
-        <Route path="/tr0" component={AsyncTestRoute1} location={location} />
-        <Route
-          path="/todo-list"
-          component={AsyncTestRoute2}
-          location={location}
-        />
-        <Route
-          path="/lazy-test/:id"
-          component={AsyncParseParamsTestRoute}
-          location={location}
-        />
-        <Route component={NotFoundPage} />
-      </Switch>
-    </NavigationDrawer>
-  );
-};
-
-export default withRouter(Navigation);
+export default Navigation;
