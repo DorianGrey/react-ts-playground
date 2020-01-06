@@ -1,7 +1,9 @@
-import React from "react";
+import React, { MouseEvent, useState } from "react";
 import { useIntl } from "react-intl";
-import ListItem from "react-md/lib/Lists/ListItem";
-import MenuButton from "react-md/lib/Menus/MenuButton";
+import Fab from "@material-ui/core/Fab";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import LanguageIcon from "@material-ui/icons/Language";
 
 import { getSupportedLanguages } from "../i18n/i18n";
 import { useIntlConfig } from "../provider/IntlConfigProvider";
@@ -12,29 +14,49 @@ function LanguagePicker() {
   const { formatMessage, locale } = useIntl();
   const { loadLanguage } = useIntlConfig();
 
-  const items = languages.map(lang => ({
-    label: formatMessage({ id: `languages.${lang}` }),
-    value: lang
-  }));
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const listItems = items.map(({ label, value }) => (
-    <ListItem
-      key={value}
-      primaryText={label}
-      active={locale === value}
-      onClick={loadLanguage.bind(null, value)}
-    />
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const listItems = languages.map(lang => (
+    <MenuItem
+      key={lang}
+      onClick={() => {
+        handleClose();
+        loadLanguage(lang);
+      }}
+      selected={lang === locale}
+    >
+      {formatMessage({ id: `languages.${lang}` })}
+    </MenuItem>
   ));
 
   return (
-    <MenuButton
-      id="language-selection"
-      floating
-      secondary
-      menuItems={listItems}
-    >
-      language
-    </MenuButton>
+    <div>
+      <Fab
+        aria-controls="language-selection"
+        aria-haspopup="true"
+        onClick={handleClick}
+        color="secondary"
+      >
+        <LanguageIcon />
+      </Fab>
+      <Menu
+        id="language-selection"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        {listItems}
+      </Menu>
+    </div>
   );
 }
 

@@ -1,7 +1,6 @@
 const path = require("path");
 const Config = require("webpack-chain");
 const objectHash = require("node-object-hash");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 // FIXME: Disabled temporarily - reason: https://stackoverflow.com/questions/52566349/referenceerror-undefinedcreateprovider-is-not-defined
 // const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
@@ -20,9 +19,6 @@ const CaseSensitivePathsPlugin = require.resolve(
   "case-sensitive-paths-webpack-plugin"
 );
 const TerserPlugin = require.resolve("terser-webpack-plugin");
-const OptimizeCssnanoPlugin = require.resolve(
-  "@intervolga/optimize-cssnano-plugin"
-);
 const HtmlWebpackPlugin = require.resolve("html-webpack-plugin");
 const ScriptExtHtmlWebpackPlugin = require.resolve(
   "script-ext-html-webpack-plugin"
@@ -39,7 +35,8 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const GenerateSW = require("workbox-webpack-plugin/build/generate-sw");
 
 const BuildStatsFormatterPlugin = require("./plugins/BuildStatsFormatterPlugin");
-const loadingAnimation = require("../../scripts/util/renderLoading")().css;
+const loadingAnimation = require("../../scripts/util/loadingAnimation")();
+
 const paths = require("../paths");
 const { log } = require("../logger");
 
@@ -84,76 +81,6 @@ module.exports = function() {
     .enforce("pre")
     .include.add(paths.appSrc).end()
     .end();
-
-  // Define how scss is handled - the first loader depends on mode.
-  // Development mode docs:
-  // "postcss" loader applies autoprefixer to our CSS.
-  // "css" loader resolves paths in CSS and adds assets as dependencies.
-  // "style" loader turns CSS into JS modules that inject <style> tags.
-  // In production, we use a plugin to extract that CSS to a file, but
-  // in development "style" loader enables hot editing of CSS.
-
-  // Production mode docs:
-  // The notation here is somewhat confusing.
-  // "postcss" loader applies autoprefixer to our CSS.
-  // "css" loader resolves paths in CSS and adds assets as dependencies.
-  // "style" loader normally turns CSS into JS modules injecting <style>,
-  // but unlike in development configuration, we do something different.
-  // `ExtractTextPlugin` first applies the "postcss" and "css" loaders
-  // (second argument), then grabs the result CSS and puts it into a
-  // separate file in our build process. This way we actually ship
-  // a single CSS file in production instead of JS code injecting <style>
-  // tags. If you use code splitting, however, any async bundles will still
-  // use the "style" loader inside the async code so CSS from them won't be
-  // in the main CSS file.
-  // prettier-ignore
-  const scssRule = config.module
-  .rule("scss")
-  .test(/\.scss$/)
-  .use("css-loader")
-    .loader(require.resolve("css-loader"))
-    .options({
-      importLoaders: 1,
-      sourceMap: !isProd
-    })
-    .end()
-  .use("postcss-loader")
-    .loader(require.resolve("postcss-loader"))
-    .options({
-      sourceMap: !isProd
-    })
-    .end()
-  .use("resolve-url-loader")
-    .loader(require.resolve("resolve-url-loader"))
-    .options({
-      sourceMap: !isProd
-    })
-    .end()
-  .use("sass-loader")
-    .loader(require.resolve("sass-loader"))
-    .options({
-      sourceMap: true, // Has to be true always, since the resolve-url-loader requires it to properly map the resource paths.
-      sassOptions: {
-        outputStyle: isProd ? "compressed": "nested"
-      }
-    })
-    .end();
-
-  config.when(
-    isProd,
-    () =>
-      scssRule
-        .use("mini-css-extract")
-        .loader(MiniCssExtractPlugin.loader)
-        .before("css-loader")
-        .end(),
-    () =>
-      scssRule
-        .use("style-loader")
-        .loader(require.resolve("style-loader"))
-        .before("css-loader")
-        .end()
-  );
 
   const generateCacheIdentifer = (...additionalPackageSrcs) => {
     const additional = {};
@@ -289,7 +216,7 @@ module.exports = function() {
       title: "Demo App",
       devMode: !isProd,
       baseHref: "/",
-      loadingCss: loadingAnimation.css
+      loadingCss: loadingAnimation
     }
   ]);
 
@@ -427,31 +354,6 @@ module.exports = function() {
           parallel: true
         }
       ]);
-
-    // Extract styles
-    config.plugin("css-extract").use(MiniCssExtractPlugin, [
-      {
-        filename: `static/css/[name].[contenthash:8].css`,
-        chunkFilename: `static/css/[name].[contenthash:8].css`
-      }
-    ]);
-
-    // Optimize styles externally
-    config.plugin("cssnano-plugin").use(OptimizeCssnanoPlugin, [
-      {
-        sourceMap: true,
-        cssnanoOptions: {
-          preset: [
-            "default",
-            {
-              discardComments: {
-                removeAll: true
-              }
-            }
-          ]
-        }
-      }
-    ]);
 
     // Set production plugins
     config.plugin("copy-static").use(CopyWebpackPlugin, [

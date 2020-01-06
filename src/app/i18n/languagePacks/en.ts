@@ -1,9 +1,11 @@
+import enLocale from "date-fns/locale/en-GB";
 import translationsEn from "../../../generated/translations.en";
 import { LanguagePack } from "./languagePack";
 
 const enLanguagePack: LanguagePack = {
   translations: translationsEn,
-  language: "en"
+  locale: "en",
+  dateLocale: enLocale
 };
 
 export default enLanguagePack;

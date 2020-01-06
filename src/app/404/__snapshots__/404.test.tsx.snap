@@ -2,12 +2,12 @@
 
 exports[`Default rendering test renders content as intended 1`] = `
 <div>
-  <div
-    id="not-found-page"
-  >
-    <h2>
+  <div>
+    <h4
+      class="MuiTypography-root makeStyles-centered-1 MuiTypography-h4"
+    >
       404 | Well, That about Wraps It Up for This Page
-    </h2>
+    </h4>
     <blockquote>
       <p>
         ’I refuse to prove that I exist,’ says Page, ’for proof denies faith, and without faith I am nothing.’
@@ -19,13 +19,20 @@ exports[`Default rendering test renders content as intended 1`] = `
         ’Oh dear,’ says Page, ’I hadn’t thought of that,’ and promptly disappears in a puff of logic.
       </p>
       <p
-        class="italic"
+        class="makeStyles-thanksText-2"
       >
-        – Thanks to 
-        <a>
+        – Thanks to
+         
+        <a
+          class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
+          href="https://www.elastic.co/de/whatever"
+          rel="noopener"
+          target="_blank"
+        >
           https://www.elastic.co
         </a>
-         for this story
+         
+        for this story
       </p>
     </blockquote>
   </div>

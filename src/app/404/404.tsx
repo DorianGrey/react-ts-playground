@@ -1,11 +1,27 @@
-import "./404.scss";
-
 import React from "react";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import { Link } from "@material-ui/core";
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    centered: {
+      textAlign: "center"
+    },
+    thanksText: {
+      fontStyle: "italic",
+      marginTop: "2rem"
+    }
+  })
+);
 
 export const NotFoundPage = () => {
+  const classes = useStyles();
   return (
-    <div id="not-found-page">
-      <h2>404 | Well, That about Wraps It Up for This Page</h2>
+    <div>
+      <Typography variant="h4" className={classes.centered}>
+        404 | Well, That about Wraps It Up for This Page
+      </Typography>
       <blockquote>
         <p>
           ’I refuse to prove that I exist,’ says Page, ’for proof denies faith,
@@ -20,8 +36,16 @@ export const NotFoundPage = () => {
           ’Oh dear,’ says Page, ’I hadn’t thought of that,’ and promptly
           disappears in a puff of logic.
         </p>
-        <p className="italic">
-          – Thanks to <a>{"https://www.elastic.co"}</a> for this story
+        <p className={classes.thanksText}>
+          – Thanks to{" "}
+          <Link
+            href="https://www.elastic.co/de/whatever"
+            target="_blank"
+            rel="noopener"
+          >
+            {"https://www.elastic.co"}
+          </Link>{" "}
+          for this story
         </p>
       </blockquote>
     </div>
