@@ -65,7 +65,7 @@ function ReadOnlyTodo(
       </CardContent>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Grid container>
+          <Grid container spacing={2}>
             <Grid item>
               <FormattedMessage id="todos.entry.created" />
               &nbsp;
