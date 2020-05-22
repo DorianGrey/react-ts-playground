@@ -33,23 +33,23 @@ const useStyles = makeStyles((theme: Theme) =>
           /* Basic web fallback */
           "Helvetica Neue",
           "Arial",
-          "sans-serif"
-        ].join(",")
-      }
+          "sans-serif",
+        ].join(","),
+      },
     },
     root: {
-      display: "flex"
+      display: "flex",
     },
     toolbar: {
       ...theme.mixins.toolbar,
       display: "flex",
       justifyContent: "center",
-      alignItems: "center"
+      alignItems: "center",
     },
     content: {
       flexGrow: 1,
-      padding: theme.spacing(3)
-    }
+      padding: theme.spacing(3),
+    },
   })
 );
 

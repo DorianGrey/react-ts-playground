@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 
 // Note: We have to import these from different packages to always get the proper typings ... DAFUQ?!
 import { BrowserRouter as Router } from "react-router-dom";
@@ -14,7 +14,7 @@ export interface AppProps {
   langPack: LanguagePack;
 }
 
-export default function App(props: AppProps) {
+export const App: FC<AppProps> = (props) => {
   return (
     <>
       <ThemeProvider>
@@ -29,4 +29,4 @@ export default function App(props: AppProps) {
       </ThemeProvider>
     </>
   );
-}
+};

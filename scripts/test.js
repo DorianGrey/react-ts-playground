@@ -8,13 +8,13 @@ const compileTranslations = require("./translations").compile;
 // Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will
 // terminate the Node.js process with a non-zero exit code.
-process.on("unhandledRejection", err => {
+process.on("unhandledRejection", (err) => {
   throw err;
 });
 
 async function runTest() {
   await compileTranslations("src/**/*.i18n.yml", "src/generated/translations", {
-    splitPerLang: true
+    splitPerLang: true,
   });
 
   const jest = require("jest");
@@ -28,6 +28,6 @@ async function runTest() {
   jest.run(argv);
 }
 
-runTest().catch(err => {
+runTest().catch((err) => {
   console.error(err);
 });

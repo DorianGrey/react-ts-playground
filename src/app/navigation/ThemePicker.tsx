@@ -13,8 +13,8 @@ const useStyles = makeStyles(() =>
     gridItem: {
       display: "flex",
       justifyContent: "center",
-      alignItems: "center"
-    }
+      alignItems: "center",
+    },
   })
 );
 

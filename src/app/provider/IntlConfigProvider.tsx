@@ -21,7 +21,7 @@ const IntlConfigContext = React.createContext<IntlConfigContext>({
   locale: BROWSER_LANGUAGE,
   dateLocale: {} as Locale,
   translations: {},
-  loadLanguage: noop
+  loadLanguage: noop,
 });
 
 interface IntlConfigProviderProps {
@@ -30,12 +30,12 @@ interface IntlConfigProviderProps {
 
 export const IntlConfigProvider: FunctionComponent<IntlConfigProviderProps> = ({
   children,
-  initialLangPack
+  initialLangPack,
 }) => {
   const [intlState, setIntl] = useState<LanguagePack>(initialLangPack);
 
   const loadLanguage = (lang: string) =>
-    loadLanguagePack(lang).then(langPack => {
+    loadLanguagePack(lang).then((langPack) => {
       setIntl(langPack);
     });
 
@@ -43,7 +43,7 @@ export const IntlConfigProvider: FunctionComponent<IntlConfigProviderProps> = ({
     <IntlConfigContext.Provider
       value={{
         ...intlState,
-        loadLanguage
+        loadLanguage,
       }}
     >
       <IntlProvider
@@ -57,6 +57,6 @@ export const IntlConfigProvider: FunctionComponent<IntlConfigProviderProps> = ({
   );
 };
 
-export function useIntlConfig() {
+export function useIntlConfig(): IntlConfigContext {
   return useContext(IntlConfigContext);
 }

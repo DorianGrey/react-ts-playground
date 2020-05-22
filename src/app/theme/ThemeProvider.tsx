@@ -3,11 +3,11 @@ import React, {
   useState,
   createContext,
   useCallback,
-  useContext
+  useContext,
 } from "react";
 import {
   Theme,
-  ThemeProvider as MuiThemeProvider
+  ThemeProvider as MuiThemeProvider,
 } from "@material-ui/core/styles";
 import noop from "lodash-es/noop";
 
@@ -25,7 +25,7 @@ interface ThemeContext {
 const ThemeContext = createContext<ThemeContext>({
   currentTheme: "light",
   setDarkTheme: noop,
-  setLightTheme: noop
+  setLightTheme: noop,
 });
 
 /**
@@ -51,7 +51,7 @@ export const ThemeProvider: FC = ({ children }) => {
       value={{
         setLightTheme,
         setDarkTheme,
-        currentTheme: theme === dark ? "dark" : "light"
+        currentTheme: theme === dark ? "dark" : "light",
       }}
     >
       <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
@@ -59,6 +59,6 @@ export const ThemeProvider: FC = ({ children }) => {
   );
 };
 
-export function useThemeContext() {
+export function useThemeContext(): ThemeContext {
   return useContext(ThemeContext);
 }

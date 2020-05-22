@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 
-export const useCurrentDateTime = (updateInterval = 1000) => {
+type CurrentDateTimeHook = (updateInterval?: number) => [Date];
+
+export const useCurrentDateTime: CurrentDateTimeHook = (
+  updateInterval = 1000
+) => {
   const [state, setState] = useState(new Date());
 
   useEffect(() => {

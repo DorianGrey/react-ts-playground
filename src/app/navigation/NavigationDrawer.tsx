@@ -26,21 +26,21 @@ const navItems = [
   {
     label: "nav.testRoute1",
     to: "/tr0",
-    icon: PermContactCalendarIcon
+    icon: PermContactCalendarIcon,
   },
   {
     label: "nav.todos",
     to: "/todo-list",
-    icon: AssignmentIcon
+    icon: AssignmentIcon,
   },
   {
     label: "nav.testRoute3",
     to: "/lazy-test/faq?bla=true",
-    icon: QuestionAnswerIcon
-  }
+    icon: QuestionAnswerIcon,
+  },
 ];
 
-const navigationItems = navItems.map(p => <NaviLink {...p} key={p.to} />);
+const navigationItems = navItems.map((p) => <NaviLink {...p} key={p.to} />);
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -48,35 +48,35 @@ const useStyles = makeStyles((theme: Theme) =>
     drawer: {
       [theme.breakpoints.up("sm")]: {
         width: drawerWidth,
-        flexShrink: 0
-      }
+        flexShrink: 0,
+      },
     },
     drawerItem: {
       width: "100%",
       display: "flex",
-      justifyContent: "center"
+      justifyContent: "center",
     },
     toolbar: {
       ...theme.mixins.toolbar,
       display: "flex",
       justifyContent: "center",
-      alignItems: "center"
+      alignItems: "center",
     },
     appBar: {
       [theme.breakpoints.up("sm")]: {
         width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: drawerWidth
-      }
+        marginLeft: drawerWidth,
+      },
     },
     menuButton: {
       marginRight: theme.spacing(2),
       [theme.breakpoints.up("sm")]: {
-        display: "none"
-      }
+        display: "none",
+      },
     },
     drawerPaper: {
-      width: drawerWidth
-    }
+      width: drawerWidth,
+    },
   })
 );
 
@@ -134,10 +134,10 @@ export const NavigationDrawer: FC = () => {
             open={mobileOpen}
             onClose={handleDrawerToggle}
             classes={{
-              paper: classes.drawerPaper
+              paper: classes.drawerPaper,
             }}
             ModalProps={{
-              keepMounted: true // Better open performance on mobile.
+              keepMounted: true, // Better open performance on mobile.
             }}
           >
             {drawerContent}
@@ -146,7 +146,7 @@ export const NavigationDrawer: FC = () => {
         <Hidden xsDown implementation="css">
           <Drawer
             classes={{
-              paper: classes.drawerPaper
+              paper: classes.drawerPaper,
             }}
             variant="permanent"
             open

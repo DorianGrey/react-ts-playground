@@ -35,8 +35,8 @@ export function sendNotification(
   // We'll be waiting for approx. 3 seconds before cancelling the sent notification to avoid user confusion.
   return Promise.race([
     requestNotificationPermission(),
-    createTimeoutPromise()
-  ]).then(permissionState => {
+    createTimeoutPromise(),
+  ]).then((permissionState) => {
     if (permissionState === "granted") {
       const notification = new Notification(title, options);
       if (autodisposeAfter && autodisposeAfter > 0) {

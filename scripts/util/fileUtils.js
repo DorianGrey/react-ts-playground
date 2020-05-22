@@ -10,7 +10,7 @@ module.exports = {
   getFiles(src, options) {
     return new Promise((resolve, reject) =>
       glob(src, options || {}, (e, files) => (e ? reject(e) : resolve(files)))
-    ).then(files => _.reject(files, f => _.includes(f, "*")));
+    ).then((files) => _.reject(files, (f) => _.includes(f, "*")));
   },
   readFile(src) {
     return new Promise((resolve, reject) =>
@@ -19,15 +19,12 @@ module.exports = {
       )
     );
   },
-  writeFile(dest, content, options) {
-    return new Promise((resolve, reject) =>
-      mkdirp(path.dirname(dest), e =>
-        e
-          ? reject(e)
-          : fs.writeFile(dest, content, options || {}, e =>
-              e ? reject(e) : resolve()
-            )
+  async writeFile(dest, content, options) {
+    await mkdirp(path.dirname(dest));
+    return await new Promise((resolve, reject) =>
+      fs.writeFile(dest, content, options || {}, (e) =>
+        e ? reject(e) : resolve()
       )
     );
-  }
+  },
 };

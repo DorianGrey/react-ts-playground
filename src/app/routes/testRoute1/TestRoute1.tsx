@@ -12,23 +12,23 @@ const useStyles = makeStyles(() =>
   createStyles({
     AppHeader: {
       padding: "20px",
-      textAlign: "center"
+      textAlign: "center",
     },
     AppTitle: {
-      fontSize: "1.5em"
+      fontSize: "1.5em",
     },
     "@keyframes AppLogoSpin": {
       from: {
-        transform: "rotate(0deg)"
+        transform: "rotate(0deg)",
       },
       to: {
-        transform: "rotate(360deg)"
-      }
+        transform: "rotate(360deg)",
+      },
     },
     AppLogo: {
       animation: "$AppLogoSpin infinite 20s linear",
-      height: "80px"
-    }
+      height: "80px",
+    },
   })
 );
 

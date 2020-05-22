@@ -20,7 +20,7 @@ if (serveDirs.length === 0) {
 app.use(router);
 app.use(compression());
 
-serveDirs.forEach(dirName => {
+serveDirs.forEach((dirName) => {
   app.use(express.static(path.resolve(process.cwd(), dirName)));
 });
 

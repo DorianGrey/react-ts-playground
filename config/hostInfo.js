@@ -34,5 +34,5 @@ module.exports = {
   selectPort,
   useLocalIp,
   LOCAL_HOST_ADDRESS,
-  PUBLIC_ADDRESS
+  PUBLIC_ADDRESS,
 };

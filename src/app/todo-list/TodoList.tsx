@@ -15,7 +15,7 @@ import { TodoModel } from "./todo.model";
 import TodoEntry from "./TodoEntry";
 import {
   sendNotification,
-  requestNotificationPermission
+  requestNotificationPermission,
 } from "../util/notification";
 import { useTodos } from "../provider/TodosProvider";
 import { useIntlConfig } from "../provider/IntlConfigProvider";
@@ -26,13 +26,13 @@ const useStyles = makeStyles(() =>
       cursor: "pointer",
       display: "flex",
       flexDirection: "row",
-      justifyContent: "center"
+      justifyContent: "center",
     },
     todoListItem: {
       display: "block",
       width: "50%",
-      minWidth: "300px"
-    }
+      minWidth: "300px",
+    },
   })
 );
 
@@ -57,7 +57,7 @@ const TodoList: FC = () => {
     setShowNewTodoBlock(false);
 
     if (id) {
-      const oldTodo = todos.find(e => !!e && e.id === id);
+      const oldTodo = todos.find((e) => !!e && e.id === id);
 
       // Should neven happen, but just in case...
       if (!oldTodo) {
@@ -69,7 +69,7 @@ const TodoList: FC = () => {
         id,
         headline,
         description,
-        deadline
+        deadline,
       });
     } else {
       addTodo(headline, description, deadline);
@@ -77,14 +77,14 @@ const TodoList: FC = () => {
 
     sendNotification(
       formatMessage({
-        id: `todos.newTodo.${id ? "updated" : "added"}`
+        id: `todos.newTodo.${id ? "updated" : "added"}`,
       }),
       {
         icon: "favicon.ico",
-        body: headline
+        body: headline,
       },
       5000
-    ).catch(error => {
+    ).catch((error) => {
       console.error("Could not send notification:", error);
     });
   };

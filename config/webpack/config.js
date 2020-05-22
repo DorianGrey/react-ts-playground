@@ -46,7 +46,7 @@ if (!process.env.NODE_ENV) {
 const isProd = process.env.NODE_ENV === "production";
 const hasher = objectHash().hash;
 
-module.exports = function() {
+module.exports = function () {
   const config = new Config();
 
   config.context(paths.appRoot);
@@ -58,8 +58,8 @@ module.exports = function() {
   // Setup sourcemap.
   config.when(
     isProd,
-    config => config.devtool("source-map"),
-    config => config.devtool("cheap-module-eval-source-map")
+    (config) => config.devtool("source-map"),
+    (config) => config.devtool("cheap-module-eval-source-map")
   );
 
   // Common configuration.
@@ -84,14 +84,14 @@ module.exports = function() {
 
   const generateCacheIdentifer = (...additionalPackageSrcs) => {
     const additional = {};
-    additionalPackageSrcs.forEach(pkg => {
+    additionalPackageSrcs.forEach((pkg) => {
       additional[pkg] = require(`${pkg}/package.json`).version;
     });
 
     return hasher({
       ...additional,
       env: process.env.NODE_ENV,
-      "cache-loader": require("cache-loader/package.json").version
+      "cache-loader": require("cache-loader/package.json").version,
     });
   };
 
@@ -186,8 +186,8 @@ module.exports = function() {
   config.plugin("friendly-errors").use(FriendlyErrorsWebpackPlugin, [
     {
       additionalTransformers: [transformer],
-      additionalFormatters: [formatter]
-    }
+      additionalFormatters: [formatter],
+    },
   ]);
 
   // Setup Html-Webpack-Plugin
@@ -202,7 +202,7 @@ module.exports = function() {
         keepClosingSlash: true,
         minifyJS: true,
         minifyCSS: true,
-        minifyURLs: true
+        minifyURLs: true,
       }
     : false;
 
@@ -216,8 +216,8 @@ module.exports = function() {
       title: "Demo App",
       devMode: !isProd,
       baseHref: "/",
-      loadingCss: loadingAnimation
-    }
+      loadingCss: loadingAnimation,
+    },
   ]);
 
   // Setup script-extender-plugin
@@ -228,8 +228,8 @@ module.exports = function() {
   // Setup environment-plugin
   config.plugin("environment").use(EnvironmentPlugin, [
     {
-      NODE_ENV: process.env.NODE_ENV
-    }
+      NODE_ENV: process.env.NODE_ENV,
+    },
   ]);
 
   // Setup ignore-plugin
@@ -308,7 +308,7 @@ module.exports = function() {
     });
 
   // Other stuff exclusively for production mode.
-  config.when(isProd, config => {
+  config.when(isProd, (config) => {
     // prettier-ignore
     config
     .bail(true)
@@ -337,33 +337,37 @@ module.exports = function() {
               // https://github.com/facebookincubator/create-react-app/issues/2376
               // Pending further investigation:
               // https://github.com/mishoo/UglifyJS2/issues/2011
-              comparisons: false
+              comparisons: false,
             },
             mangle: {
-              safari10: true
+              safari10: true,
             },
             output: {
               comments: false,
               // Turned on because emoji and regex is not minified properly using default
               // https://github.com/facebookincubator/create-react-app/issues/2488
-              ascii_only: true
-            }
+              ascii_only: true,
+            },
           },
           sourceMap: true,
           cache: true,
-          parallel: true
-        }
+          parallel: true,
+        },
       ]);
 
     // Set production plugins
     config.plugin("copy-static").use(CopyWebpackPlugin, [
-      [
-        {
-          from: paths.appPublic + "/**/*",
-          context: paths.appPublic,
-          ignore: ["*.template.html"]
-        }
-      ]
+      {
+        patterns: [
+          {
+            from: "**/*",
+            context: paths.appPublic,
+            globOptions: {
+              ignore: ["*.template.html"],
+            },
+          },
+        ],
+      },
     ]);
 
     config.plugin("clean").use(CleanWebpackPlugin, [
@@ -371,8 +375,8 @@ module.exports = function() {
         verbose: false,
         // Required to get the `BuildStatsFormatterPlugin` working correctly - otherwise,
         // it could not pick up the previous output file paths.
-        cleanOnceBeforeBuildPatterns: true
-      }
+        cleanOnceBeforeBuildPatterns: true,
+      },
     ]);
 
     config.plugin("bundle-analyzer").use(BundleAnalyzerPlugin, [
@@ -388,8 +392,8 @@ module.exports = function() {
           paths.appBuildStats,
           "bundle-size-report.json"
         ),
-        logLevel: "silent"
-      }
+        logLevel: "silent",
+      },
     ]);
 
     // Plugin for more consistent hashes.
@@ -401,12 +405,12 @@ module.exports = function() {
           /\.map$/,
           /img\/icons\//,
           /favicon\.ico$/,
-          /manifest\.webmanifest$/
+          /manifest\.webmanifest$/,
         ],
         cacheId: "react-ts-playground",
         skipWaiting: true,
-        clientsClaim: true
-      }
+        clientsClaim: true,
+      },
     ]);
 
     // Special plugin to print file sizes.
@@ -430,8 +434,8 @@ module.exports = function() {
         // This gzip level is used heavily, i.e. by nginx, so it makes sense
         // to take it as a reference.
         gzipDisplayOpts: { level: 6 },
-        ignorePattern: /\.map$/
-      }
+        ignorePattern: /\.map$/,
+      },
     ]);
   });
 

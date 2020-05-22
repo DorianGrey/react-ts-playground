@@ -9,7 +9,7 @@ const readline = require("readline");
  *
  * Function performs nothing in case the stdout is NOT a TTY.
  */
-exports.cls = function() {
+exports.cls = function () {
   if (process.stdout.isTTY) {
     const blank = "\n".repeat(process.stdout.rows);
     console.log(blank);
@@ -24,7 +24,7 @@ exports.cls = function() {
  *
  * Function performs nothing in case the stdout is NOT a TTY.
  */
-exports.hardCls = function() {
+exports.hardCls = function () {
   if (process.stdout.isTTY) {
     process.stdout.write(
       process.platform === "win32" ? "\x1Bc" : "\x1B[2J\x1B[3J\x1B[H"
@@ -32,6 +32,6 @@ exports.hardCls = function() {
   }
 };
 
-exports.formatFirstLineMessage = function(text) {
+exports.formatFirstLineMessage = function (text) {
   return chalk.bgWhite.black(text);
 };

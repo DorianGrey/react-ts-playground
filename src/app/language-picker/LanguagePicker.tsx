@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState } from "react";
+import React, { FC, MouseEvent, useState } from "react";
 import { useIntl } from "react-intl";
 import Fab from "@material-ui/core/Fab";
 import Menu from "@material-ui/core/Menu";
@@ -8,7 +8,7 @@ import LanguageIcon from "@material-ui/icons/Language";
 import { getSupportedLanguages } from "../i18n/i18n";
 import { useIntlConfig } from "../provider/IntlConfigProvider";
 
-function LanguagePicker() {
+const LanguagePicker: FC = () => {
   const languages = getSupportedLanguages();
 
   const { formatMessage, locale } = useIntl();
@@ -24,7 +24,7 @@ function LanguagePicker() {
     setAnchorEl(null);
   };
 
-  const listItems = languages.map(lang => (
+  const listItems = languages.map((lang) => (
     <MenuItem
       key={lang}
       onClick={() => {
@@ -58,6 +58,6 @@ function LanguagePicker() {
       </Menu>
     </div>
   );
-}
+};
 
 export default LanguagePicker;

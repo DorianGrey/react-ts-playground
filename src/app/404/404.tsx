@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { Link } from "@material-ui/core";
@@ -6,16 +6,16 @@ import { Link } from "@material-ui/core";
 const useStyles = makeStyles(() =>
   createStyles({
     centered: {
-      textAlign: "center"
+      textAlign: "center",
     },
     thanksText: {
       fontStyle: "italic",
-      marginTop: "2rem"
-    }
+      marginTop: "2rem",
+    },
   })
 );
 
-export const NotFoundPage = () => {
+export const NotFoundPage: FC = () => {
   const classes = useStyles();
   return (
     <div>

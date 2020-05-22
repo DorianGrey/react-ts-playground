@@ -13,7 +13,7 @@ module.exports = (pattern, onChange, opts) => {
   }, opts.debounce || 100);
 
   for (let event of opts.events || ["change"]) {
-    watcher.on(event, file => {
+    watcher.on(event, (file) => {
       files.push(file);
       debouncedCallback();
     });

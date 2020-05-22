@@ -6,20 +6,20 @@ const log = new signale.Signale({
     category: {
       badge: ">",
       color: "cyan",
-      label: "category"
-    }
-  }
+      label: "category",
+    },
+  },
 });
 const buildLog = new signale.Signale({
   // Only use interactive mode in case the stdout is a TTY and
   // not on a CI system - the .isTTY often yields "true" on these,
   // even though they do NOT fully support it.
-  interactive: process.stdout.isTTY && !process.env.CI
+  interactive: process.stdout.isTTY && !process.env.CI,
 });
 const asyncLog = signale.scope("async");
 
 module.exports = {
   log,
   buildLog,
-  asyncLog
+  asyncLog,
 };

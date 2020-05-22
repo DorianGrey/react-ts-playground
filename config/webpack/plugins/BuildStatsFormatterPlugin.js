@@ -84,7 +84,7 @@ function createHeadline(
   return [
     alignPad("", longestFileNameSize),
     alignPad(withTableCellPadding(colorer("min.")), longestSrcSizeLabelLength),
-    alignPad(colorer("gzip"), longestGzipSizeLabelLength)
+    alignPad(colorer("gzip"), longestGzipSizeLabelLength),
   ].join(" ");
 }
 
@@ -124,7 +124,7 @@ function validateOptions(options) {
     const hasValidShape =
       hasLogProperty &&
       expectedFunctions.every(
-        k => !!options.log[k] && typeof options.log[k] === "function"
+        (k) => !!options.log[k] && typeof options.log[k] === "function"
       );
 
     if (!hasValidShape) {
@@ -148,8 +148,8 @@ function validateOptions(options) {
       );
     }
   }
-  const isPositiveNumber = num => typeof num === "number" && num >= 0;
-  const isPositiveInteger = num =>
+  const isPositiveNumber = (num) => typeof num === "number" && num >= 0;
+  const isPositiveInteger = (num) =>
     isPositiveNumber(num) && Number.isInteger(num);
   // `assetsSizeWarnLimit` has to be a positive numeric value.
   {
@@ -234,7 +234,7 @@ class BuildStatsFormatterPlugin {
       this.determineFileSizesBeforeBuild();
     });
 
-    compiler.hooks.done.tap("BuildStatsFormatterPlugin", stats => {
+    compiler.hooks.done.tap("BuildStatsFormatterPlugin", (stats) => {
       this.printFileSizes(stats);
     });
   }
@@ -247,7 +247,7 @@ class BuildStatsFormatterPlugin {
   determineFileSizesBeforeBuild() {
     const globbed = glob.sync(["**/*.{js,css,json,webmanifest}"], {
       cwd: this.sourcePath,
-      absolute: true
+      absolute: true,
     });
 
     try {
@@ -257,7 +257,7 @@ class BuildStatsFormatterPlugin {
         const originalSize = fs.statSync(fileName).size;
         result[key] = {
           original: originalSize,
-          gzip: gzipSizeOf(contents, this.gzipDisplayOpts)
+          gzip: gzipSizeOf(contents, this.gzipDisplayOpts),
         };
         return result;
       }, {});
@@ -295,7 +295,7 @@ class BuildStatsFormatterPlugin {
      */
     const missingPreviousVersion = [];
 
-    const assets = assetsStats.map(asset => {
+    const assets = assetsStats.map((asset) => {
       const filePath = path.join(this.sourcePath, asset.name);
       const fileContents = fs.readFileSync(filePath);
       const originalFileSize = fs.statSync(filePath).size;
@@ -330,8 +330,8 @@ class BuildStatsFormatterPlugin {
           src: withTableCellPadding(
             `${filesize(originalFileSize)}${originalSizeDiff}`
           ),
-          gzip: `${filesize(gzipSize)}${gzipSizeDiff}`
-        }
+          gzip: `${filesize(gzipSize)}${gzipSizeDiff}`,
+        },
       };
     });
 
@@ -342,15 +342,15 @@ class BuildStatsFormatterPlugin {
     // so that all formatting is properly aligned.
     const longestSrcSizeLabelLength = Math.max.apply(
       null,
-      assets.map(a => stripAnsi(a.sizeLabel.src).length)
+      assets.map((a) => stripAnsi(a.sizeLabel.src).length)
     );
     const longestGzipSizeLabelLength = Math.max.apply(
       null,
-      assets.map(a => stripAnsi(a.sizeLabel.gzip).length)
+      assets.map((a) => stripAnsi(a.sizeLabel.gzip).length)
     );
     const longestFileNameSize = Math.max.apply(
       null,
-      assets.map(a => stripAnsi(a.folder + path.sep + a.name).length)
+      assets.map((a) => stripAnsi(a.folder + path.sep + a.name).length)
     );
 
     const headline = createHeadline(
@@ -360,7 +360,7 @@ class BuildStatsFormatterPlugin {
       chalk.grey
     );
 
-    const formattedAssetsLabels = assets.map(asset => {
+    const formattedAssetsLabels = assets.map((asset) => {
       const sizeLabelSrc = alignPad(
         asset.sizeLabel.src,
         longestSrcSizeLabelLength
@@ -488,14 +488,14 @@ class BuildStatsFormatterPlugin {
     // Prints a detailed summary of build files.
     const jsonStats = webpackStats.toJson({}, true);
     const assetsStats = this.ignorePattern
-      ? jsonStats.assets.filter(a => !this.ignorePattern.test(a.name))
+      ? jsonStats.assets.filter((a) => !this.ignorePattern.test(a.name))
       : jsonStats.assets;
 
     const missingPreviousVersion = [];
 
     let exceptionalAssetCnt = {
       tooLarge: 0,
-      extracted: 0
+      extracted: 0,
     };
     this.log.note(`Build hash: ${jsonStats.hash}`);
     this.log.note(
@@ -514,14 +514,14 @@ class BuildStatsFormatterPlugin {
     let remainingAssets = Object.getOwnPropertyNames(
       this.assetCategories
     ).reduce((relevantAssets, c) => {
-      const [_relevantAssets, nextAssets] = partition(relevantAssets, asset =>
+      const [_relevantAssets, nextAssets] = partition(relevantAssets, (asset) =>
         this.assetCategories[c].test(asset.name)
       );
       if (_relevantAssets.length > 0) {
         const [
           headline,
           formattedAssetsLabels,
-          missingPrevious
+          missingPrevious,
         ] = this.formatFileSizesOnAssetCategory(
           this.previousFileSizes,
           _relevantAssets,
@@ -544,7 +544,7 @@ class BuildStatsFormatterPlugin {
       const [
         headline,
         formattedAssetsLabels,
-        missingPrevious
+        missingPrevious,
       ] = this.formatFileSizesOnAssetCategory(
         this.previousFileSizes,
         remainingAssets,
@@ -591,7 +591,7 @@ class BuildStatsFormatterPlugin {
       );
     }
 
-    const relevantMissingPreviousVersion = missingPreviousVersion.filter(a =>
+    const relevantMissingPreviousVersion = missingPreviousVersion.filter((a) =>
       relevantSizeComparisonRegex.test(a)
     );
 

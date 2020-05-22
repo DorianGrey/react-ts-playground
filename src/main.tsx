@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "react-dom";
 import WebFontLoader from "webfontloader";
 
-import App from "./app/App";
+import { App } from "./app/App";
 import { loadBrowserLanguagePack } from "./app/i18n/i18n";
 import registerServiceWorker from "./registerServiceWorker";
 import { LanguagePack } from "./app/i18n/languagePacks/languagePack";
@@ -10,8 +10,8 @@ import { LanguagePack } from "./app/i18n/languagePacks/languagePack";
 // Import here instead of using the template - reduce initial loading time.
 WebFontLoader.load({
   google: {
-    families: ["Roboto:300,400,500,700"]
-  }
+    families: ["Roboto:300,400,500,700"],
+  },
 });
 
 function getContainer() {
@@ -28,7 +28,7 @@ function renderApp(container: HTMLElement | null, langPack: LanguagePack) {
   registerServiceWorker();
 }
 
-loadBrowserLanguagePack().then(langPack => {
+loadBrowserLanguagePack().then((langPack) => {
   const container = getContainer();
   if (container != null) {
     renderApp(container, langPack);

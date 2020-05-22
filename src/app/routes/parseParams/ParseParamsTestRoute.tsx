@@ -9,7 +9,7 @@ const expectedQueryParams = ["bla"];
 
 export const ParseParamsTestRoute: FC = () => {
   const {
-    location: { search }
+    location: { search },
   } = useHistory();
   const { params } = useRouteMatch();
   // Note: This might require a URLSearchParams polyfill, like https://github.com/jerrybendy/url-search-params-polyfill.
@@ -25,7 +25,7 @@ export const ParseParamsTestRoute: FC = () => {
         <FormattedMessage id="parseParams.search" />
       </p>
       <List>
-        {expectedQueryParams.map(entry => (
+        {expectedQueryParams.map((entry) => (
           <ListItem key={entry}>
             {">"} {entry} {"=>"} {searchParams.get(entry)}
           </ListItem>

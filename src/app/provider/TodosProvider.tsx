@@ -14,7 +14,7 @@ const TodosContext = createContext<TodosContext>({
   todos: [],
   addTodo: noop,
   updateTodo: noop,
-  deleteTodo: noop
+  deleteTodo: noop,
 });
 
 export const TodosProvider: FC = ({ children }) => {
@@ -24,15 +24,15 @@ export const TodosProvider: FC = ({ children }) => {
       headline: "Test todo",
       description: "A lot of stuff to be done!",
       deadline: new Date(Date.now() + 60 * 60 * 1000),
-      created: new Date()
+      created: new Date(),
     },
     {
       id: 2,
       headline: "Test todo2",
       description: "A lot of stuff to be done!",
       deadline: new Date(Date.now() + 60 * 60 * 1000),
-      created: new Date()
-    }
+      created: new Date(),
+    },
   ]);
 
   const addTodo = (headline: string, description: string, deadline: Date) => {
@@ -41,13 +41,13 @@ export const TodosProvider: FC = ({ children }) => {
       created: new Date(),
       headline,
       description,
-      deadline
+      deadline,
     };
     setTodos([...todos, newTodo]);
   };
 
   const updateTodo = (todo: TodoModel) => {
-    const oldIndex = todos.findIndex(e => e.id === todo.id);
+    const oldIndex = todos.findIndex((e) => e.id === todo.id);
     if (oldIndex >= 0) {
       const newTodos = [...todos];
       newTodos[oldIndex] = todo;
@@ -56,7 +56,7 @@ export const TodosProvider: FC = ({ children }) => {
   };
 
   const deleteTodo = (id: number) => {
-    const newTodos = todos.filter(e => e.id !== id);
+    const newTodos = todos.filter((e) => e.id !== id);
     setTodos(newTodos);
   };
 
@@ -64,7 +64,7 @@ export const TodosProvider: FC = ({ children }) => {
     todos,
     addTodo,
     deleteTodo,
-    updateTodo
+    updateTodo,
   };
 
   return (
@@ -72,6 +72,6 @@ export const TodosProvider: FC = ({ children }) => {
   );
 };
 
-export function useTodos() {
+export function useTodos(): TodosContext {
   return useContext(TodosContext);
 }

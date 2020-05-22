@@ -8,11 +8,11 @@ const rules = [
     re: /Can't resolve '(.*loader)'/,
     msg: (e, match) =>
       `Failed to resolve loader: ${chalk.yellow(match[1])}\n` +
-      `You may need to install it.`
-  }
+      `You may need to install it.`,
+  },
 ];
 
-exports.transformer = error => {
+exports.transformer = (error) => {
   if (error.webpackError) {
     const message =
       typeof error.webpackError === "string"
@@ -25,7 +25,7 @@ exports.transformer = error => {
           // type is necessary to avoid being printed as defualt error
           // by friendly-error-webpack-plugin
           type,
-          shortMessage: msg(error, match)
+          shortMessage: msg(error, match),
         });
       }
     }
@@ -34,16 +34,16 @@ exports.transformer = error => {
     if (!error.message) {
       return Object.assign({}, error, {
         type: "unknown-webpack-error",
-        shortMessage: message
+        shortMessage: message,
       });
     }
   }
   return error;
 };
 
-exports.formatter = errors => {
-  errors = errors.filter(e => e.shortMessage);
+exports.formatter = (errors) => {
+  errors = errors.filter((e) => e.shortMessage);
   if (errors.length) {
-    return errors.map(e => e.shortMessage);
+    return errors.map((e) => e.shortMessage);
   }
 };

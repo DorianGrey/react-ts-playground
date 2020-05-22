@@ -10,10 +10,10 @@ const defaultOpts = {
   verbose: false,
   duplicateThreshold: 5,
   format: "ts",
-  splitPerLang: false
+  splitPerLang: false,
 };
 
-const parseYaml = file => {
+const parseYaml = (file) => {
   try {
     return yaml.safeLoad(file.contents);
   } catch (e) {
@@ -42,22 +42,22 @@ const setValueAt = (obj, path, value) => {
   obj[path] = value;
 };
 
-const statistics = opts => partials => {
-  const translations = _.flatMap(partials, partial =>
+const statistics = (opts) => (partials) => {
+  const translations = _.flatMap(partials, (partial) =>
     mapLeaves(partial.translations, (value, path) => ({
       value,
       key: path.join("."),
       file: partial.path,
-      lang: _.last(path)
+      lang: _.last(path),
     }))
   );
 
   const duplicatedValues = _.chain(translations)
     .filter(
-      translation =>
+      (translation) =>
         _.filter(
           translations,
-          t => translation.value === t.value && translation.lang === t.lang
+          (t) => translation.value === t.value && translation.lang === t.lang
         ).length > 1
     )
     .groupBy("value")
@@ -65,15 +65,15 @@ const statistics = opts => partials => {
 
   let duplicatedKeys = _.filter(
     translations,
-    translation =>
-      _.filter(translations, t => translation.key === t.key).length > 1
+    (translation) =>
+      _.filter(translations, (t) => translation.key === t.key).length > 1
   );
 
   const conflictingKeys = _.chain(duplicatedKeys)
-    .filter(translation =>
+    .filter((translation) =>
       _.some(
         duplicatedKeys,
-        t => translation.key === t.key && translation.value !== t.value
+        (t) => translation.key === t.key && translation.value !== t.value
       )
     )
     .groupBy("key")
@@ -81,13 +81,13 @@ const statistics = opts => partials => {
   duplicatedKeys = _.groupBy(duplicatedKeys, "key");
 
   if (translations.length > 0) {
-    const maxFileNameLength = _.maxBy(translations, t => t.file.length).file
+    const maxFileNameLength = _.maxBy(translations, (t) => t.file.length).file
       .length;
 
     if (_.size(conflictingKeys) > 0) {
       _.each(conflictingKeys, (translations, key) => {
         log.error(`Conflict for "${key}":`);
-        _.each(translations, t => {
+        _.each(translations, (t) => {
           log.error(
             `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.value}`
           );
@@ -100,7 +100,7 @@ const statistics = opts => partials => {
     if (opts.verbose) {
       _.each(duplicatedValues, (translations, value) => {
         log.debug(`Duplicated value for "${value}":`);
-        _.each(translations, t => {
+        _.each(translations, (t) => {
           log.debug(
             `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.key}`
           );
@@ -132,7 +132,7 @@ const statistics = opts => partials => {
   return partials;
 };
 
-const byLanguage = translations => {
+const byLanguage = (translations) => {
   const result = {};
   mapLeaves(translations, (value, path) => {
     const lang = path.pop();
@@ -148,7 +148,7 @@ const formatters = {
   },
   json(translations) {
     return JSON.stringify(translations, null, 4);
-  }
+  },
 };
 
 /**
@@ -173,24 +173,29 @@ exports.compile = (src, dest, opts) => {
 
   return utils
     .getFiles(src)
-    .then(paths =>
+    .then((paths) =>
       Promise.all(
-        paths.map(path =>
-          utils.readFile(path).then(contents => ({ contents, path }))
+        paths.map((path) =>
+          utils.readFile(path).then((contents) => ({ contents, path }))
         )
       )
     )
-    .then(files =>
+    .then((files) =>
       Promise.all(
-        files.map(file => ({ path: file.path, translations: parseYaml(file) }))
+        files.map((file) => ({
+          path: file.path,
+          translations: parseYaml(file),
+        }))
       )
     )
     .then(statistics(_.pick(opts, "verbose", "duplicateThreshold")))
-    .then(partials => _.defaultsDeep.apply(_, _.map(partials, "translations")))
+    .then((partials) =>
+      _.defaultsDeep.apply(_, _.map(partials, "translations"))
+    )
     .then(byLanguage)
-    .then(translations => {
+    .then((translations) => {
       if (opts.splitPerLang) {
-        const data = Object.keys(translations).map(lang => {
+        const data = Object.keys(translations).map((lang) => {
           const formatted = formatters[opts.format](translations[lang]);
           const target = `${dest}.${lang}.${opts.format}`;
           return utils.writeFile(target, formatted);
@@ -225,12 +230,12 @@ exports.watch = (src, dest, opts) => {
     () => {
       exports.compile(src, dest, opts).then(
         () => log.debug(`Translations written to ${dest}`),
-        err => log.error(`Error processing translation: ${err}`)
+        (err) => log.error(`Error processing translation: ${err}`)
       );
     },
     {
       events: ["change", "unlink"],
-      chokidarOpts: opts.chokidarOpts
+      chokidarOpts: opts.chokidarOpts,
     }
   );
 };

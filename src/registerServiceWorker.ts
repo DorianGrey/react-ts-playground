@@ -1,6 +1,6 @@
 import { register } from "register-service-worker";
 
-export default function registerServiceWorker() {
+export default function registerServiceWorker(): void {
   if (process.env.NODE_ENV === "production") {
     register("/service-worker.js", {
       ready(_registration: ServiceWorkerRegistration) {
@@ -25,7 +25,7 @@ export default function registerServiceWorker() {
       },
       error(error: Error) {
         console.error("Error during service worker registration:", error);
-      }
+      },
     });
   }
 }

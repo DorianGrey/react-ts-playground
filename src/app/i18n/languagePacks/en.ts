@@ -5,7 +5,7 @@ import { LanguagePack } from "./languagePack";
 const enLanguagePack: LanguagePack = {
   translations: translationsEn,
   locale: "en",
-  dateLocale: enLocale
+  dateLocale: enLocale,
 };
 
 export default enLanguagePack;

@@ -26,12 +26,12 @@ const useStyles = makeStyles((theme: Theme) =>
       transform: "rotate(0deg)",
       marginLeft: "auto",
       transition: theme.transitions.create("transform", {
-        duration: theme.transitions.duration.shortest
-      })
+        duration: theme.transitions.duration.shortest,
+      }),
     },
     expandOpen: {
-      transform: "rotate(180deg)"
-    }
+      transform: "rotate(180deg)",
+    },
   })
 );
 
@@ -104,7 +104,7 @@ function ReadOnlyTodo(
         </Fab>
         <IconButton
           className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded
+            [classes.expandOpen]: expanded,
           })}
           onClick={handleExpandClick}
           aria-expanded={expanded}
@@ -127,13 +127,13 @@ const EditableTodo: FC<EditableTodoProps> = ({
   deadline,
   createOrUpdateTodo,
   onEditLeave,
-  onCancel
+  onCancel,
 }) => {
   const [currentTodoData, setCurrentTodoData] = useState<Partial<TodoModel>>({
     id,
     headline: headline || "",
     description: description || "",
-    deadline
+    deadline,
   });
   const { formatMessage } = useIntl();
 
@@ -155,14 +155,14 @@ const EditableTodo: FC<EditableTodoProps> = ({
   const updateHeadline = (newHeadline: number | string) => {
     setCurrentTodoData({
       ...currentTodoData,
-      headline: newHeadline as string
+      headline: newHeadline as string,
     });
   };
 
   const updateDescription = (newDescription: number | string) => {
     setCurrentTodoData({
       ...currentTodoData,
-      description: newDescription as string
+      description: newDescription as string,
     });
   };
 
@@ -177,7 +177,7 @@ const EditableTodo: FC<EditableTodoProps> = ({
       }
       setCurrentTodoData({
         ...currentTodoData,
-        deadline: newValue
+        deadline: newValue,
       });
     }
   };
@@ -194,22 +194,22 @@ const EditableTodo: FC<EditableTodoProps> = ({
       }
       setCurrentTodoData({
         ...currentTodoData,
-        deadline: newValue
+        deadline: newValue,
       });
     }
   };
 
   const titlePlaceHolder = formatMessage({
-    id: "todos.entry.placeholder.tag"
+    id: "todos.entry.placeholder.tag",
   });
   const descriptionPlaceholder = formatMessage({
-    id: "todos.entry.placeholder.description"
+    id: "todos.entry.placeholder.description",
   });
   const datePlaceHolder = formatMessage({
-    id: "todos.entry.placeholder.deadline.date"
+    id: "todos.entry.placeholder.deadline.date",
   });
   const timePlaceholder = formatMessage({
-    id: "todos.entry.placeholder.deadline.time"
+    id: "todos.entry.placeholder.deadline.time",
   });
 
   const handleCancel = currentTodoData.id ? onEditLeave : onCancel;
@@ -230,7 +230,7 @@ const EditableTodo: FC<EditableTodoProps> = ({
                 id="floating-center-title"
                 label={titlePlaceHolder}
                 placeholder={titlePlaceHolder}
-                onChange={evt => updateHeadline(evt.target.value)}
+                onChange={(evt) => updateHeadline(evt.target.value)}
                 value={currentTodoData.headline}
                 error={!currentTodoData.headline}
                 required
@@ -245,7 +245,7 @@ const EditableTodo: FC<EditableTodoProps> = ({
                 rows={2}
                 value={currentTodoData.description}
                 error={!currentTodoData.description}
-                onChange={evt => updateDescription(evt.target.value)}
+                onChange={(evt) => updateDescription(evt.target.value)}
                 required
               />
             </Grid>
@@ -258,7 +258,7 @@ const EditableTodo: FC<EditableTodoProps> = ({
                 value={currentTodoData.deadline}
                 onChange={updateDate}
                 KeyboardButtonProps={{
-                  "aria-label": "change date"
+                  "aria-label": "change date",
                 }}
                 required
                 minDate={new Date()}
@@ -272,7 +272,7 @@ const EditableTodo: FC<EditableTodoProps> = ({
                 value={currentTodoData.deadline}
                 onChange={updateTime}
                 KeyboardButtonProps={{
-                  "aria-label": "change time"
+                  "aria-label": "change time",
                 }}
                 required
               />
@@ -300,7 +300,7 @@ const EditableTodo: FC<EditableTodoProps> = ({
   );
 };
 
-const TodoEntry: FC<Partial<TodoModel> & TodoEntryProps> = props => {
+const TodoEntry: FC<Partial<TodoModel> & TodoEntryProps> = (props) => {
   const [isEditable, setIsEditable] = useState(props.editable);
 
   if (isEditable) {

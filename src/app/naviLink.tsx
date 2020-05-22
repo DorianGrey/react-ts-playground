@@ -2,7 +2,7 @@ import React, {
   FunctionComponent,
   ComponentType,
   useMemo,
-  forwardRef
+  forwardRef,
 } from "react";
 import { useIntl } from "react-intl";
 
@@ -13,13 +13,13 @@ import ListItemText from "@material-ui/core/ListItemText";
 import {
   Link as RouterLink,
   LinkProps as RouterLinkProps,
-  useLocation
+  useLocation,
 } from "react-router-dom";
 
 interface NaviLinkProps {
   label: string;
   to: string;
-  icon: ComponentType<any>;
+  icon: ComponentType<unknown>;
 }
 
 function isActive(url: string, pathname: string): boolean {
@@ -29,7 +29,7 @@ function isActive(url: string, pathname: string): boolean {
 const NaviLink: FunctionComponent<NaviLinkProps> = ({
   label,
   to,
-  icon: Icon
+  icon: Icon,
 }) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();

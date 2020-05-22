@@ -9,13 +9,13 @@ const compileTranslations = require("../../scripts/translations").compile;
 const watchTranslations = require("../../scripts/translations").watch;
 
 function handleWatchTranslations() {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const translationsWatcher = watchTranslations(
       "src/**/*.i18n.yml",
       "src/generated/translations",
       {
         chokidarOpts: { ignoreInitial: true },
-        splitPerLang: true
+        splitPerLang: true,
       }
     );
 
@@ -25,16 +25,16 @@ function handleWatchTranslations() {
   });
 }
 
-module.exports = async function() {
+module.exports = async function () {
   const selectedPort = await selectPort(3000);
 
   await fs.emptyDir(paths.devTmp);
   await fs.emptyDir(paths.appGenerated);
   await compileTranslations("src/**/*.i18n.yml", "src/generated/translations", {
-    splitPerLang: true
+    splitPerLang: true,
   });
   const translationWatcher = await handleWatchTranslations();
-  ["SIGINT", "SIGTERM"].forEach(sig => {
+  ["SIGINT", "SIGTERM"].forEach((sig) => {
     process.on(sig, () => {
       translationWatcher.close();
     });
@@ -52,14 +52,14 @@ module.exports = async function() {
     .hot(true)
     .quiet(true)
     .watchOptions({
-      ignored: /node_modules|\.tmp/
+      ignored: /node_modules|\.tmp/,
     })
     .contentBase([
       paths.resolveApp("public"),
       paths.resolveApp("src"),
       paths.resolveApp(".tmp"),
       paths.resolveApp(""),
-      paths.appBuild
+      paths.appBuild,
     ]);
 
   return Promise.resolve(config.toConfig());

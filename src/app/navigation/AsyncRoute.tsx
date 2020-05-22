@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, ComponentType } from "react";
+import React, { FC, Suspense, lazy, ComponentType } from "react";
 import { LoadingIndicator } from "../Loading";
 import { ErrorBoundary } from "../util/ErrorBoundary";
 
@@ -9,7 +9,7 @@ interface AsyncRouteProps<T extends ComponentType<any> = ComponentType<any>> {
   loader: () => Promise<{ default: T }>;
 }
 
-export function AsyncRoute({ loader }: AsyncRouteProps) {
+export const AsyncRoute: FC<AsyncRouteProps> = ({ loader }) => {
   const LazyRoute = lazy(loader);
   return (
     <ErrorBoundary fallback={<div>Error loading component.</div>}>
@@ -18,4 +18,4 @@ export function AsyncRoute({ loader }: AsyncRouteProps) {
       </Suspense>
     </ErrorBoundary>
   );
-}
+};

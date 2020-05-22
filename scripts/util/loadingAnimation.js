@@ -3,7 +3,7 @@ const fs = require("fs");
 
 const paths = require("../../config/paths");
 
-module.exports = function() {
+module.exports = function () {
   "use strict";
 
   return fs
