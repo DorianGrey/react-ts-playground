@@ -293,10 +293,9 @@ module.exports = function () {
       .plugin("fork-ts-checker")
         .use(ForkTsCheckerWebpackPlugin, [
           {
-            watch: paths.appSrc,
-            tsconfig: paths.appTsConfig,
-            async: !isProd,
-            tslint: false,
+            typescript: {
+              configFile: paths.appTsConfig,
+            },
             formatter: "codeframe"
           }
         ])
