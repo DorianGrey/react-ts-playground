@@ -10,11 +10,8 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import {
-  Link as RouterLink,
-  LinkProps as RouterLinkProps,
-  useLocation,
-} from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
+import type { LinkProps as RouterLinkProps } from "react-router-dom";
 
 interface NaviLinkProps {
   label: string;

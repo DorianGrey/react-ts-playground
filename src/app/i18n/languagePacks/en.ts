@@ -1,6 +1,6 @@
 import enLocale from "date-fns/locale/en-GB";
-import translationsEn from "../../../generated/translations.en";
-import { LanguagePack } from "./languagePack";
+import translationsEn from "../../../generated/translations-en";
+import type { LanguagePack } from "./languagePack";
 
 const enLanguagePack: LanguagePack = {
   translations: translationsEn,

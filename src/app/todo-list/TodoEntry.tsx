@@ -1,7 +1,8 @@
 import React, { FC, useState } from "react";
 import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
 import clsx from "clsx";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
+import type { Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -16,9 +17,9 @@ import InputIcon from "@material-ui/icons/Input";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { KeyboardTimePicker, KeyboardDatePicker } from "@material-ui/pickers";
-import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
+import type { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 
-import { TodoModel } from "./todo.model";
+import type { TodoModel } from "./todo.model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

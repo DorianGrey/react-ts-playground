@@ -197,7 +197,7 @@ exports.compile = (src, dest, opts) => {
       if (opts.splitPerLang) {
         const data = Object.keys(translations).map((lang) => {
           const formatted = formatters[opts.format](translations[lang]);
-          const target = `${dest}.${lang}.${opts.format}`;
+          const target = `${dest}-${lang}.${opts.format}`;
           return utils.writeFile(target, formatted);
         });
         return Promise.all(data);

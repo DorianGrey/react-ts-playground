@@ -1,7 +1,7 @@
 import { register } from "register-service-worker";
 
-export default function registerServiceWorker(): void {
-  if (process.env.NODE_ENV === "production") {
+export function registerServiceWorker(): void {
+  if (import.meta.env.MODE === "production") {
     register("/service-worker.js", {
       ready(_registration: ServiceWorkerRegistration) {
         console.log("Service worker is active.");

@@ -1,14 +1,10 @@
 {
+  "extends": "@snowpack/app-scripts-react/tsconfig.base.json",
   "compilerOptions": {
     "outDir": "build",
-    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "target": "esnext",
-    "module": "esnext",
-    "forceConsistentCasingInFileNames": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
     "sourceMap": true,
     "noEmitHelpers": true,
     "importHelpers": true,
@@ -17,10 +13,8 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "skipLibCheck": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": false, // Problematic editor support, so disabled for now.
-    "strict": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
@@ -34,8 +28,6 @@
       "webfontloader",
       "webpack-env"
     ],
-
-    "jsx": "preserve",
     "lib": [
       "dom",
       "ES2015",
@@ -43,7 +35,9 @@
       "es2015.iterable",
       "es2015.promise",
       "es2015.proxy"
-    ]
+    ],
+    "baseUrl": "./",
+    "paths": { "*": ["web_modules/.types/*"] }
   },
   "exclude": [
     "node_modules",

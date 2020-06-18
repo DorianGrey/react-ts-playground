@@ -5,10 +5,8 @@ import React, {
   useCallback,
   useContext,
 } from "react";
-import {
-  Theme,
-  ThemeProvider as MuiThemeProvider,
-} from "@material-ui/core/styles";
+import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
+import type { Theme } from "@material-ui/core/styles";
 import noop from "lodash-es/noop";
 
 import dark from "./dark";

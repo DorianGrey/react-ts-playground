@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from "react";
 
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
+import type { Theme } from "@material-ui/core/styles";
 
 import { Routes } from "./Routes";
 import { NavigationDrawer } from "./NavigationDrawer";
