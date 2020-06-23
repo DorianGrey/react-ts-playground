@@ -1,12 +1,13 @@
-const plugins = [];
-
-if (process.env.BUNDLED === "true") {
-  plugins.push([
+const plugins = [
+  [
     "@snowpack/plugin-webpack",
     {
       extendConfig: (config) => {
         const TerserPlugin = require("terser-webpack-plugin");
         const GenerateSW = require("workbox-webpack-plugin/build/generate-sw");
+
+        config.output.filename = "js/[name].[chunkhash:8].js";
+        config.output.chunkFilename = "js/[name].[chunkhash:8].js";
 
         config.mode = "production";
         config.plugins.push(
@@ -61,8 +62,8 @@ if (process.env.BUNDLED === "true") {
         return config;
       },
     },
-  ]);
-}
+  ],
+];
 
 module.exports = {
   extends: "@snowpack/app-scripts-react",

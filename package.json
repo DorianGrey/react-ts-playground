@@ -37,7 +37,6 @@
     "case-sensitive-paths-webpack-plugin": "^2.3.0",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "6.0.2",
-    "cross-env": "^7.0.2",
     "detect-port": "^1.3.0",
     "eslint": "^7.2.0",
     "eslint-config-prettier": "^6.11.0",
@@ -99,8 +98,8 @@
   },
   "scripts": {
     "start": "snowpack dev",
-    "build": "snowpack build",
-    "build:bundled": "cross-env BUNDLED=true snowpack build",
+    "build": "snowpack build --no-bundle",
+    "build:bundled": "snowpack build",
     "serve": "node scripts/serve.js",
     "test:ci": "node scripts/test.js --no-cache --coverage",
     "test": "node scripts/test.js",
