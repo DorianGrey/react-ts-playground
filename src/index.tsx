@@ -4,7 +4,7 @@ import WebFontLoader from "webfontloader";
 
 import { App } from "./app/App";
 import { loadBrowserLanguagePack } from "./app/i18n/i18n";
-// import { registerServiceWorker } from "./registerServiceWorker";
+import { registerServiceWorker } from "./registerServiceWorker";
 import type { LanguagePack } from "./app/i18n/languagePacks/languagePack";
 
 // Import here instead of using the template - reduce initial loading time.
@@ -32,7 +32,7 @@ function renderApp(container: HTMLElement | null, langPack: LanguagePack) {
      findDOMNode was passed an instance of Transition which is inside StrictMode
   */
   render(<App langPack={langPack} />, container);
-  // registerServiceWorker();
+  registerServiceWorker();
 }
 
 loadBrowserLanguagePack().then((langPack) => {

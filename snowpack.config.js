@@ -12,6 +12,7 @@ const plugins = [
         config.mode = "production";
         config.plugins.push(
           new GenerateSW({
+            swDest: "sw.js",
             exclude: [
               /\.map$/,
               /img\/icons\//,

@@ -2,7 +2,7 @@ import { register } from "register-service-worker";
 
 export function registerServiceWorker(): void {
   if (import.meta.env.MODE === "production") {
-    register("/service-worker.js", {
+    register("/sw.js", {
       ready(_registration: ServiceWorkerRegistration) {
         console.log("Service worker is active.");
       },

@@ -9,9 +9,8 @@ This is just a repository for playing around with React, TypeScript, HMR, ...
 
 # Known issues
 
-- The `build` task utilizing `snowpack` without a bundler does currently not include a service worker, thus the served build will complain about it being missing.
-- The `build` task utilizing `snowpack` with a bundler does currently not include a service worker, since the module used for it fails with an `exports is not defined` error.
+- The `build:bundled` task utilizing `snowpack` with a bundler is not working yet, but will be as soon as the issue [regarding bundle splitting](https://github.com/pikapkg/create-snowpack-app/issues/152) will be resolved.
 
 # Other things to beware of
 
-- Importing types from modules: Although the `importsNotUsedAsValues` flag is set to `error`, not all of those imports seems to cause a complaint from the compiler. However, it is required to import types from modules solely using the `import type` clause so that the ESM build does not considers those to be values existing during runtime, which will cause the `build` task to fail.
+- Importing types from modules: Although the `importsNotUsedAsValues` flag is set to `error`, not all of those imports seems to cause a complaint from the compiler. However, it is required to import types from modules solely using the `import type` clause so that the ESM build does not considers those to be values existing during runtime, which will cause the `build` task to fail. **Note**: This might no longer be necessary in upcoming releases of `snowpack`.
