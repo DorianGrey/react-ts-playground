@@ -1,6 +1,5 @@
 const path = require("path");
 const paths = require("./config/paths");
-// const { log } = require("./config/logger");
 
 const plugins = [
   [
@@ -11,16 +10,12 @@ const plugins = [
         const TerserPlugin = require("terser-webpack-plugin");
         const GenerateSW = require("workbox-webpack-plugin/build/generate-sw");
         const BundleAnalyzerPlugin = require("webpack-bundle-analyzer/lib/BundleAnalyzerPlugin");
-        const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
+        // const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
 
         // TODO: Try to figure out why the output of this plugin is only partially visible if added.
         // In addition, the "stats" config for webpack does not seem to be evaluated, however
         // that is not the cause of this problem.
-        // const BuildStatsFormatterPlugin = require("./config/webpack/plugins/BuildStatsFormatterPlugin");
-        const {
-          transformer,
-          formatter,
-        } = require("./config/webpack/resolveLoaderError");
+        const BuildStatsFormatterPlugin = require("./config/webpack/plugins/BuildStatsFormatterPlugin");
 
         config.output.filename = "js/[name].[chunkhash:8].js";
         config.output.chunkFilename = "js/[name].[chunkhash:8].js";
@@ -59,14 +54,9 @@ const plugins = [
             ),
             logLevel: "silent",
           }),
-          new FriendlyErrorsWebpackPlugin({
-            additionalTransformers: [transformer],
-            additionalFormatters: [formatter],
-          })
-          // new BuildStatsFormatterPlugin({
-          //   log,
-          //   categorizeAssets: false,
-          /* TODO - Maybe use this:
+          new BuildStatsFormatterPlugin({
+            categorizeAssets: false,
+            /* TODO - Maybe use this:
             categorizeAssets: {
               "Service worker": /(workbox|service-worker|precache-manifest).*\.js$/,
               Scripts: /\.js$/,
@@ -77,13 +67,13 @@ const plugins = [
               Fonts: /\.(woff2?|eot|ttf|svg)$/
             },
           */
-          //   assetsSizeWarnLimit: 250 * 1024, // <=> 250 KB.
-          //   potentiallyExtractedChunkSizeLimit: 512, // <=> 512 Byte.
-          // This gzip level is used heavily, i.e. by nginx, so it makes sense
-          // to take it as a reference.
-          //   gzipDisplayOpts: { level: 6 },
-          //   ignorePattern: /\.map$/,
-          // })
+            assetsSizeWarnLimit: 250 * 1024, // <=> 250 KB.
+            potentiallyExtractedChunkSizeLimit: 512, // <=> 512 Byte.
+            // This gzip level is used heavily, i.e. by nginx, so it makes sense
+            // to take it as a reference.
+            gzipDisplayOpts: { level: 6 },
+            ignorePattern: /\.map$/,
+          })
         );
 
         config.optimization = {

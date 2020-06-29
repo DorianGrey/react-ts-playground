@@ -116,23 +116,6 @@ function isRegExp(src) {
  * @param options {Object} The options to validate.
  */
 function validateOptions(options) {
-  // `log` is an object that has to provide the following functions:
-  // `debug`, `note`, `warn`, `error` , `category`.
-  {
-    const hasLogProperty = options.hasOwnProperty("log");
-    const expectedFunctions = ["debug", "note", "category", "warn", "error"];
-    const hasValidShape =
-      hasLogProperty &&
-      expectedFunctions.every(
-        (k) => !!options.log[k] && typeof options.log[k] === "function"
-      );
-
-    if (!hasValidShape) {
-      throw new Error(
-        `'log' has to contain at least these functions: ${expectedFunctions.join()}.`
-      );
-    }
-  }
   // .categorizeAssets has to be either `false` or an object with entries like {'string', 'RegExp'}.
   {
     const isFalse = options.categorizeAssets === false;
@@ -210,6 +193,7 @@ class BuildStatsFormatterPlugin {
     validateOptions(options);
 
     this.log = options.log;
+    this.logMessages = [];
 
     this.assetCategories =
       options.categorizeAssets === false
@@ -262,7 +246,7 @@ class BuildStatsFormatterPlugin {
         return result;
       }, {});
     } catch (e) {
-      this.log.error(
+      this.logMessages.push(
         `Determining file sizes before build failed, due to ${e}, going ahead with empty object.`
       );
       this.previousFileSizes = {};
@@ -497,8 +481,8 @@ class BuildStatsFormatterPlugin {
       tooLarge: 0,
       extracted: 0,
     };
-    this.log.note(`Build hash: ${jsonStats.hash}`);
-    this.log.note(
+    this.logMessages.push(`Build hash: ${jsonStats.hash}`);
+    this.logMessages.push(
       `Emitted assets in ${chalk.cyan(
         path.resolve(this.sourcePath)
       )} (displayed gzip sizes refer to compression ${chalk.cyan(
@@ -529,10 +513,10 @@ class BuildStatsFormatterPlugin {
         );
         const highlightedCategoryName =
           c === catchAllCategories ? "" : chalk.bgCyan.white.bold(c);
-        this.log.category(
-          [highlightedCategoryName, headline]
+        this.logMessages.push(
+          ...[highlightedCategoryName, headline]
             .concat(formattedAssetsLabels)
-            .join("\n")
+            .concat("\n")
         );
         missingPreviousVersion.push(...missingPrevious);
       }
@@ -550,17 +534,17 @@ class BuildStatsFormatterPlugin {
         remainingAssets,
         exceptionalAssetCnt
       );
-      this.log.category(
-        [chalk.bgCyan.white.bold("Others"), headline]
+      this.logMessages.push(
+        ...[chalk.bgCyan.white.bold("Others"), headline]
           .concat(formattedAssetsLabels)
-          .join("\n")
+          .concat("\n")
       );
       missingPreviousVersion.push(...missingPrevious);
     }
 
     // If some files where ignored / filtered out, print a note about the pattern.
     if (this.ignorePattern) {
-      this.log.note(
+      this.logMessages.push(
         `Files matching ${chalk.cyan(
           this.ignorePattern.source
         )} are not listed above.`
@@ -569,7 +553,7 @@ class BuildStatsFormatterPlugin {
 
     // Print an information about the amount of too large assets, and how they are marked.
     if (exceptionalAssetCnt.tooLarge > 0) {
-      this.log.warn(
+      this.logMessages.push(
         `${exceptionalAssetCnt.tooLarge === 1 ? "There is" : "There are"} ${
           exceptionalAssetCnt.tooLarge
         } assets which exceed the configured size limit of ${filesize(
@@ -580,7 +564,7 @@ class BuildStatsFormatterPlugin {
 
     // Print an information about potential extraction remainings, and how they are marked.
     if (exceptionalAssetCnt.extracted > 0) {
-      this.log.note(
+      this.logMessages.push(
         `${exceptionalAssetCnt.extracted === 1 ? "There is" : "There are"} ${
           exceptionalAssetCnt.extracted
         } assets which are smaller than the configured lower size limit of ${filesize(
@@ -596,7 +580,7 @@ class BuildStatsFormatterPlugin {
     );
 
     if (relevantMissingPreviousVersion.length > 0) {
-      this.log.debug(
+      this.logMessages.push(
         `Some assets did not have a previous version: ${JSON.stringify(
           relevantMissingPreviousVersion,
           null,
@@ -608,6 +592,8 @@ class BuildStatsFormatterPlugin {
         )}`
       );
     }
+
+    console.log(this.logMessages.join("\n"));
   }
 
   /**

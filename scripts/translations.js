@@ -4,7 +4,6 @@ const yaml = require("js-yaml");
 const _ = require("lodash");
 
 const utils = require("./util/fileUtils");
-const { log } = require("../config/logger");
 
 const defaultOpts = {
   verbose: false,
@@ -86,9 +85,9 @@ const statistics = (opts) => (partials) => {
 
     if (_.size(conflictingKeys) > 0) {
       _.each(conflictingKeys, (translations, key) => {
-        log.error(`Conflict for "${key}":`);
+        console.error(`Conflict for "${key}":`);
         _.each(translations, (t) => {
-          log.error(
+          console.error(
             `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.value}`
           );
         });
@@ -99,9 +98,9 @@ const statistics = (opts) => (partials) => {
     }
     if (opts.verbose) {
       _.each(duplicatedValues, (translations, value) => {
-        log.debug(`Duplicated value for "${value}":`);
+        console.debug(`Duplicated value for "${value}":`);
         _.each(translations, (t) => {
-          log.debug(
+          console.debug(
             `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.key}`
           );
         });
@@ -121,13 +120,13 @@ const statistics = (opts) => (partials) => {
         );
       }
     }
-    log.debug(
+    console.debug(
       `Translation duplicates: ${_.size(
         duplicatedValues
       )} (${duplicatedValuesPercent.toFixed(1)}%)`
     );
   } else {
-    log.debug(`Translation duplicates: 0 / 0%; There are no translations!`);
+    console.debug(`Translation duplicates: 0 / 0%; There are no translations!`);
   }
   return partials;
 };
@@ -165,7 +164,7 @@ exports.compile = (src, dest, opts) => {
 
   // Determine output format / file extension.
   if (!(opts.format in formatters)) {
-    log.warn(
+    console.warn(
       `Output format=${opts.format} is not supported. Falling back to 'ts'.`
     );
     opts.format = "ts";
@@ -229,8 +228,8 @@ exports.watch = (src, dest, opts) => {
     src,
     () => {
       exports.compile(src, dest, opts).then(
-        () => log.debug(`Translations written to ${dest}`),
-        (err) => log.error(`Error processing translation: ${err}`)
+        () => console.debug(`Translations written to ${dest}`),
+        (err) => console.error(`Error processing translation: ${err}`)
       );
     },
     {
