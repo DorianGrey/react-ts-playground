@@ -115,6 +115,7 @@ const plugins = [
       },
     },
   ],
+  "@snowpack/plugin-react-refresh",
 ];
 
 module.exports = {
