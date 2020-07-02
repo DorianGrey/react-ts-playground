@@ -1,6 +1,7 @@
-const fs = require("fs-extra");
-const chalk = require("chalk");
 const path = require("path");
+
+const chalk = require("chalk");
+const fs = require("fs-extra");
 const filesize = require("filesize");
 const stripAnsi = require("strip-ansi");
 
