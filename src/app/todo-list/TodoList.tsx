@@ -11,7 +11,7 @@ import Typography from "@material-ui/core/Typography";
 
 import noop from "lodash-es/noop";
 
-import { TodoModel } from "./todo.model";
+import type { TodoModel } from "./todo.model";
 import TodoEntry from "./TodoEntry";
 import {
   sendNotification,

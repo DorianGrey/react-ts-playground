@@ -7,27 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#000000">
 
-    <base href="<%= htmlWebpackPlugin.options.baseHref %>">
-
     <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
     <link rel="manifest" href="/manifest.webmanifest">
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title><%= htmlWebpackPlugin.options.title %></title>
-    <!-- Inline style for the loading animation -->
     <style>
-      <%= htmlWebpackPlugin.options.loadingCss %>
+      #loader {position: absolute;top: 50%;left: 50%;margin-top: -2.7em;margin-left: -2.7em;width: 5.4em;height: 5.4em;background-color: #ffffff;}#hill {position: absolute;width: 7.1em;height: 7.1em;top: 1.7em;left: 1.7em;background-color: transparent;border-left: 0.25em solid #222222;transform: rotate(45deg);}#hill::after {content: "";position: absolute;width: 7.1em;height: 7.1em;left: 0;background-color: #ffffff;}#box {position: absolute;left: 0;bottom: -0.1em;width: 1em;height: 1em;background-color: transparent;border: 0.25em solid #222222;border-radius: 15%;transform: translate(0, -1em) rotate(-45deg);animation: push 2.5s cubic-bezier(0.79, 0, 0.47, 0.97) infinite;}@keyframes push {0% {transform: translate(0, -1em) rotate(-45deg);}5% {transform: translate(0, -1em) rotate(-50deg);}20% {transform: translate(1em, -2em) rotate(47deg);}25% {transform: translate(1em, -2em) rotate(45deg);}30% {transform: translate(1em, -2em) rotate(40deg);}45% {transform: translate(2em, -3em) rotate(137deg);}50% {transform: translate(2em, -3em) rotate(135deg);}55% {transform: translate(2em, -3em) rotate(130deg);}70% {transform: translate(3em, -4em) rotate(217deg);}75% {transform: translate(3em, -4em) rotate(220deg);}100% {transform: translate(0, -1em) rotate(-225deg);}}
     </style>
   </head>
   <body>
@@ -40,6 +27,7 @@
         <div id="hill"></div>
       </div>
     </div>
+    <script type="module" src="/_dist_/index.js"></script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

@@ -1,21 +1,8 @@
 module.exports = {
-  presets: [
-    [
-      "@babel/preset-env",
-      {
-        useBuiltIns: "usage",
-        corejs: 3
-      }
-    ],
-    "@babel/preset-react"
-  ],
-  plugins: [
-    "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-transform-runtime"
-  ],
+  extends: "@snowpack/app-scripts-react/babel.config.json",
   env: {
-    test: {
-      plugins: ["dynamic-import-node"]
-    }
-  }
+    development: {
+      plugins: ["react-refresh/babel"],
+    },
+  },
 };

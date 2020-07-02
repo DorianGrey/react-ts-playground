@@ -1,6 +1,6 @@
 import deLocale from "date-fns/locale/de";
-import translationsDe from "../../../generated/translations.de";
-import { LanguagePack } from "./languagePack";
+import translationsDe from "../../../generated/translations-de";
+import type { LanguagePack } from "./languagePack";
 
 const deLanguagePack: LanguagePack = {
   translations: translationsDe,

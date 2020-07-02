@@ -2,7 +2,10 @@ import React, { FC, FunctionComponent, useState, useContext } from "react";
 import { IntlProvider } from "react-intl";
 import noop from "lodash-es/noop";
 
-import { Translations, LanguagePack } from "../i18n/languagePacks/languagePack";
+import type {
+  Translations,
+  LanguagePack,
+} from "../i18n/languagePacks/languagePack";
 import { BROWSER_LANGUAGE, loadLanguagePack } from "../i18n/i18n";
 
 // Only use text contents for intl formatting.

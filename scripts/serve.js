@@ -3,7 +3,6 @@
 const express = require("express");
 const compression = require("compression");
 const path = require("path");
-const logger = require("signale");
 
 // Enter your proxy rules here.
 const serverPort = 4000;
@@ -30,5 +29,5 @@ app.get("*", (req, res) =>
 );
 
 app.listen(serverPort, () =>
-  logger.info(`Listening on http://localhost:${serverPort} ...`)
+  console.info(`Listening on http://localhost:${serverPort} ...`)
 );

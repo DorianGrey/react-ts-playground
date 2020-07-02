@@ -11,7 +11,8 @@ import { useTheme } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
+import type { Theme } from "@material-ui/core/styles";
 // Icons for the navigation
 import PermContactCalendarIcon from "@material-ui/icons/PermContactCalendar";
 import AssignmentIcon from "@material-ui/icons/Assignment";

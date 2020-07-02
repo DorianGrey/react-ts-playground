@@ -1,25 +1,15 @@
 const fs = require("fs-extra");
-const glob = require("globby");
 const chalk = require("chalk");
 const path = require("path");
 const filesize = require("filesize");
 const stripAnsi = require("strip-ansi");
-const zlib = require("zlib");
+
+const paths = require("../../paths");
+const { gzipSizeOf } = require("../../../util/gzipSizeOf");
+const { getRelativeChunkName } = require("../../../util/getRelativeChunkName");
 
 const relevantSizeComparisonRegex = /\.(js|css|json|webmanifest)$/;
 const catchAllCategories = "#";
-
-/**
- * Helper function to determine the gzipped size of a content.
- *
- * @param src {String|Buffer} Content to determine the size for.
- * @param gzipOpts {Object} Gzip options to apply - esp. the `level` affects the output size.
- *                          Should fit the `ZlibOptions` shape.
- * @returns {number} The size of the gzipped content in bytes.
- */
-function gzipSizeOf(src, gzipOpts) {
-  return zlib.gzipSync(src, gzipOpts).length;
-}
 
 /**
  * Aligns a string to fit a particular minimal width. The width is expanded
@@ -116,23 +106,6 @@ function isRegExp(src) {
  * @param options {Object} The options to validate.
  */
 function validateOptions(options) {
-  // `log` is an object that has to provide the following functions:
-  // `debug`, `note`, `warn`, `error` , `category`.
-  {
-    const hasLogProperty = options.hasOwnProperty("log");
-    const expectedFunctions = ["debug", "note", "category", "warn", "error"];
-    const hasValidShape =
-      hasLogProperty &&
-      expectedFunctions.every(
-        (k) => !!options.log[k] && typeof options.log[k] === "function"
-      );
-
-    if (!hasValidShape) {
-      throw new Error(
-        `'log' has to contain at least these functions: ${expectedFunctions.join()}.`
-      );
-    }
-  }
   // .categorizeAssets has to be either `false` or an object with entries like {'string', 'RegExp'}.
   {
     const isFalse = options.categorizeAssets === false;
@@ -210,6 +183,7 @@ class BuildStatsFormatterPlugin {
     validateOptions(options);
 
     this.log = options.log;
+    this.logMessages = [];
 
     this.assetCategories =
       options.categorizeAssets === false
@@ -245,24 +219,12 @@ class BuildStatsFormatterPlugin {
    * vary between builds.
    */
   determineFileSizesBeforeBuild() {
-    const globbed = glob.sync(["**/*.{js,css,json,webmanifest}"], {
-      cwd: this.sourcePath,
-      absolute: true,
-    });
-
     try {
-      this.previousFileSizes = globbed.reduce((result, fileName) => {
-        const contents = fs.readFileSync(fileName);
-        const key = this.getRelativeChunkName(fileName);
-        const originalSize = fs.statSync(fileName).size;
-        result[key] = {
-          original: originalSize,
-          gzip: gzipSizeOf(contents, this.gzipDisplayOpts),
-        };
-        return result;
-      }, {});
+      this.previousFileSizes = fs.readJSONSync(
+        paths.appTmpDir + path.sep + "build-stats.json"
+      );
     } catch (e) {
-      this.log.error(
+      this.logMessages.push(
         `Determining file sizes before build failed, due to ${e}, going ahead with empty object.`
       );
       this.previousFileSizes = {};
@@ -421,7 +383,7 @@ class BuildStatsFormatterPlugin {
     type,
     alertLimit
   ) {
-    const relativeName = this.getRelativeChunkName(assetName);
+    const relativeName = getRelativeChunkName(this.sourcePath, assetName);
     const previousInfo = previousFileSizes[relativeName];
     if (previousInfo) {
       const difference = currentSize - previousInfo[type];
@@ -497,8 +459,8 @@ class BuildStatsFormatterPlugin {
       tooLarge: 0,
       extracted: 0,
     };
-    this.log.note(`Build hash: ${jsonStats.hash}`);
-    this.log.note(
+    this.logMessages.push(`Build hash: ${jsonStats.hash}`);
+    this.logMessages.push(
       `Emitted assets in ${chalk.cyan(
         path.resolve(this.sourcePath)
       )} (displayed gzip sizes refer to compression ${chalk.cyan(
@@ -529,10 +491,10 @@ class BuildStatsFormatterPlugin {
         );
         const highlightedCategoryName =
           c === catchAllCategories ? "" : chalk.bgCyan.white.bold(c);
-        this.log.category(
-          [highlightedCategoryName, headline]
+        this.logMessages.push(
+          ...[highlightedCategoryName, headline]
             .concat(formattedAssetsLabels)
-            .join("\n")
+            .concat("\n")
         );
         missingPreviousVersion.push(...missingPrevious);
       }
@@ -550,17 +512,17 @@ class BuildStatsFormatterPlugin {
         remainingAssets,
         exceptionalAssetCnt
       );
-      this.log.category(
-        [chalk.bgCyan.white.bold("Others"), headline]
+      this.logMessages.push(
+        ...[chalk.bgCyan.white.bold("Others"), headline]
           .concat(formattedAssetsLabels)
-          .join("\n")
+          .concat("\n")
       );
       missingPreviousVersion.push(...missingPrevious);
     }
 
     // If some files where ignored / filtered out, print a note about the pattern.
     if (this.ignorePattern) {
-      this.log.note(
+      this.logMessages.push(
         `Files matching ${chalk.cyan(
           this.ignorePattern.source
         )} are not listed above.`
@@ -569,7 +531,7 @@ class BuildStatsFormatterPlugin {
 
     // Print an information about the amount of too large assets, and how they are marked.
     if (exceptionalAssetCnt.tooLarge > 0) {
-      this.log.warn(
+      this.logMessages.push(
         `${exceptionalAssetCnt.tooLarge === 1 ? "There is" : "There are"} ${
           exceptionalAssetCnt.tooLarge
         } assets which exceed the configured size limit of ${filesize(
@@ -580,7 +542,7 @@ class BuildStatsFormatterPlugin {
 
     // Print an information about potential extraction remainings, and how they are marked.
     if (exceptionalAssetCnt.extracted > 0) {
-      this.log.note(
+      this.logMessages.push(
         `${exceptionalAssetCnt.extracted === 1 ? "There is" : "There are"} ${
           exceptionalAssetCnt.extracted
         } assets which are smaller than the configured lower size limit of ${filesize(
@@ -596,7 +558,7 @@ class BuildStatsFormatterPlugin {
     );
 
     if (relevantMissingPreviousVersion.length > 0) {
-      this.log.debug(
+      this.logMessages.push(
         `Some assets did not have a previous version: ${JSON.stringify(
           relevantMissingPreviousVersion,
           null,
@@ -608,31 +570,8 @@ class BuildStatsFormatterPlugin {
         )}`
       );
     }
-  }
 
-  /**
-   * Gets the relative name of a file chunk, excluding potentially existing hashes in the file name.
-   * Used to match current assets with their potential predecessors.
-   *
-   * @param fileName
-   * @returns {string}
-   */
-  getRelativeChunkName(fileName) {
-    // Replacing by relative path is more stable, but not always usable regarding
-    // provided relative file names...
-    // In case `fileName` is an absolute path, using `path.relative` is favorable,
-    // since it also avoids problems with potentially leading path separators.
-    const targetFileName = path.isAbsolute(fileName)
-      ? path.relative(this.sourcePath, fileName)
-      : fileName.replace(this.sourcePath, "");
-
-    const filenameWithoutHash = targetFileName.replace(
-      /\/?(.*)(\.[0-9a-f]{8,})(\.chunk)?\.(js|css|json|webmanifest)/,
-      (match, p1, p2, p3, p4) => p1 + p4
-    );
-
-    // The path has to be normalized to properly handle different path separators on Windows vs the rest of the world.
-    return path.normalize(filenameWithoutHash);
+    console.log(this.logMessages.join("\n"));
   }
 }
 

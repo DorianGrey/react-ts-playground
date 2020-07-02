@@ -7,7 +7,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "./theme";
 import Navigation from "./navigation/Navigation";
 import { IntlConfigProvider } from "./provider/IntlConfigProvider";
-import { LanguagePack } from "./i18n/languagePacks/languagePack";
+import type { LanguagePack } from "./i18n/languagePacks/languagePack";
 import { TodosProvider } from "./provider/TodosProvider";
 
 export interface AppProps {
