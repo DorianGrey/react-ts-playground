@@ -10,11 +10,6 @@ const plugins = [
         const TerserPlugin = require("terser-webpack-plugin");
         const GenerateSW = require("workbox-webpack-plugin/build/generate-sw");
         const BundleAnalyzerPlugin = require("webpack-bundle-analyzer/lib/BundleAnalyzerPlugin");
-        // const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
-
-        // TODO: Try to figure out why the output of this plugin is only partially visible if added.
-        // In addition, the "stats" config for webpack does not seem to be evaluated, however
-        // that is not the cause of this problem.
         const BuildStatsFormatterPlugin = require("./config/webpack/plugins/BuildStatsFormatterPlugin");
 
         config.output.filename = "js/[name].[chunkhash:8].js";
@@ -56,7 +51,7 @@ const plugins = [
           }),
           new BuildStatsFormatterPlugin({
             categorizeAssets: false,
-            /* TODO - Maybe use this:
+            /* Alternative usage:
             categorizeAssets: {
               "Service worker": /(workbox|service-worker|precache-manifest).*\.js$/,
               Scripts: /\.js$/,
