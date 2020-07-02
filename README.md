@@ -17,6 +17,10 @@ Uses [snowpack](https://www.snowpack.dev/) for the default setup and its plugin 
     - No source maps for your app code in dev mode (for now)
     - No named dynamic imports (for now)
 
+## Package manager
+
+PNPM - https://pnpm.js.org/
+
 ## Build tasks
 
 - `build` executes the default `snowpack build` task **without** using a bundler, i.e. the output result is not minified and optimized to the full extend.
@@ -52,6 +56,10 @@ Uses [webpack](https://webpack.js.org) and several related plugins for both mode
 ## Notable aspects
 - Very mature technical basis.
 - Requires less tools, but more plugins for `webpack` and configuration for both.
+
+## Package manager
+
+Yarn - https://yarnpkg.com/
 
 ## Build tasks
 
