@@ -1,25 +1,15 @@
 const fs = require("fs-extra");
-const glob = require("globby");
 const chalk = require("chalk");
 const path = require("path");
 const filesize = require("filesize");
 const stripAnsi = require("strip-ansi");
-const zlib = require("zlib");
+
+const paths = require("../../paths");
+const { gzipSizeOf } = require("../../../util/gzipSizeOf");
+const { getRelativeChunkName } = require("../../../util/getRelativeChunkName");
 
 const relevantSizeComparisonRegex = /\.(js|css|json|webmanifest)$/;
 const catchAllCategories = "#";
-
-/**
- * Helper function to determine the gzipped size of a content.
- *
- * @param src {String|Buffer} Content to determine the size for.
- * @param gzipOpts {Object} Gzip options to apply - esp. the `level` affects the output size.
- *                          Should fit the `ZlibOptions` shape.
- * @returns {number} The size of the gzipped content in bytes.
- */
-function gzipSizeOf(src, gzipOpts) {
-  return zlib.gzipSync(src, gzipOpts).length;
-}
 
 /**
  * Aligns a string to fit a particular minimal width. The width is expanded
@@ -229,22 +219,10 @@ class BuildStatsFormatterPlugin {
    * vary between builds.
    */
   determineFileSizesBeforeBuild() {
-    const globbed = glob.sync(["**/*.{js,css,json,webmanifest}"], {
-      cwd: this.sourcePath,
-      absolute: true,
-    });
-
     try {
-      this.previousFileSizes = globbed.reduce((result, fileName) => {
-        const contents = fs.readFileSync(fileName);
-        const key = this.getRelativeChunkName(fileName);
-        const originalSize = fs.statSync(fileName).size;
-        result[key] = {
-          original: originalSize,
-          gzip: gzipSizeOf(contents, this.gzipDisplayOpts),
-        };
-        return result;
-      }, {});
+      this.previousFileSizes = fs.readJSONSync(
+        paths.appTmpDir + path.sep + "build-stats.json"
+      );
     } catch (e) {
       this.logMessages.push(
         `Determining file sizes before build failed, due to ${e}, going ahead with empty object.`
@@ -405,7 +383,7 @@ class BuildStatsFormatterPlugin {
     type,
     alertLimit
   ) {
-    const relativeName = this.getRelativeChunkName(assetName);
+    const relativeName = getRelativeChunkName(this.sourcePath, assetName);
     const previousInfo = previousFileSizes[relativeName];
     if (previousInfo) {
       const difference = currentSize - previousInfo[type];
@@ -594,31 +572,6 @@ class BuildStatsFormatterPlugin {
     }
 
     console.log(this.logMessages.join("\n"));
-  }
-
-  /**
-   * Gets the relative name of a file chunk, excluding potentially existing hashes in the file name.
-   * Used to match current assets with their potential predecessors.
-   *
-   * @param fileName
-   * @returns {string}
-   */
-  getRelativeChunkName(fileName) {
-    // Replacing by relative path is more stable, but not always usable regarding
-    // provided relative file names...
-    // In case `fileName` is an absolute path, using `path.relative` is favorable,
-    // since it also avoids problems with potentially leading path separators.
-    const targetFileName = path.isAbsolute(fileName)
-      ? path.relative(this.sourcePath, fileName)
-      : fileName.replace(this.sourcePath, "");
-
-    const filenameWithoutHash = targetFileName.replace(
-      /\/?(.*)(\.[0-9a-f]{8,})(\.chunk)?\.(js|css|json|webmanifest)/,
-      (match, p1, p2, p3, p4) => p1 + p4
-    );
-
-    // The path has to be normalized to properly handle different path separators on Windows vs the rest of the world.
-    return path.normalize(filenameWithoutHash);
   }
 }
 

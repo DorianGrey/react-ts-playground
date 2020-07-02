@@ -83,7 +83,7 @@
     "start": "snowpack dev",
     "build": "snowpack build --no-bundle && yarn generate:sw",
     "generate:sw": "workbox generateSW",
-    "build:bundled": "snowpack build",
+    "build:bundled": "node scripts/current-build-stats.js && snowpack build",
     "serve": "node scripts/serve.js",
     "test:ci": "node scripts/test.js --no-cache --coverage",
     "test": "node scripts/test.js",

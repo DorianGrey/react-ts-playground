@@ -3,7 +3,7 @@
 const yaml = require("js-yaml");
 const _ = require("lodash");
 
-const utils = require("./util/fileUtils");
+const utils = require("../util/fileUtils");
 
 const defaultOpts = {
   verbose: false,

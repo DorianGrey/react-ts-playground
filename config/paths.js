@@ -8,5 +8,7 @@ const resolveApp = (...relativePath) =>
 // config after eject: we're in ./config/
 module.exports = {
   resolveApp,
+  appBuild: resolveApp("build"),
+  appTmpDir: resolveApp(".tmp"),
   appBuildStats: resolveApp("buildStats"),
 };
