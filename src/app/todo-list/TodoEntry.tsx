@@ -138,7 +138,7 @@ const EditableTodo: FC<EditableTodoProps> = ({
   });
   const { formatMessage } = useIntl();
 
-  const submitButtonTranslationId = currentTodoData.headline
+  const submitButtonTranslationId = currentTodoData.id
     ? "todos.newTodo.update"
     : "todos.newTodo.create";
 
