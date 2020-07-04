@@ -1,0 +1,4 @@
+paymentCreation:
+  infoText:
+    de: "Mit dem unten dargestellen Formular kann die Initiierung eines Bezahlvorgangs mit Hilfe der PaymentRequest-API durchgespielt werden. Wichtig: Das Formular versendet keine Daten und löst keinen realen Zahlungsvorgang aus, sondern illustriert lediglich den Workflow aus Benutzersicht sowie die erhaltenen Daten."
+    en: "With the form below, the initiation of a payment process using the PaymentRequest-API can be played through. Important: The form does not send any data and does not trigger a real payment process, but only illustrates the workflow from the user's point of view and the data received."

@@ -17,6 +17,7 @@ import type { Theme } from "@material-ui/core/styles";
 import PermContactCalendarIcon from "@material-ui/icons/PermContactCalendar";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
+import PaymentIcon from "@material-ui/icons/Payment";
 
 import CurrentTime from "../currentTime/CurrentTime";
 import LanguagePicker from "../language-picker/LanguagePicker";
@@ -38,6 +39,11 @@ const navItems = [
     label: "nav.testRoute3",
     to: "/lazy-test/faq?bla=true",
     icon: QuestionAnswerIcon,
+  },
+  {
+    label: "nav.paymentCreation",
+    to: "/payment-creation",
+    icon: PaymentIcon,
   },
 ];
 

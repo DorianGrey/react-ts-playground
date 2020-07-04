@@ -38,6 +38,18 @@ const AsyncParseParamsTestRoute: FC = () => {
   );
 };
 
+const AsyncPaymentCreation: FC = () => {
+  return (
+    <AsyncRoute
+      loader={() =>
+        import(
+          /* webpackChunkName: "paymentCreation" */ "../routes/payment-creation/PaymentCreation"
+        )
+      }
+    />
+  );
+};
+
 export const Routes: FC = () => {
   const location = useLocation();
   return (
@@ -52,6 +64,11 @@ export const Routes: FC = () => {
       <Route
         path="/lazy-test/:id"
         component={AsyncParseParamsTestRoute}
+        location={location}
+      />
+      <Route
+        path="/payment-creation"
+        component={AsyncPaymentCreation}
         location={location}
       />
       <Route component={NotFoundPage} />
