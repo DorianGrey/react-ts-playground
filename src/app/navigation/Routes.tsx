@@ -20,7 +20,7 @@ const AsyncTestRoute2: FC = () => {
   return (
     <AsyncRoute
       loader={() =>
-        import(/* webpackChunkName: "todos" */ "../todo-list/TodoList")
+        import(/* webpackChunkName: "todos" */ "../routes/todo-list/TodoList")
       }
     />
   );

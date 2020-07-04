@@ -2,7 +2,7 @@ import React, { createContext, FC, useContext, useState } from "react";
 import produce from "immer";
 import noop from "lodash-es/noop";
 
-import type { TodoModel } from "../todo-list/todo.model";
+import type { TodoModel } from "../routes/todo-list/todo.model";
 
 interface TodosContext {
   todos: readonly TodoModel[];

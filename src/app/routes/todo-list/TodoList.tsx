@@ -16,9 +16,9 @@ import TodoEntry from "./TodoEntry";
 import {
   sendNotification,
   requestNotificationPermission,
-} from "../util/notification";
-import { useTodos } from "../provider/TodosProvider";
-import { useIntlConfig } from "../provider/IntlConfigProvider";
+} from "../../util/notification";
+import { useTodos } from "../../provider/TodosProvider";
+import { useIntlConfig } from "../../provider/IntlConfigProvider";
 
 const useStyles = makeStyles(() =>
   createStyles({
