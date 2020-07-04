@@ -1,6 +1,7 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useCallback } from "react";
 import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
 import clsx from "clsx";
+import produce from "immer";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import type { Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -121,6 +122,22 @@ function ReadOnlyTodo(
 type EditableTodoProps = Partial<TodoModel> &
   TodoEntryProps & { onEditLeave: () => void };
 
+const headlineProducer = produce(
+  (draft: Partial<TodoModel>, newHeadline: string) => {
+    draft.headline = newHeadline;
+  }
+);
+const descriptionProducer = produce(
+  (draft: Partial<TodoModel>, newDescription: string) => {
+    draft.description = newDescription;
+  }
+);
+const deadlineProducer = produce(
+  (draft: Partial<TodoModel>, newDeadline: Date) => {
+    draft.deadline = newDeadline;
+  }
+);
+
 const EditableTodo: FC<EditableTodoProps> = ({
   id,
   headline,
@@ -153,52 +170,52 @@ const EditableTodo: FC<EditableTodoProps> = ({
     onEditLeave();
   };
 
-  const updateHeadline = (newHeadline: number | string) => {
-    setCurrentTodoData({
-      ...currentTodoData,
-      headline: newHeadline as string,
-    });
-  };
+  const updateHeadline = useCallback((newHeadline: string) => {
+    setCurrentTodoData((current) => headlineProducer(current, newHeadline));
+  }, []);
 
-  const updateDescription = (newDescription: number | string) => {
-    setCurrentTodoData({
-      ...currentTodoData,
-      description: newDescription as string,
-    });
-  };
+  const updateDescription = useCallback((newDescription: string) => {
+    setCurrentTodoData((current) =>
+      descriptionProducer(current, newDescription)
+    );
+  }, []);
 
-  const updateDate = (newDate: MaterialUiPickersDate) => {
-    const newValue = newDate;
-    if (newValue) {
-      if (currentTodoData.deadline) {
-        newValue.setHours(
-          currentTodoData.deadline.getHours(),
-          currentTodoData.deadline.getMinutes()
-        );
+  const updateDeadline = useCallback((newDeadline: Date) => {
+    setCurrentTodoData((current) => deadlineProducer(current, newDeadline));
+  }, []);
+
+  const updateDate = useCallback(
+    (newDate: MaterialUiPickersDate) => {
+      const newValue = newDate;
+      if (newValue) {
+        if (currentTodoData.deadline) {
+          newValue.setHours(
+            currentTodoData.deadline.getHours(),
+            currentTodoData.deadline.getMinutes()
+          );
+        }
+        updateDeadline(newValue);
       }
-      setCurrentTodoData({
-        ...currentTodoData,
-        deadline: newValue,
-      });
-    }
-  };
+    },
+    [currentTodoData.deadline, updateDeadline]
+  );
 
-  const updateTime = (newDate: MaterialUiPickersDate) => {
-    const newValue = newDate;
-    if (newValue) {
-      if (currentTodoData.deadline) {
-        newValue.setFullYear(
-          currentTodoData.deadline.getFullYear(),
-          currentTodoData.deadline.getMonth(),
-          currentTodoData.deadline.getDate()
-        );
+  const updateTime = useCallback(
+    (newDate: MaterialUiPickersDate) => {
+      const newValue = newDate;
+      if (newValue) {
+        if (currentTodoData.deadline) {
+          newValue.setFullYear(
+            currentTodoData.deadline.getFullYear(),
+            currentTodoData.deadline.getMonth(),
+            currentTodoData.deadline.getDate()
+          );
+        }
+        updateDeadline(newValue);
       }
-      setCurrentTodoData({
-        ...currentTodoData,
-        deadline: newValue,
-      });
-    }
-  };
+    },
+    [currentTodoData.deadline, updateDeadline]
+  );
 
   const titlePlaceHolder = formatMessage({
     id: "todos.entry.placeholder.tag",

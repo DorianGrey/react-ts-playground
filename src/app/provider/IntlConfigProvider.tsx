@@ -1,4 +1,10 @@
-import React, { FC, FunctionComponent, useState, useContext } from "react";
+import React, {
+  FC,
+  FunctionComponent,
+  useState,
+  useContext,
+  useCallback,
+} from "react";
 import { IntlProvider } from "react-intl";
 import noop from "lodash-es/noop";
 
@@ -37,10 +43,13 @@ export const IntlConfigProvider: FunctionComponent<IntlConfigProviderProps> = ({
 }) => {
   const [intlState, setIntl] = useState<LanguagePack>(initialLangPack);
 
-  const loadLanguage = (lang: string) =>
-    loadLanguagePack(lang).then((langPack) => {
-      setIntl(langPack);
-    });
+  const loadLanguage = useCallback(
+    (lang: string) =>
+      loadLanguagePack(lang).then((langPack) => {
+        setIntl(langPack);
+      }),
+    []
+  );
 
   return (
     <IntlConfigContext.Provider

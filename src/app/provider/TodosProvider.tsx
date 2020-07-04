@@ -1,4 +1,5 @@
 import React, { createContext, FC, useContext, useState } from "react";
+import produce from "immer";
 import noop from "lodash-es/noop";
 
 import type { TodoModel } from "../todo-list/todo.model";
@@ -43,15 +44,21 @@ export const TodosProvider: FC = ({ children }) => {
       description,
       deadline,
     };
-    setTodos([...todos, newTodo]);
+    setTodos(
+      produce(todos, (draft) => {
+        draft.push(newTodo);
+      })
+    );
   };
 
   const updateTodo = (todo: TodoModel) => {
     const oldIndex = todos.findIndex((e) => e.id === todo.id);
     if (oldIndex >= 0) {
-      const newTodos = [...todos];
-      newTodos[oldIndex] = todo;
-      setTodos(newTodos);
+      setTodos(
+        produce(todos, (draft) => {
+          draft[oldIndex] = todo;
+        })
+      );
     }
   };
 

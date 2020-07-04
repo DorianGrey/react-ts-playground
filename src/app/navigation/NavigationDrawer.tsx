@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useCallback } from "react";
 import { useIntl } from "react-intl";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -86,9 +86,9 @@ export const NavigationDrawer: FC = () => {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
   const { formatMessage } = useIntl();
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  const handleDrawerToggle = useCallback(() => {
+    setMobileOpen((open) => !open);
+  }, []);
   const drawerContent = (
     <List>
       <ListItem className={classes.drawerItem}>
