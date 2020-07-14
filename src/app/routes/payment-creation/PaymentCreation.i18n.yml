@@ -1,10 +1,29 @@
 paymentCreation:
   infoText:
-    de: "Mit dem unten dargestellen Formular kann die Initiierung eines Bezahlvorgangs mit Hilfe der PaymentRequest-API durchgespielt werden. Wichtig: Das Formular versendet keine Daten und löst keinen realen Zahlungsvorgang aus, sondern illustriert lediglich den Workflow aus Benutzersicht sowie die erhaltenen Daten."
-    en: "With the form below, the initiation of a payment process using the PaymentRequest-API can be played through. Important: The form does not send any data and does not trigger a real payment process, but only illustrates the workflow from the user's point of view and the data received."
+    de: "Mit dem unten dargestellen Formular kann die Initiierung eines Bezahlvorgangs mit Hilfe der PaymentRequest-API durchgespielt werden."
+    en: "With the form below, the initiation of a payment process using the PaymentRequest-API can be played through."
+  infoSubText:
+    de: "Wichtig: Das Formular versendet keine Daten und löst keinen realen Zahlungsvorgang aus, sondern illustriert lediglich den Workflow aus Benutzersicht sowie die erhaltenen Daten."
+    en: "Important: The form does not send any data and does not trigger a real payment process, but only illustrates the workflow from the user's point of view and the data received."
   unavailable:
     de: "Ihr Browser unterstützt die PaymentRequest API leider nicht."
     en: "Your browser does not support the PaymentRequest API."
   startDemo:
     de: "Demo starten"
-    en: "Start demo"  
+    en: "Start demo"
+  card:
+    name:
+      de: Name auf der Karte
+      en: Name on card
+    number:
+      de: Kartennummer
+      en: Card number
+    expMonth:
+      de: Ablaufmonat
+      en: Expiry month
+    expYear:
+      de: Ablaufjahr
+      en: Expiry year
+  rawData:
+    de: "Rohe Daten:"
+    en: "Raw data:"
